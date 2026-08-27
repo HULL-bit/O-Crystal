@@ -29,11 +29,11 @@ export function Preloader() {
     }
 
     const toForm = setTimeout(() => setPhase("form"), 20);
-    const toReveal = setTimeout(() => setPhase("reveal"), 1600);
+    const toReveal = setTimeout(() => setPhase("reveal"), 1150);
     const toDone = setTimeout(() => {
       setPhase("done");
       markIntroSeen();
-    }, 2500);
+    }, 1850);
     return () => {
       clearTimeout(toForm);
       clearTimeout(toReveal);

@@ -12,8 +12,9 @@
 @theme {
   /* — Couleurs de marque (issues de l'étiquette & de l'icône officielle) — */
   --color-royal: #0a1e7a; /* bleu royal profond — fonds, héro, aplats */
-  --color-royal-deep: #050f3d; /* nuit abyssale — dégradés, profondeur */
-  --color-royal-soft: #16307f; /* surfaces glassmorphism sur fond royal */
+  --color-royal-deep: #0a1852; /* base sombre lumineuse (jamais un aplat terne) */
+  --color-royal-abysse: #071240; /* réservé aux dégradés / creux de profondeur */
+  --color-royal-soft: #1b3a97; /* surfaces glassmorphism sur fond royal */
   --color-cristal: #2e9fdf; /* bleu cristal — accents, liens, survols */
   --color-cristal-light: #7fd0f5; /* reflets d'eau, halos */
   --color-platine: #c7ced8; /* argent / platine — filets, texte secondaire */
@@ -22,13 +23,13 @@
   --color-nuit: #0c1330; /* bleu nuit — corps de texte sur fond clair */
   --color-or: #b8912e; /* or discret — distinctions, certifications */
 
-  /* — Rôles sémantiques (thème sombre par défaut) — */
-  --color-background: var(--color-royal-deep);
-  --color-surface: #0a1946;
-  --color-surface-raised: #0f2358;
-  --color-foreground: #eef3fb;
-  --color-muted: #a9b6d4; /* texte secondaire — AA sur --background */
-  --color-border: color-mix(in oklab, var(--color-platine) 22%, transparent);
+  /* — Rôles sémantiques (thème sombre "bleu joaillerie", lumineux) — */
+  --color-background: #0b1c5e;
+  --color-surface: #14286e;
+  --color-surface-raised: #1c3585;
+  --color-foreground: #f2f6fd;
+  --color-muted: #bcc8e6; /* texte secondaire — AA sur --background */
+  --color-border: color-mix(in oklab, var(--color-platine) 26%, transparent);
   --color-ring: var(--color-cristal-light);
 
   /* — Typographie — (familles injectées par next/font, cf. src/lib/fonts.ts) */
@@ -81,9 +82,16 @@
   /* — Dégradés signature — */
   --gradient-eau: linear-gradient(
     155deg,
-    var(--color-royal-deep) 0%,
-    var(--color-royal) 42%,
+    var(--color-royal) 0%,
+    #1c4fb8 45%,
     var(--color-cristal) 100%
+  );
+  /* Fond de page : lumineux en haut, profond en bas — jamais un aplat terne. */
+  --gradient-fond: radial-gradient(
+    130% 90% at 50% -10%,
+    #1b3f9e 0%,
+    var(--color-background) 48%,
+    var(--color-royal-abysse) 100%
   );
   --gradient-argent: linear-gradient(
     100deg,
@@ -98,10 +106,9 @@
   --spacing-gutter: clamp(1.25rem, 4vw, 4rem);
 
   /* — Animations keyframes exposées en utilitaires Tailwind — */
-  --animate-shimmer: shimmer 6s linear infinite;
+  --animate-shimmer: shimmer 8s linear infinite;
   --animate-rise: rise 14s linear infinite;
-  --animate-breathe: breathe 7s var(--ease-plonge) infinite;
-  --animate-aurora: aurora 24s var(--ease-plonge) infinite;
+  --animate-breathe: breathe 9s var(--ease-plonge) infinite;
 }
 
 @keyframes shimmer {
@@ -158,16 +165,22 @@
     opacity: 1;
   }
 }
-@keyframes aurora {
+@keyframes aurora-pulse {
   0%,
   100% {
-    transform: translate3d(-4%, -2%, 0) rotate(-6deg) scale(1.1);
+    opacity: 0.75;
   }
-  33% {
-    transform: translate3d(6%, 3%, 0) rotate(4deg) scale(1.25);
+  50% {
+    opacity: 1;
   }
-  66% {
-    transform: translate3d(-2%, 5%, 0) rotate(8deg) scale(1.15);
+}
+@keyframes float {
+  0%,
+  100% {
+    transform: translate3d(0, -1.5%, 0) rotate(-1.5deg);
+  }
+  50% {
+    transform: translate3d(0, 2.5%, 0) rotate(1.5deg);
   }
 }
 
@@ -197,6 +210,16 @@
     -moz-osx-font-smoothing: grayscale;
     font-synthesis-weight: none;
     overflow-x: hidden;
+  }
+
+  /* Nappe de lumière fixe derrière tout le contenu (couche composite,
+     ne se repeint pas au scroll — contrairement à background-attachment). */
+  body::before {
+    content: "";
+    position: fixed;
+    inset: 0;
+    z-index: -1;
+    background: var(--gradient-fond);
   }
 
   h1,
@@ -273,12 +296,13 @@
   }
 }
 
-/* Verre dépoli premium */
+/* Verre dépoli premium — flou modéré (coût GPU maîtrisé), fond assez opaque
+   pour rester lisible même si le backdrop-filter est bridé. */
 @utility glass {
-  background: color-mix(in oklab, var(--color-royal-soft) 55%, transparent);
-  backdrop-filter: blur(16px) saturate(1.4);
-  -webkit-backdrop-filter: blur(16px) saturate(1.4);
-  border: 1px solid color-mix(in oklab, var(--color-platine) 18%, transparent);
+  background: color-mix(in oklab, var(--color-royal-soft) 72%, transparent);
+  backdrop-filter: blur(10px);
+  -webkit-backdrop-filter: blur(10px);
+  border: 1px solid color-mix(in oklab, var(--color-platine) 20%, transparent);
 }
 
 /* Bordure en dégradé subtile */
@@ -301,14 +325,21 @@
 /* ------------------------------------------------------------------ *
  *  GRAIN / TEXTURE FILM (overlay global très léger)
  * ------------------------------------------------------------------ */
+/* Overlay statique, sans mix-blend-mode (qui force un compositing global
+   coûteux). Très discret : juste une texture argentique. */
 .grain-overlay {
   pointer-events: none;
   position: fixed;
   inset: 0;
   z-index: 9999;
-  opacity: 0.04;
-  mix-blend-mode: overlay;
-  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='140' height='140'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
+  opacity: 0.028;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='120' height='120'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='2' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
+}
+
+@media (max-width: 640px) {
+  .grain-overlay {
+    display: none;
+  }
 }
 
 /* ------------------------------------------------------------------ *

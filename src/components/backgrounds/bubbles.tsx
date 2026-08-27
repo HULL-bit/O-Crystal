@@ -15,7 +15,7 @@ function seeded(i: number, salt: number) {
  * CSS pur (transform/opacity), se fige en reduced-motion.
  */
 export function Bubbles({
-  count = 18,
+  count = 10,
   className,
 }: {
   count?: number;

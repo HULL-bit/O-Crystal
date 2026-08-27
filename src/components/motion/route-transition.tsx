@@ -25,7 +25,7 @@ export function RouteTransition() {
     }
     if (reduced) return;
     const raf = requestAnimationFrame(() => setKey(pathname));
-    const to = setTimeout(() => setKey(null), 900);
+    const to = setTimeout(() => setKey(null), 620);
     return () => {
       cancelAnimationFrame(raf);
       clearTimeout(to);
@@ -42,9 +42,9 @@ export function RouteTransition() {
           initial={{ scaleY: 0 }}
           animate={{ scaleY: 1 }}
           exit={{ scaleY: 0, originY: 0 }}
-          transition={{ duration: 0.45, ease: ease.plonge }}
+          transition={{ duration: 0.32, ease: ease.plonge }}
         >
-          <span className="absolute inset-x-0 top-0 h-24 bg-[linear-gradient(180deg,rgba(127,208,245,0.55),transparent)] blur-lg" />
+          <span className="absolute inset-x-0 top-0 h-16 bg-[linear-gradient(180deg,rgba(127,208,245,0.5),transparent)]" />
         </motion.div>
       )}
     </AnimatePresence>

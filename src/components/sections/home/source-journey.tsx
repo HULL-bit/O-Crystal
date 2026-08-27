@@ -133,12 +133,11 @@ function Strata({ progress }: { progress: MotionValue<number> }) {
 }
 
 function LightShaft({ progress }: { progress: MotionValue<number> }) {
-  const opacity = useTransform(progress, [0, 0.4, 1], [0.15, 0.55, 0.9]);
-  const scaleY = useTransform(progress, [0, 1], [0.7, 1.5]);
+  const opacity = useTransform(progress, [0, 0.4, 1], [0.15, 0.5, 0.85]);
   return (
     <motion.div
-      style={{ opacity, scaleY }}
-      className="absolute left-1/2 top-0 h-full w-48 -translate-x-1/2 origin-top bg-[linear-gradient(180deg,rgba(127,208,245,0.4),transparent_70%)] blur-2xl"
+      style={{ opacity }}
+      className="absolute left-1/2 top-0 h-full w-56 -translate-x-1/2 bg-[linear-gradient(180deg,rgba(127,208,245,0.4),transparent_72%)] blur-xl"
     />
   );
 }

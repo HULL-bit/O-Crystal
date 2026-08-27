@@ -10,7 +10,7 @@ export async function NewsletterSection() {
   return (
     <Section spacing="lg" contained={false} className="relative">
       <div className="relative isolate mx-[var(--spacing-gutter)] overflow-hidden rounded-[var(--radius-2xl)] border border-[var(--color-border)] bg-[image:var(--gradient-eau)] px-6 py-16 md:px-16 md:py-24">
-        <Bubbles count={16} />
+        <Bubbles count={10} />
         <div className="relative max-w-xl">
           <Reveal as="p" className="font-[family-name:var(--font-display)] text-3xl md:text-4xl">
             {t("title")}

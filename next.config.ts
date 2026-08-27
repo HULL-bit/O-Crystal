@@ -29,12 +29,8 @@ const nextConfig: NextConfig = {
   reactStrictMode: true,
 
   experimental: {
-    // Optimise les gros paquets d'icônes / animation en tree-shaking agressif.
-    optimizePackageImports: [
-      "motion",
-      "@react-three/drei",
-      "lucide-react",
-    ],
+    // Tree-shaking agressif des gros paquets d'animation.
+    optimizePackageImports: ["motion", "@react-three/drei"],
   },
 
   images: {

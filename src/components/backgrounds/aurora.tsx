@@ -1,21 +1,28 @@
 import { cn } from "@/lib/utils";
 
 /**
- * Fond « aurora » / mesh gradient — nappes de lumière bleue qui dérivent
- * lentement dans l'eau. CSS pur, très peu coûteux. Se fige en reduced-motion.
+ * Fond « aurora » / mesh gradient — nappes de lumière bleue.
+ * Statique et peu coûteux (un seul dégradé composé, pas de transform animée
+ * sur des éléments floutés). Un très léger pouls d'opacité donne la vie.
  */
 export function Aurora({ className }: { className?: string }) {
   return (
     <div
       aria-hidden
       className={cn(
-        "pointer-events-none absolute inset-0 overflow-hidden [mask-image:radial-gradient(120%_120%_at_50%_0%,black,transparent_75%)]",
+        "pointer-events-none absolute inset-0 overflow-hidden",
         className,
       )}
     >
-      <div className="absolute -left-1/4 top-[-20%] h-[60vmax] w-[60vmax] rounded-full bg-[radial-gradient(circle,rgba(46,159,223,0.28),transparent_60%)] blur-3xl [animation:aurora_26s_ease-in-out_infinite] motion-reduce:animate-none" />
-      <div className="absolute right-[-20%] top-[10%] h-[50vmax] w-[50vmax] rounded-full bg-[radial-gradient(circle,rgba(127,208,245,0.2),transparent_60%)] blur-3xl [animation:aurora_32s_ease-in-out_infinite_reverse] motion-reduce:animate-none" />
-      <div className="absolute bottom-[-30%] left-1/3 h-[55vmax] w-[55vmax] rounded-full bg-[radial-gradient(circle,rgba(10,30,122,0.5),transparent_65%)] blur-3xl [animation:aurora_38s_ease-in-out_infinite] motion-reduce:animate-none" />
+      <div
+        className="absolute inset-0 opacity-90 [animation:aurora-pulse_16s_ease-in-out_infinite] motion-reduce:animate-none"
+        style={{
+          background:
+            "radial-gradient(60% 55% at 12% 8%, rgba(46,159,223,0.28), transparent 60%)," +
+            "radial-gradient(55% 50% at 92% 22%, rgba(127,208,245,0.20), transparent 62%)," +
+            "radial-gradient(70% 60% at 50% 108%, rgba(27,58,151,0.45), transparent 68%)",
+        }}
+      />
     </div>
   );
 }

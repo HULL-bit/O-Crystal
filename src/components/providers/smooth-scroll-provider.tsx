@@ -4,7 +4,7 @@ import { ReactLenis, type LenisRef } from "lenis/react";
 import { useEffect, useRef } from "react";
 import { gsap } from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
-import { usePrefersReducedMotion } from "@/hooks/use-reduced-motion";
+import { usePrefersReducedMotion, useMediaQuery } from "@/hooks/use-media-query";
 
 if (typeof window !== "undefined") {
   gsap.registerPlugin(ScrollTrigger);
@@ -12,14 +12,17 @@ if (typeof window !== "undefined") {
 
 /**
  * Smooth scroll inertiel global (Lenis) synchronisé avec GSAP ScrollTrigger.
- * « Sensation d'eau et de glisse » — désactivé proprement en reduced-motion.
+ * Desktop uniquement : sur tactile, le scroll natif est plus fluide et moins
+ * coûteux. Désactivé proprement en reduced-motion.
  */
 export function SmoothScrollProvider({ children }: { children: React.ReactNode }) {
   const lenisRef = useRef<LenisRef>(null);
   const reduced = usePrefersReducedMotion();
+  const coarse = useMediaQuery("(pointer: coarse)", false);
+  const active = !reduced && !coarse;
 
   useEffect(() => {
-    if (reduced) return;
+    if (!active) return;
 
     function onFrame(time: number) {
       lenisRef.current?.lenis?.raf(time * 1000);
@@ -34,9 +37,9 @@ export function SmoothScrollProvider({ children }: { children: React.ReactNode }
       gsap.ticker.remove(onFrame);
       lenis?.off("scroll", ScrollTrigger.update);
     };
-  }, [reduced]);
+  }, [active]);
 
-  if (reduced) return <>{children}</>;
+  if (!active) return <>{children}</>;
 
   return (
     <ReactLenis
@@ -44,12 +47,10 @@ export function SmoothScrollProvider({ children }: { children: React.ReactNode }
       ref={lenisRef}
       options={{
         autoRaf: false,
-        duration: 1.1,
-        // Courbe "glisse d'eau" — cf. --ease-eau.
-        easing: (t: number) => 1 - Math.pow(1 - t, 3.2),
-        wheelMultiplier: 0.9,
-        touchMultiplier: 1.4,
-        syncTouch: true,
+        // `lerp` plutôt que `duration` : réactif, sans traîne molle.
+        lerp: 0.12,
+        wheelMultiplier: 1,
+        syncTouch: false,
       }}
     >
       {children}

@@ -29,7 +29,7 @@ export function Hero() {
       className="relative isolate flex min-h-[100svh] flex-col justify-center overflow-hidden pt-20 pb-14 sm:pt-24 sm:pb-20"
     >
       <Aurora />
-      <Bubbles count={20} />
+      <Bubbles count={12} />
 
       {/* Scène 3D — décalée à droite pour ne jamais gêner la lecture */}
       <motion.div

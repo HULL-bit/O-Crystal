@@ -35,12 +35,12 @@ export function Reveal({
   }[from];
 
   const variants: Variants = {
-    hidden: { opacity: 0, filter: "blur(6px)", ...dir },
+    // opacity + transform uniquement (compositor-friendly, aucun repaint).
+    hidden: { opacity: 0, ...dir },
     visible: {
       opacity: 1,
       x: 0,
       y: 0,
-      filter: "blur(0px)",
       transition: { duration: duration.slow, ease: ease.surface, delay },
     },
   };

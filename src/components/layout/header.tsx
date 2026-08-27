@@ -28,7 +28,7 @@ export function Header() {
       className={cn(
         "fixed inset-x-0 top-0 z-50 border-b transition-[background-color,backdrop-filter,border-color,box-shadow] duration-[var(--duration-slow)] ease-[var(--ease-eau)]",
         scrolled
-          ? "border-[var(--color-border)] bg-[color-mix(in_oklab,var(--color-royal-deep)_86%,transparent)] shadow-[var(--shadow-soft)] backdrop-blur-xl backdrop-saturate-150"
+          ? "border-[var(--color-border)] bg-[color-mix(in_oklab,var(--color-royal-abysse)_88%,transparent)] shadow-[var(--shadow-soft)] backdrop-blur-md"
           : "border-transparent bg-transparent",
       )}
     >
