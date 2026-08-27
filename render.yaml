@@ -1,0 +1,54 @@
+# Blueprint de déploiement Render — O'Crystal
+# Un service web Node (Next.js + Payload embarqué) + une base Postgres managée.
+# Cloudflare devant pour CDN / cache / WAF / anti-DDoS.
+# Docs : https://render.com/docs/blueprint-spec
+
+services:
+  - type: web
+    name: ocrystal-web
+    runtime: node
+    plan: standard
+    region: frankfurt
+    # Node 20.9+ requis par Next 16
+    buildCommand: corepack enable && pnpm install --frozen-lockfile && pnpm build
+    startCommand: pnpm start
+    healthCheckPath: /fr
+    autoDeploy: true
+    envVars:
+      - key: NODE_VERSION
+        value: "22"
+      - key: NEXT_TELEMETRY_DISABLED
+        value: "1"
+      - key: NEXT_PUBLIC_SITE_URL
+        sync: false
+      - key: PAYLOAD_SECRET
+        generateValue: true
+      - key: DATABASE_URI
+        fromDatabase:
+          name: ocrystal-db
+          property: connectionString
+      # Secrets renseignés dans le dashboard Render (sync:false)
+      - key: R2_ACCOUNT_ID
+        sync: false
+      - key: R2_ACCESS_KEY_ID
+        sync: false
+      - key: R2_SECRET_ACCESS_KEY
+        sync: false
+      - key: R2_BUCKET
+        sync: false
+      - key: R2_PUBLIC_URL
+        sync: false
+      - key: RESEND_API_KEY
+        sync: false
+      - key: HCAPTCHA_SECRET
+        sync: false
+      - key: NEXT_PUBLIC_HCAPTCHA_SITE_KEY
+        sync: false
+      - key: NEXT_PUBLIC_MAP_STYLE_URL
+        sync: false
+
+databases:
+  - name: ocrystal-db
+    plan: basic-256mb
+    region: frankfurt
+    postgresMajorVersion: "16"

@@ -1,0 +1,252 @@
+{
+  "brand": {
+    "name": "O'Crystal",
+    "legalName": "Cristal Waters SARL",
+    "signature": "Pureté Naturelle Préservée",
+    "concept": "La lumière révélée par l'eau"
+  },
+  "nav": {
+    "home": "Accueil",
+    "brand": "La Marque",
+    "source": "La Source & la Qualité",
+    "products": "Nos Produits",
+    "whereToBuy": "Où acheter",
+    "pro": "Professionnels",
+    "csr": "Engagements RSE",
+    "news": "Actualités",
+    "careers": "Carrières",
+    "contact": "Contact",
+    "press": "Espace presse",
+    "menu": "Menu",
+    "close": "Fermer",
+    "openMenu": "Ouvrir le menu",
+    "skipToContent": "Aller au contenu principal",
+    "viewAll": "Voir toute la gamme",
+    "format33": "Format 33 cl",
+    "format50": "Format 50 cl",
+    "format150": "Format 1,5 L",
+    "format5": "Format 5 L",
+    "format10": "Format 10 L",
+    "format19": "Bonbonne 19 L"
+  },
+  "actions": {
+    "discover": "Découvrir",
+    "becomeDistributor": "Devenir distributeur",
+    "requestQuote": "Demander un devis",
+    "findAStore": "Trouver un point de vente",
+    "seeProducts": "Voir la gamme",
+    "readMore": "En savoir plus",
+    "downloadAnalysis": "Télécharger l'analyse (PDF)",
+    "back": "Retour",
+    "backToTop": "Haut de page",
+    "subscribe": "S'inscrire",
+    "send": "Envoyer",
+    "play": "Lire la vidéo",
+    "pause": "Mettre en pause",
+    "skipIntro": "Passer l'intro",
+    "enableSound": "Activer le son",
+    "disableSound": "Couper le son"
+  },
+  "preloader": {
+    "loading": "Préparation de l'expérience",
+    "enter": "Entrer"
+  },
+  "home": {
+    "hero": {
+      "eyebrow": "Eau minérale naturelle · Source de Niague, Sénégal",
+      "titleLine1": "La lumière",
+      "titleLine2": "révélée par l'eau",
+      "subtitle": "Puisée au cœur d'une nature préservée, naturellement filtrée par la roche. Une pureté d'exception, une minéralité d'équilibre.",
+      "scroll": "Défiler pour explorer"
+    },
+    "bottle": {
+      "title": "Une eau, six formats",
+      "text": "Du format nomade 33 cl à la bonbonne 19 L, la même exigence de pureté à chaque gorgée."
+    },
+    "brandTeaser": {
+      "eyebrow": "La Marque",
+      "title": "Une fierté sénégalaise, hissée aux standards du monde",
+      "text": "O'Crystal est née d'une ambition simple : offrir au Sénégal et à la sous-région une eau minérale d'une pureté irréprochable, avec l'élégance d'une grande maison.",
+      "cta": "Notre histoire"
+    },
+    "sourceTeaser": {
+      "eyebrow": "La Source & la Qualité",
+      "title": "De la roche à la bouteille",
+      "text": "L'eau chemine lentement à travers les couches minérales de Niague, se chargeant en calcium et magnésium, puis est embouteillée à la source.",
+      "cta": "Découvrir le parcours de l'eau"
+    },
+    "minerality": {
+      "eyebrow": "Minéralité",
+      "title": "320 mg/L de minéralité d'équilibre",
+      "text": "Résidu sec à 180 °C. Une eau légère, aux fines bulles rafraîchissantes.",
+      "residue": "Résidu sec à 180 °C",
+      "unit": "mg/L",
+      "cta": "Voir l'analyse complète"
+    },
+    "journey": {
+      "eyebrow": "Le parcours de l'eau",
+      "title": "De la roche de Niague à la bouteille",
+      "stages": {
+        "source": {
+          "title": "La source",
+          "text": "L'eau de pluie s'infiltre lentement dans une nature préservée, à l'abri des pollutions de surface."
+        },
+        "filtration": {
+          "title": "La filtration naturelle",
+          "text": "En traversant les couches de roche, elle se purifie et se charge en calcium, magnésium et bicarbonates."
+        },
+        "bottling": {
+          "title": "L'embouteillage à la source",
+          "text": "Captée puis embouteillée sur place, l'eau garde intacte sa pureté d'origine — rien n'est ajouté."
+        }
+      }
+    },
+    "proof": {
+      "title": "L'échelle de l'excellence",
+      "stats": {
+        "capacity": "Bouteilles / jour",
+        "stores": "Points de vente",
+        "regions": "Régions couvertes",
+        "since": "Depuis"
+      }
+    },
+    "whereToBuy": {
+      "eyebrow": "Où acheter",
+      "title": "O'Crystal près de chez vous",
+      "text": "Trouvez le point de vente le plus proche, en boutique comme en grande distribution.",
+      "cta": "Ouvrir le localisateur"
+    },
+    "distributor": {
+      "eyebrow": "Professionnels",
+      "title": "Devenez partenaire distributeur",
+      "text": "Grossistes, CHR, événementiel : rejoignez le réseau O'Crystal et bénéficiez de conditions dédiées.",
+      "cta": "Demander un partenariat"
+    },
+    "newsletter": {
+      "title": "Recevez nos actualités",
+      "text": "Nouveautés, conseils d'hydratation, coulisses de la source. Une lettre soignée, jamais de spam.",
+      "placeholder": "Votre adresse e-mail",
+      "consent": "J'accepte de recevoir la newsletter O'Crystal.",
+      "success": "Merci ! Confirmez votre inscription depuis l'e-mail que nous venons de vous envoyer."
+    }
+  },
+  "footer": {
+    "tagline": "Pureté Naturelle Préservée",
+    "sitemap": "Plan du site",
+    "legalTitle": "Informations légales",
+    "legal": "Mentions légales",
+    "privacy": "Politique de confidentialité",
+    "cookies": "Gestion des cookies",
+    "social": "Réseaux sociaux",
+    "language": "Langue",
+    "address": "Zone Industrielle de Niague — Rufisque, Sénégal",
+    "rights": "Tous droits réservés.",
+    "madeWith": "Site sobre en énergie, hébergé sur infrastructure responsable."
+  },
+  "cookies": {
+    "title": "Votre vie privée",
+    "text": "Nous utilisons des cookies de mesure d'audience respectueux de la vie privée et, avec votre accord, des cookies de contenu (cartes, vidéos).",
+    "accept": "Tout accepter",
+    "reject": "Tout refuser",
+    "customize": "Personnaliser",
+    "save": "Enregistrer mes choix",
+    "necessary": "Nécessaires",
+    "necessaryText": "Indispensables au fonctionnement du site. Toujours actifs.",
+    "analytics": "Mesure d'audience",
+    "analyticsText": "Statistiques anonymes et agrégées (Plausible).",
+    "media": "Contenus enrichis",
+    "mediaText": "Cartes interactives et vidéos hébergées."
+  },
+  "motion": {
+    "reduced": "Animations réduites",
+    "reducedText": "Vous naviguez avec une expérience allégée, conforme à vos préférences système."
+  },
+  "notFound": {
+    "code": "404",
+    "title": "Une goutte s'est perdue",
+    "text": "La page que vous cherchez s'est évaporée. Revenons à la source.",
+    "cta": "Retour à l'accueil"
+  },
+  "error": {
+    "title": "Une turbulence est survenue",
+    "text": "Quelque chose s'est troublé de notre côté. Réessayez dans un instant.",
+    "retry": "Réessayer"
+  },
+  "meta": {
+    "defaultTitle": "O'Crystal — Pureté Naturelle Préservée",
+    "titleTemplate": "%s · O'Crystal",
+    "description": "O'Crystal, eau minérale naturelle du Sénégal. Puisée à la source de Niague, naturellement filtrée par la roche. Découvrez la gamme, la source et nos points de vente."
+  },
+  "wip": {
+    "label": "Section en cours de conception",
+    "text": "Cette page fait partie de l'arborescence validée. Son contenu et ses animations seront construits à l'étape correspondante du plan.",
+    "back": "Revenir à l'accueil"
+  },
+  "pages": {
+    "brand": {
+      "eyebrow": "La Marque",
+      "title": "Une fierté sénégalaise, hissée aux standards du monde",
+      "intro": "L'histoire, la vision et l'ambition d'O'Crystal — racontées au fil du défilement."
+    },
+    "source": {
+      "eyebrow": "La Source & la Qualité",
+      "title": "De la roche de Niague à votre verre",
+      "intro": "Le parcours de l'eau, la filtration naturelle, l'analyse minérale et nos certifications."
+    },
+    "products": {
+      "eyebrow": "Nos Produits",
+      "title": "Une gamme, six formats",
+      "intro": "33 cl, 50 cl, 1,5 L, 5 L, 10 L et la bonbonne 19 L — pour la maison, le sport, l'événementiel et les CHR."
+    },
+    "product": {
+      "eyebrow": "Fiche produit",
+      "title": "Format O'Crystal",
+      "intro": "Contenance, composition, usages, points de vente et visuels 360°."
+    },
+    "whereToBuy": {
+      "eyebrow": "Où acheter",
+      "title": "Trouvez O'Crystal près de chez vous",
+      "intro": "Localisateur de points de vente, distributeurs partenaires et plateformes e-commerce."
+    },
+    "pro": {
+      "eyebrow": "Professionnels & Distributeurs",
+      "title": "Devenez partenaire O'Crystal",
+      "intro": "Offre B2B, CHR et événementiel, conditions, logistique et demande de partenariat."
+    },
+    "csr": {
+      "eyebrow": "Engagements RSE",
+      "title": "Nature préservée, responsabilité assumée",
+      "intro": "Environnement, recyclage, actions communautaires et éco-conception."
+    },
+    "news": {
+      "eyebrow": "Actualités",
+      "title": "Les actualités O'Crystal",
+      "intro": "Événements, conseils d'hydratation, coulisses de la source et revue de presse."
+    },
+    "careers": {
+      "eyebrow": "Carrières",
+      "title": "Rejoindre O'Crystal",
+      "intro": "Nos offres d'emploi et la candidature spontanée, avec dépôt de CV."
+    },
+    "contact": {
+      "eyebrow": "Contact",
+      "title": "Parlons-en",
+      "intro": "Formulaire, coordonnées de l'usine de Niague, horaires et réseaux sociaux."
+    },
+    "press": {
+      "eyebrow": "Espace presse",
+      "title": "Kit média O'Crystal",
+      "intro": "Logos, visuels HD, communiqués et éléments de langage téléchargeables."
+    },
+    "search": {
+      "eyebrow": "Recherche",
+      "title": "Rechercher sur O'Crystal",
+      "intro": "Contenus, produits et actualités."
+    },
+    "legal": {
+      "eyebrow": "Informations légales",
+      "title": "Mentions & conformité",
+      "intro": "Mentions légales, politique de confidentialité et gestion des cookies."
+    }
+  }
+}

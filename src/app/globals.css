@@ -1,0 +1,335 @@
+@import "tailwindcss";
+@plugin "@tailwindcss/typography";
+
+/* Le site est nativement en thème sombre "bleu joaillerie". Le mode clair
+   (optionnel, P2) réutilisera ces tokens sémantiques sans toucher aux composants. */
+@custom-variant light (&:where(.theme-light, .theme-light *));
+
+/* ------------------------------------------------------------------ *
+ *  DESIGN TOKENS — O'Crystal
+ *  Concept : « La lumière révélée par l'eau »
+ * ------------------------------------------------------------------ */
+@theme {
+  /* — Couleurs de marque (issues de l'étiquette & de l'icône officielle) — */
+  --color-royal: #0a1e7a; /* bleu royal profond — fonds, héro, aplats */
+  --color-royal-deep: #050f3d; /* nuit abyssale — dégradés, profondeur */
+  --color-royal-soft: #16307f; /* surfaces glassmorphism sur fond royal */
+  --color-cristal: #2e9fdf; /* bleu cristal — accents, liens, survols */
+  --color-cristal-light: #7fd0f5; /* reflets d'eau, halos */
+  --color-platine: #c7ced8; /* argent / platine — filets, texte secondaire */
+  --color-platine-bright: #e8edf3; /* reflet métallique haute lumière */
+  --color-blanc: #ffffff;
+  --color-nuit: #0c1330; /* bleu nuit — corps de texte sur fond clair */
+  --color-or: #b8912e; /* or discret — distinctions, certifications */
+
+  /* — Rôles sémantiques (thème sombre par défaut) — */
+  --color-background: var(--color-royal-deep);
+  --color-surface: #0a1946;
+  --color-surface-raised: #0f2358;
+  --color-foreground: #eef3fb;
+  --color-muted: #a9b6d4; /* texte secondaire — AA sur --background */
+  --color-border: color-mix(in oklab, var(--color-platine) 22%, transparent);
+  --color-ring: var(--color-cristal-light);
+
+  /* — Typographie — (familles injectées par next/font, cf. src/lib/fonts.ts) */
+  --font-display: var(--font-fraunces), ui-serif, Georgia, "Times New Roman", serif;
+  --font-sans: var(--font-inter), ui-sans-serif, system-ui, -apple-system, "Segoe UI", sans-serif;
+
+  /* Échelle typographique fluide (clamp) — grille de 8pt, rythme maîtrisé */
+  --text-2xs: 0.6875rem;
+  --text-xs: 0.75rem;
+  --text-sm: 0.875rem;
+  --text-base: 1rem;
+  --text-lg: clamp(1.0625rem, 1rem + 0.35vw, 1.1875rem);
+  --text-xl: clamp(1.25rem, 1.1rem + 0.6vw, 1.4rem);
+  --text-2xl: clamp(1.5rem, 1.25rem + 1vw, 1.85rem);
+  --text-3xl: clamp(1.9rem, 1.5rem + 1.8vw, 2.6rem);
+  --text-4xl: clamp(2.4rem, 1.8rem + 3vw, 3.6rem);
+  --text-5xl: clamp(2.7rem, 1.9rem + 4vw, 4.6rem);
+  --text-6xl: clamp(3.2rem, 2rem + 6vw, 6rem);
+  --text-hero: clamp(2.7rem, 1rem + 8.5vw, 7.5rem);
+
+  /* — Rayons — langage cohérent — */
+  --radius-sm: 0.5rem;
+  --radius-md: 0.875rem;
+  --radius-lg: 1.5rem;
+  --radius-xl: 2rem;
+  --radius-2xl: 2.75rem;
+
+  /* — Ombres en couches douces superposées (jamais plates) — */
+  --shadow-soft:
+    0 1px 2px -1px rgb(5 15 61 / 0.4), 0 4px 12px -4px rgb(5 15 61 / 0.5),
+    0 16px 40px -12px rgb(5 15 61 / 0.55);
+  --shadow-lift:
+    0 2px 4px -2px rgb(5 15 61 / 0.5), 0 12px 28px -8px rgb(5 15 61 / 0.55),
+    0 40px 80px -24px rgb(5 15 61 / 0.6);
+  --shadow-glow: 0 0 0 1px rgb(127 208 245 / 0.25), 0 0 48px -8px rgb(46 159 223 / 0.45);
+
+  /* — Tokens de MOTION (codifiés comme les couleurs — signature reconnaissable) — */
+  --duration-instant: 120ms;
+  --duration-fast: 200ms;
+  --duration-base: 320ms;
+  --duration-slow: 600ms;
+  --duration-scene: 900ms;
+  --duration-cinema: 1400ms;
+
+  --ease-eau: cubic-bezier(0.22, 1, 0.36, 1); /* sortie fluide, "glisse d'eau" */
+  --ease-plonge: cubic-bezier(0.65, 0, 0.35, 1); /* in-out organique */
+  --ease-surface: cubic-bezier(0.16, 1, 0.3, 1); /* révélations */
+  --ease-repli: cubic-bezier(0.4, 0, 1, 1);
+
+  /* — Dégradés signature — */
+  --gradient-eau: linear-gradient(
+    155deg,
+    var(--color-royal-deep) 0%,
+    var(--color-royal) 42%,
+    var(--color-cristal) 100%
+  );
+  --gradient-argent: linear-gradient(
+    100deg,
+    var(--color-platine) 0%,
+    var(--color-platine-bright) 30%,
+    var(--color-blanc) 48%,
+    var(--color-platine-bright) 66%,
+    var(--color-platine) 100%
+  );
+
+  /* — Container — */
+  --spacing-gutter: clamp(1.25rem, 4vw, 4rem);
+
+  /* — Animations keyframes exposées en utilitaires Tailwind — */
+  --animate-shimmer: shimmer 6s linear infinite;
+  --animate-rise: rise 14s linear infinite;
+  --animate-breathe: breathe 7s var(--ease-plonge) infinite;
+  --animate-aurora: aurora 24s var(--ease-plonge) infinite;
+}
+
+@keyframes shimmer {
+  to {
+    background-position: 200% center;
+  }
+}
+@keyframes rise {
+  from {
+    transform: translateY(0);
+  }
+  to {
+    transform: translateY(-50%);
+  }
+}
+@keyframes marquee {
+  to {
+    transform: translateX(-50%);
+  }
+}
+@keyframes sheen {
+  0% {
+    transform: translateX(-120%);
+  }
+  60%,
+  100% {
+    transform: translateX(120%);
+  }
+}
+@keyframes drift-up {
+  0% {
+    transform: translateY(20vh) scale(0.4);
+    opacity: 0;
+  }
+  10% {
+    opacity: 0.6;
+  }
+  90% {
+    opacity: 0.5;
+  }
+  100% {
+    transform: translateY(-110vh) scale(1);
+    opacity: 0;
+  }
+}
+@keyframes breathe {
+  0%,
+  100% {
+    transform: scale(1);
+    opacity: 0.85;
+  }
+  50% {
+    transform: scale(1.06);
+    opacity: 1;
+  }
+}
+@keyframes aurora {
+  0%,
+  100% {
+    transform: translate3d(-4%, -2%, 0) rotate(-6deg) scale(1.1);
+  }
+  33% {
+    transform: translate3d(6%, 3%, 0) rotate(4deg) scale(1.25);
+  }
+  66% {
+    transform: translate3d(-2%, 5%, 0) rotate(8deg) scale(1.15);
+  }
+}
+
+/* ------------------------------------------------------------------ *
+ *  BASE
+ * ------------------------------------------------------------------ */
+@layer base {
+  *,
+  *::before,
+  *::after {
+    border-color: var(--color-border);
+  }
+
+  html {
+    -webkit-text-size-adjust: 100%;
+    text-rendering: optimizeLegibility;
+    /* Le smooth scroll est piloté par Lenis (JS) — surtout pas en CSS. */
+  }
+
+  body {
+    background-color: var(--color-background);
+    color: var(--color-foreground);
+    font-family: var(--font-sans);
+    font-size: var(--text-base);
+    line-height: 1.65;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+    font-synthesis-weight: none;
+    overflow-x: hidden;
+  }
+
+  h1,
+  h2,
+  h3,
+  h4 {
+    font-family: var(--font-display);
+    font-weight: 400;
+    line-height: 1.05;
+    letter-spacing: -0.012em;
+    /* opsz modéré + douceur légère : élégant mais parfaitement lisible en grand. */
+    font-optical-sizing: none;
+    font-variation-settings:
+      "opsz" 40,
+      "SOFT" 24;
+    text-wrap: balance;
+  }
+
+  p {
+    text-wrap: pretty;
+  }
+
+  ::selection {
+    background: color-mix(in oklab, var(--color-cristal) 45%, transparent);
+    color: var(--color-blanc);
+  }
+
+  :focus-visible {
+    outline: 2px solid var(--color-ring);
+    outline-offset: 3px;
+    border-radius: 2px;
+  }
+
+  /* Cible tactile confortable */
+  button,
+  a,
+  input,
+  select,
+  textarea {
+    touch-action: manipulation;
+  }
+
+  /* Masque le curseur natif quand le curseur custom est actif (desktop, pointeur fin) */
+  @media (hover: hover) and (pointer: fine) {
+    body[data-cursor="on"],
+    body[data-cursor="on"] * {
+      cursor: none;
+    }
+  }
+}
+
+/* ------------------------------------------------------------------ *
+ *  UTILITAIRES SIGNATURE
+ * ------------------------------------------------------------------ */
+@utility container-page {
+  width: 100%;
+  margin-inline: auto;
+  max-width: 90rem;
+  padding-inline: var(--spacing-gutter);
+}
+
+/* Texte à reflet chromé / argent liquide animé */
+@utility text-shimmer {
+  color: var(--color-platine-bright);
+  background-image: var(--gradient-argent);
+  background-size: 200% auto;
+  background-clip: text;
+  -webkit-background-clip: text;
+  animation: var(--animate-shimmer);
+}
+@supports (background-clip: text) or (-webkit-background-clip: text) {
+  .text-shimmer {
+    color: transparent;
+  }
+}
+
+/* Verre dépoli premium */
+@utility glass {
+  background: color-mix(in oklab, var(--color-royal-soft) 55%, transparent);
+  backdrop-filter: blur(16px) saturate(1.4);
+  -webkit-backdrop-filter: blur(16px) saturate(1.4);
+  border: 1px solid color-mix(in oklab, var(--color-platine) 18%, transparent);
+}
+
+/* Bordure en dégradé subtile */
+@utility edge-gradient {
+  position: relative;
+  isolation: isolate;
+}
+
+@utility hairline {
+  border: 0;
+  height: 1px;
+  background: linear-gradient(
+    90deg,
+    transparent,
+    color-mix(in oklab, var(--color-platine) 40%, transparent),
+    transparent
+  );
+}
+
+/* ------------------------------------------------------------------ *
+ *  GRAIN / TEXTURE FILM (overlay global très léger)
+ * ------------------------------------------------------------------ */
+.grain-overlay {
+  pointer-events: none;
+  position: fixed;
+  inset: 0;
+  z-index: 9999;
+  opacity: 0.04;
+  mix-blend-mode: overlay;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='140' height='140'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
+}
+
+/* ------------------------------------------------------------------ *
+ *  PREFERS-REDUCED-MOTION — alternative sobre, pas juste "coupée"
+ * ------------------------------------------------------------------ */
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.001ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.001ms !important;
+    scroll-behavior: auto !important;
+  }
+
+  .grain-overlay {
+    display: none;
+  }
+}
+
+/* Utilitaire : réserve l'espace du header fixe pour les ancres */
+:target {
+  scroll-margin-top: 6rem;
+}
