@@ -17,10 +17,15 @@ export function getConsent(): Consent | null {
   }
 }
 
+/** Rouvre le panneau de préférences cookies (lien du pied de page). */
+export function openConsent() {
+  window.dispatchEvent(new Event("ocrystal:consent:open"));
+}
+
 /**
  * Bandeau de consentement cookies — conforme RGPD + loi sénégalaise 2008-12.
  * Granularité : nécessaires (toujours) / mesure d'audience / contenus enrichis.
- * TODO (étape 4) : page de gestion des préférences + gating réel des scripts.
+ * Réouvrable via `openConsent()` ; gating réel des scripts dans <Plausible/>.
  */
 export function CookieConsent() {
   const t = useTranslations("cookies");
@@ -30,15 +35,26 @@ export function CookieConsent() {
 
   useEffect(() => {
     if (!getConsent()) {
-      // Après l'intro cinématique, laisser respirer le hero.
       const to = setTimeout(() => setOpen(true), 3200);
       return () => clearTimeout(to);
     }
   }, []);
 
+  useEffect(() => {
+    const reopen = () => {
+      const c = getConsent();
+      if (c) setChoice(c);
+      setDetail(true);
+      setOpen(true);
+    };
+    window.addEventListener("ocrystal:consent:open", reopen);
+    return () => window.removeEventListener("ocrystal:consent:open", reopen);
+  }, []);
+
   function persist(value: Consent) {
     try {
       localStorage.setItem(KEY, JSON.stringify(value));
+      window.dispatchEvent(new Event("ocrystal:consent"));
     } catch {
       /* ignore */
     }

@@ -27,7 +27,11 @@
     "format150": "1.5 L format",
     "format5": "5 L format",
     "format10": "10 L format",
-    "format19": "19 L dispenser"
+    "format19": "19 L dispenser",
+    "search": "Search",
+    "tools": "Tools",
+    "hydration": "Hydration calculator",
+    "quiz": "\"Your water\" quiz"
   },
   "actions": {
     "discover": "Discover",

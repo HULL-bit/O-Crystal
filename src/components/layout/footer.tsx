@@ -1,6 +1,7 @@
 import { useTranslations } from "next-intl";
 import { Link } from "@/i18n/navigation";
 import { footerNav, legalNav, socialLinks } from "@/config/nav";
+import { ConsentLink } from "@/components/consent/consent-link";
 import { BrandMark } from "@/components/brand/BrandMark";
 import { LocaleSwitcher } from "./locale-switcher";
 import { NewsletterForm } from "@/components/forms/newsletter-form";
@@ -81,9 +82,13 @@ export function Footer() {
         <ul className="flex flex-wrap gap-x-5 gap-y-2">
           {legalNav.map((item) => (
             <li key={item.href}>
-              <Link href={item.href} className="transition-colors hover:text-white">
-                {tf(item.labelKey)}
-              </Link>
+              {item.labelKey === "cookies" ? (
+                <ConsentLink>{tf(item.labelKey)}</ConsentLink>
+              ) : (
+                <Link href={item.href} className="transition-colors hover:text-white">
+                  {tf(item.labelKey)}
+                </Link>
+              )}
             </li>
           ))}
         </ul>

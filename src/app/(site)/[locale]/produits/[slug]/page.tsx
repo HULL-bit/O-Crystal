@@ -15,6 +15,7 @@ import { BrandMark } from "@/components/brand/BrandMark";
 import { getProduct, getProducts, payloadClient, toLocale } from "@/lib/cms";
 import { asMedia, type Product } from "@/lib/cms-types";
 import { minerals as fallbackMinerals, dryResidue } from "@/content/minerals";
+import { JsonLd, productLd } from "@/components/seo/json-ld";
 
 type Props = { params: Promise<{ locale: string; slug: string }> };
 
@@ -69,8 +70,19 @@ export default async function ProductPage({ params }: Props) {
   const residue = product.dryResidue ?? dryResidue;
   const frames = product.images360?.map((f) => f.frame) ?? [];
 
+  const packUrl = asMedia(product.packshot)?.url ?? null;
+
   return (
     <>
+      <JsonLd
+        data={productLd({
+          name: product.name,
+          slug: product.slug,
+          description: product.tagline,
+          image: packUrl,
+          availability: product.availability,
+        })}
+      />
       <header className="relative isolate overflow-hidden pt-32 pb-16 md:pt-40">
         <Aurora className="opacity-60" />
         <div className="container-page relative grid items-center gap-12 lg:grid-cols-2">

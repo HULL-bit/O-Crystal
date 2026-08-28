@@ -1,40 +1,32 @@
 "use client";
 
-import { useState } from "react";
-import { useTranslations } from "next-intl";
+import { useActionState } from "react";
+import { useLocale, useTranslations } from "next-intl";
 import { AnimatePresence, motion } from "motion/react";
 import { cn } from "@/lib/utils";
 import { spring } from "@/lib/motion";
+import { subscribeNewsletter } from "@/app/actions/forms";
+import type { ActionResult } from "@/lib/schemas";
 
-type Status = "idle" | "loading" | "success" | "error";
-
-/**
- * Inscription newsletter — double opt-in.
- * TODO (étape 4) : brancher `/api/newsletter` (Resend + outil d'emailing),
- * hCaptcha, rate-limit. Ici : validation e-mail + état visuel.
- */
+/** Inscription newsletter — double opt-in (Server Action → Payload + Resend). */
 export function NewsletterForm({ className }: { className?: string }) {
   const t = useTranslations("home.newsletter");
   const tA = useTranslations("actions");
-  const [status, setStatus] = useState<Status>("idle");
-  const [email, setEmail] = useState("");
-
-  async function onSubmit(e: React.FormEvent) {
-    e.preventDefault();
-    if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) {
-      setStatus("error");
-      return;
-    }
-    setStatus("loading");
-    // Placeholder — remplacé par l'appel API à l'étape 4.
-    await new Promise((r) => setTimeout(r, 700));
-    setStatus("success");
-  }
+  const locale = useLocale();
+  const [state, action, pending] = useActionState<ActionResult | null, FormData>(
+    subscribeNewsletter,
+    null,
+  );
 
   return (
-    <form onSubmit={onSubmit} className={cn("relative", className)} noValidate>
+    <form action={action} className={cn("relative", className)} noValidate>
+      <input type="hidden" name="locale" value={locale} />
+      <div aria-hidden className="absolute -left-[9999px] h-0 w-0 overflow-hidden">
+        <input name="website" tabIndex={-1} autoComplete="off" />
+      </div>
+
       <AnimatePresence mode="wait">
-        {status === "success" ? (
+        {state?.ok ? (
           <motion.p
             key="ok"
             initial={{ opacity: 0, y: 8 }}
@@ -42,7 +34,7 @@ export function NewsletterForm({ className }: { className?: string }) {
             transition={spring.soft}
             className="rounded-[var(--radius-md)] border border-[color-mix(in_oklab,var(--color-cristal)_40%,transparent)] bg-white/[0.04] p-4 text-sm text-[var(--color-cristal-light)]"
           >
-            {t("success")}
+            {state.message || t("success")}
           </motion.p>
         ) : (
           <motion.div
@@ -54,32 +46,33 @@ export function NewsletterForm({ className }: { className?: string }) {
           >
             <input
               type="email"
+              name="email"
               inputMode="email"
               autoComplete="email"
               required
-              value={email}
-              onChange={(e) => {
-                setEmail(e.target.value);
-                if (status === "error") setStatus("idle");
-              }}
               placeholder={t("placeholder")}
               aria-label={t("placeholder")}
-              aria-invalid={status === "error"}
-              className="flex-1 rounded-full border border-[var(--color-border)] bg-white/[0.03] px-5 py-3 text-sm text-white placeholder:text-[var(--color-muted)]/60 focus:border-[var(--color-cristal)] focus-visible:outline-none"
+              className="flex-1 rounded-full border border-[var(--color-border)] bg-white/[0.06] px-5 py-3 text-sm text-white placeholder:text-white/50 focus:border-[var(--color-cristal-light)] focus-visible:outline-none"
             />
             <button
               type="submit"
-              disabled={status === "loading"}
-              className="rounded-full bg-[image:var(--gradient-eau)] bg-[length:180%_180%] px-6 py-3 text-sm font-medium text-white transition-[background-position] duration-[var(--duration-slow)] hover:bg-[position:100%_50%] disabled:opacity-60"
+              disabled={pending}
+              className="rounded-full bg-white px-6 py-3 text-sm font-medium text-[var(--color-nuit)] transition-opacity hover:opacity-90 disabled:opacity-60"
             >
-              {status === "loading" ? "…" : tA("subscribe")}
+              {pending ? "…" : tA("subscribe")}
             </button>
           </motion.div>
         )}
       </AnimatePresence>
-      {status === "error" && (
-        <p className="mt-2 text-xs text-[#ff9d9d]" role="alert">
-          {t("placeholder")} — format invalide.
+
+      <label className="mt-2 flex items-start gap-2 text-xs text-white/70">
+        <input type="checkbox" name="consent" required className="mt-0.5 h-3.5 w-3.5 accent-white" />
+        {t("consent")}
+      </label>
+
+      {state && !state.ok && (
+        <p className="mt-2 text-xs text-[#ffbcbc]" role="alert">
+          {state.error}
         </p>
       )}
     </form>

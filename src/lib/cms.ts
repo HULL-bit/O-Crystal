@@ -127,6 +127,19 @@ export const getPointsOfSale = () =>
     [] as Record<string, unknown>[],
   )();
 
+export const getPressKit = (locale: Locale) =>
+  cached(
+    ["press-kit", locale],
+    ["press-kit"],
+    async () => {
+      const r = await (
+        await payloadClient()
+      ).find({ collection: "press-kit", locale, limit: 100, depth: 1 });
+      return r.docs;
+    },
+    [] as Record<string, unknown>[],
+  )();
+
 export const getDistributors = () =>
   cached(
     ["distributors"],
@@ -230,6 +243,49 @@ export const getJob = (locale: Locale, slug: string) =>
     },
     null as Record<string, unknown> | null,
   )();
+
+export type SearchHit = {
+  id: string | number;
+  title: string;
+  excerpt?: string | null;
+  priority?: number | null;
+  doc?: { relationTo: string; value: string | number | { slug?: string } } | null;
+};
+
+export const searchContent = async (query: string): Promise<SearchHit[]> => {
+  const q = query.trim();
+  if (q.length < 2) return [];
+  try {
+    const payload = await payloadClient();
+    const res = await payload.find({
+      collection: "search-index",
+      where: {
+        or: [
+          { title: { like: q } },
+          { excerpt: { like: q } },
+        ],
+      },
+      sort: "-priority",
+      limit: 20,
+      depth: 1,
+    });
+    return res.docs as SearchHit[];
+  } catch {
+    return [];
+  }
+};
+
+/** Chemin public d'un résultat de recherche selon sa collection d'origine. */
+export function searchHitHref(hit: SearchHit): string {
+  const rel = hit.doc?.relationTo;
+  const val = hit.doc?.value;
+  const slug =
+    val && typeof val === "object" && "slug" in val ? (val.slug as string) : "";
+  if (rel === "products") return `/produits/${slug}`;
+  if (rel === "articles") return `/actualites/${slug}`;
+  if (rel === "pages") return `/${slug}`;
+  return "/";
+}
 
 export const getPage = (locale: Locale, slug: string) =>
   cached(

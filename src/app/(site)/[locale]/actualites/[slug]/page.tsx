@@ -10,6 +10,7 @@ import { RichText } from "@/components/cms/rich-text";
 import { ShareButton } from "@/components/share-button";
 import { getArticle, getArticles, payloadClient, toLocale } from "@/lib/cms";
 import { asMedia, type Article } from "@/lib/cms-types";
+import { JsonLd, articleLd } from "@/components/seo/json-ld";
 
 type Props = { params: Promise<{ locale: string; slug: string }> };
 
@@ -62,6 +63,16 @@ export default async function ArticlePage({ params }: Props) {
 
   return (
     <>
+      <JsonLd
+        data={articleLd({
+          title: article.title,
+          slug: article.slug,
+          excerpt: article.excerpt,
+          publishedAt: article.publishedAt,
+          image: asMedia(article.cover)?.url ?? null,
+          author: typeof article.author === "object" ? article.author?.name : null,
+        })}
+      />
       <header className="relative isolate overflow-hidden pt-32 pb-12 md:pt-40">
         <Aurora className="opacity-60" />
         <div className="container-page relative max-w-3xl">

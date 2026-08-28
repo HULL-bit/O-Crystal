@@ -59,6 +59,14 @@ export const footerNav: { headingKey: string; items: NavItem[] }[] = [
       { labelKey: "contact", href: "/contact" },
     ],
   },
+  {
+    headingKey: "tools",
+    items: [
+      { labelKey: "hydration", href: "/hydratation" },
+      { labelKey: "quiz", href: "/quiz" },
+      { labelKey: "search", href: "/recherche" },
+    ],
+  },
 ];
 
 export const legalNav = [

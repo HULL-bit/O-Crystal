@@ -6,6 +6,7 @@ import { routing } from "@/i18n/routing";
 import { fontClassName } from "@/lib/fonts";
 import { AppProviders } from "@/components/providers/app-providers";
 import { SiteShell } from "@/components/layout/site-shell";
+import { JsonLd, organizationLd, localBusinessLd } from "@/components/seo/json-ld";
 import "../../globals.css";
 
 export function generateStaticParams() {
@@ -67,6 +68,7 @@ export default async function LocaleLayout({
   return (
     <html lang={locale} className={fontClassName} suppressHydrationWarning>
       <body>
+        <JsonLd data={[organizationLd, localBusinessLd]} />
         <NextIntlClientProvider messages={messages}>
           <AppProviders>
             <SiteShell>{children}</SiteShell>

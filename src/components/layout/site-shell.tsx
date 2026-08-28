@@ -8,6 +8,8 @@ import { RouteTransition } from "@/components/motion/route-transition";
 import { BackToTop } from "./back-to-top";
 import { CookieConsent } from "@/components/consent/cookie-consent";
 import { WhatsAppButton } from "./whatsapp-button";
+import { Plausible } from "@/components/analytics/plausible";
+import { RegisterSW } from "@/components/pwa/register-sw";
 
 /** Ossature commune à toutes les pages du site public. */
 export async function SiteShell({ children }: { children: React.ReactNode }) {
@@ -37,6 +39,8 @@ export async function SiteShell({ children }: { children: React.ReactNode }) {
       <BackToTop />
       <WhatsAppButton />
       <CookieConsent />
+      <Plausible />
+      <RegisterSW />
     </>
   );
 }

@@ -27,7 +27,11 @@
     "format150": "Format 1,5 L",
     "format5": "Format 5 L",
     "format10": "Format 10 L",
-    "format19": "Bonbonne 19 L"
+    "format19": "Bonbonne 19 L",
+    "search": "Rechercher",
+    "tools": "Outils",
+    "hydration": "Calculateur d'hydratation",
+    "quiz": "Quiz « Votre eau »"
   },
   "actions": {
     "discover": "Découvrir",

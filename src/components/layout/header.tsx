@@ -105,6 +105,16 @@ export function Header() {
         </nav>
 
         <div className="flex items-center gap-3">
+          <Link
+            href="/recherche"
+            aria-label={t("search")}
+            className="hidden h-9 w-9 items-center justify-center rounded-full text-[var(--color-muted)] transition-colors hover:text-white sm:flex"
+          >
+            <svg viewBox="0 0 24 24" className="h-4 w-4" fill="none" stroke="currentColor" strokeWidth="2">
+              <circle cx="11" cy="11" r="7" />
+              <path d="m20 20-3.5-3.5" strokeLinecap="round" />
+            </svg>
+          </Link>
           <LocaleSwitcher className="hidden sm:inline-flex" />
           <Button href="/professionnels" size="sm" className="hidden md:inline-flex" magnetic>
             {tA("becomeDistributor")}
