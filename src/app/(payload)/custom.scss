@@ -1,0 +1,14 @@
+/* Personnalisation légère du portail admin O'Crystal.
+   Palette « bleu joaillerie » sur l'écran de connexion et les accents. */
+
+.template-minimal {
+  --theme-elevation-0: #0b1c5e;
+}
+
+.login {
+  background: radial-gradient(130% 90% at 50% -10%, #1b3f9e 0%, #0b1c5e 48%, #071240 100%);
+}
+
+:root {
+  --color-success-500: #2e9fdf;
+}

@@ -23,6 +23,8 @@ services:
         sync: false
       - key: PAYLOAD_SECRET
         generateValue: true
+      - key: CRON_SECRET
+        generateValue: true
       - key: DATABASE_URI
         fromDatabase:
           name: ocrystal-db
@@ -46,6 +48,27 @@ services:
         sync: false
       - key: NEXT_PUBLIC_MAP_STYLE_URL
         sync: false
+
+  # Publication programmée : traite la file de jobs Payload toutes les 5 min.
+  - type: cron
+    name: ocrystal-scheduled-publish
+    runtime: node
+    schedule: "*/5 * * * *"
+    buildCommand: "true"
+    startCommand: >
+      curl -fsS -X POST "$WEB_URL/api/payload-jobs/run"
+      -H "Authorization: Bearer $CRON_SECRET"
+    envVars:
+      - key: WEB_URL
+        fromService:
+          name: ocrystal-web
+          type: web
+          property: hostport
+      - key: CRON_SECRET
+        fromService:
+          name: ocrystal-web
+          type: web
+          envVarKey: CRON_SECRET
 
 databases:
   - name: ocrystal-db

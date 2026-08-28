@@ -6,7 +6,7 @@ import { routing } from "@/i18n/routing";
 import { fontClassName } from "@/lib/fonts";
 import { AppProviders } from "@/components/providers/app-providers";
 import { SiteShell } from "@/components/layout/site-shell";
-import "../globals.css";
+import "../../globals.css";
 
 export function generateStaticParams() {
   return routing.locales.map((locale) => ({ locale }));

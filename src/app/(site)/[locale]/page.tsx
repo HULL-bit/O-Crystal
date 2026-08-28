@@ -8,6 +8,8 @@ import { ProductRange } from "@/components/sections/home/product-range";
 import { Proof } from "@/components/sections/home/proof";
 import { CtaDuo } from "@/components/sections/home/cta-duo";
 import { NewsletterSection } from "@/components/sections/home/newsletter-section";
+import { getHomeContent } from "@/lib/cms";
+import { routing } from "@/i18n/routing";
 
 type Props = { params: Promise<{ locale: string }> };
 
@@ -15,9 +17,24 @@ export default async function HomePage({ params }: Props) {
   const { locale } = await params;
   setRequestLocale(locale);
 
+  const home = await getHomeContent(
+    locale === "en" ? "en" : "fr",
+  ).catch(() => null);
+
   return (
     <>
-      <Hero />
+      <Hero
+        content={
+          home
+            ? {
+                eyebrow: home.heroEyebrow,
+                titleLine1: home.heroTitleLine1,
+                titleLine2: home.heroTitleLine2,
+                subtitle: home.heroSubtitle,
+              }
+            : undefined
+        }
+      />
       <ValuesMarquee />
       <BrandTeaser />
       <SourceJourney />
@@ -28,4 +45,8 @@ export default async function HomePage({ params }: Props) {
       <NewsletterSection />
     </>
   );
+}
+
+export function generateStaticParams() {
+  return routing.locales.map((locale) => ({ locale }));
 }

@@ -11,9 +11,23 @@ import { Bubbles } from "@/components/backgrounds/bubbles";
 import { SceneCanvas } from "@/components/three/scene-canvas";
 import { ease } from "@/lib/motion";
 
-export function Hero() {
+/** Contenus optionnels venant du CMS (global "Page d'accueil"). */
+export type HeroContent = {
+  eyebrow?: string | null;
+  titleLine1?: string | null;
+  titleLine2?: string | null;
+  subtitle?: string | null;
+};
+
+export function Hero({ content }: { content?: HeroContent }) {
   const t = useTranslations("home.hero");
   const tA = useTranslations("actions");
+  const copy = {
+    eyebrow: content?.eyebrow || t("eyebrow"),
+    titleLine1: content?.titleLine1 || t("titleLine1"),
+    titleLine2: content?.titleLine2 || t("titleLine2"),
+    subtitle: content?.subtitle || t("subtitle"),
+  };
   const ref = useRef<HTMLElement>(null);
   const { scrollYProgress } = useScroll({
     target: ref,
@@ -52,19 +66,19 @@ export function Hero() {
           transition={{ delay: 0.2, ease: ease.eau }}
           className="text-xs font-medium tracking-[0.28em] text-[var(--color-cristal-light)] uppercase"
         >
-          {t("eyebrow")}
+          {copy.eyebrow}
         </motion.p>
 
         <h1 className="mt-6 max-w-[15ch] text-[length:var(--text-hero)] leading-[0.95] font-[400]">
           <SplitText
-            text={t("titleLine1")}
+            text={copy.titleLine1}
             by="word"
             as="span"
             immediate
             className="block"
           />
           <SplitText
-            text={t("titleLine2")}
+            text={copy.titleLine2}
             by="word"
             as="span"
             immediate
@@ -80,7 +94,7 @@ export function Hero() {
           transition={{ delay: 0.9 }}
           className="mt-5 max-w-xl text-lg text-[var(--color-muted)] sm:mt-8"
         >
-          {t("subtitle")}
+          {copy.subtitle}
         </motion.p>
 
         <motion.div

@@ -39,3 +39,9 @@ yarn-error.log*
 # typescript
 *.tsbuildinfo
 next-env.d.ts
+
+# Payload dev uploads (stockage local en dev, R2 en prod)
+/media/
+/src/media/
+
+# Payload generated (types committés, import map committée)

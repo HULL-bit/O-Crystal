@@ -1,16 +1,28 @@
 import createMiddleware from "next-intl/middleware";
-import type { NextRequest } from "next/server";
+import { NextResponse, type NextRequest } from "next/server";
 import { routing } from "@/i18n/routing";
 
-// Next.js 16 : `middleware` a été renommé `proxy` (runtime nodejs).
-const handle = createMiddleware(routing);
+// Next.js 16 : `middleware` renommé `proxy` (runtime nodejs).
+const intl = createMiddleware(routing);
+
+const PUBLIC_SITE = /^\/(?!(admin|api|_next|_vercel)(\/|$))(?!.*\.[^/]+$).*/;
 
 export function proxy(request: NextRequest) {
-  return handle(request);
+  const { pathname } = request.nextUrl;
+
+  // Portail Payload : pas de logique i18n, mais on expose le pathname en header
+  // (requis par payload-totp pour éviter une boucle de redirection).
+  if (!PUBLIC_SITE.test(pathname)) {
+    const res = NextResponse.next();
+    res.headers.set("x-pathname", pathname);
+    return res;
+  }
+
+  const res = intl(request);
+  res.headers.set("x-pathname", pathname);
+  return res;
 }
 
 export const config = {
-  // Tout sauf : API, portail admin (Payload, non localisé), assets internes,
-  // et tout chemin contenant un point (fichiers statiques).
-  matcher: ["/((?!api|admin|_next|_vercel|.*\\..*).*)"],
+  matcher: ["/((?!_next|_vercel|.*\\..*).*)"],
 };

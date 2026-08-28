@@ -2,6 +2,7 @@ import { cn } from "@/lib/utils";
 
 type BrandMarkProps = {
   className?: string;
+  style?: React.CSSProperties;
   /** Titre accessible ; si absent, l'icône est décorative (aria-hidden). */
   title?: string;
   /** Ajoute un hook data-* pour l'animation de tracé (GSAP DrawSVG). */
@@ -16,12 +17,13 @@ type BrandMarkProps = {
  * TODO : remplacer par le SVG vectoriel officiel une fois fourni
  * (fichiers .ai/.eps/.pdf dans docs/brand-source/).
  */
-export function BrandMark({ className, title, animated }: BrandMarkProps) {
+export function BrandMark({ className, style, title, animated }: BrandMarkProps) {
   const decorative = !title;
   return (
     <svg
       viewBox="0 0 100 172"
       className={cn("block", className)}
+      style={style}
       role={decorative ? undefined : "img"}
       aria-hidden={decorative || undefined}
       aria-label={title}

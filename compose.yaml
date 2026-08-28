@@ -1,0 +1,24 @@
+# Base de données Postgres pour le développement local.
+#   podman compose up -d   (ou docker compose up -d)
+# La chaîne de connexion correspondante est déjà dans .env.example / .env.local :
+#   DATABASE_URI=postgres://ocrystal:ocrystal@127.0.0.1:5433/ocrystal
+services:
+  db:
+    image: docker.io/library/postgres:16-alpine
+    container_name: ocrystal-pg
+    environment:
+      POSTGRES_USER: ocrystal
+      POSTGRES_PASSWORD: ocrystal
+      POSTGRES_DB: ocrystal
+    ports:
+      - "5433:5432"
+    volumes:
+      - ocrystal-pgdata:/var/lib/postgresql/data
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U ocrystal"]
+      interval: 5s
+      timeout: 5s
+      retries: 10
+
+volumes:
+  ocrystal-pgdata:
