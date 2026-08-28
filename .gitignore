@@ -18,6 +18,10 @@
 /.playwright
 /playwright/.cache
 
+# scripts de débogage jetables
+_*.mjs
+_*.cjs
+
 # next.js
 /.next/
 /out/

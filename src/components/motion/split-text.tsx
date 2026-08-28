@@ -39,13 +39,16 @@ export function SplitText({
   immediate = false,
   gradient = false,
 }: SplitTextProps) {
-  const units =
-    by === "char" ? Array.from(text) : text.split(by === "line" ? "\n" : " ");
+  const units = (
+    by === "char" ? Array.from(text) : text.split(by === "line" ? "\n" : " ")
+  ).map((u) => (u === " " ? "\u00A0" : u));
 
   const decorClass = cn(
     "inline-block will-change-transform",
     gradient && "text-shimmer motion-reduce:animate-none",
   );
+
+  const gap = by === "char" ? "" : "mr-[0.28em]";
 
   if (immediate) {
     const Tag = as;
@@ -54,13 +57,18 @@ export function SplitText({
         <span className="sr-only">{text}</span>
         <span aria-hidden="true" className="inline-block">
           {units.map((unit, i) => (
-            <span key={i} className="inline-block overflow-hidden align-baseline">
+            <span
+              key={i}
+              className={cn(
+                "inline-block overflow-hidden align-baseline",
+                i < units.length - 1 && gap,
+              )}
+            >
               <span
                 className={cn("split-word", decorClass)}
                 style={{ "--word-delay": `${delay + i * stagger}s` } as React.CSSProperties}
               >
                 {unit}
-                {by !== "char" && i < units.length - 1 ? " " : ""}
               </span>
             </span>
           ))}
@@ -83,7 +91,13 @@ export function SplitText({
       <span className="sr-only">{text}</span>
       <span aria-hidden="true" className="inline-block">
         {units.map((unit, i) => (
-          <span key={i} className="inline-block overflow-hidden align-baseline">
+          <span
+            key={i}
+            className={cn(
+              "inline-block overflow-hidden align-baseline",
+              i < units.length - 1 && gap,
+            )}
+          >
             <motion.span
               className={decorClass}
               variants={{
@@ -97,7 +111,6 @@ export function SplitText({
               }}
             >
               {unit}
-              {by !== "char" && i < units.length - 1 ? " " : ""}
             </motion.span>
           </span>
         ))}

@@ -21,6 +21,8 @@ const buttonVariants = cva(
           "bg-[image:var(--gradient-eau)] bg-[length:180%_180%] bg-[position:0%_50%] text-white shadow-[var(--shadow-glow)] hover:bg-[position:100%_50%] hover:shadow-[0_0_60px_-8px_rgb(46_159_223/0.6)]",
         secondary:
           "glass text-[var(--color-foreground)] hover:border-[color-mix(in_oklab,var(--color-cristal)_55%,transparent)] hover:text-[var(--color-accent)]",
+        metal:
+          "border border-[color-mix(in_oklab,var(--color-argent-bright)_65%,transparent)] bg-[image:var(--gradient-argent)] bg-[length:220%_100%] bg-[position:0%_50%] text-[var(--color-nuit)] shadow-[inset_0_1px_0_rgba(255,255,255,0.75),0_6px_20px_-8px_rgb(5_15_61/0.55)] hover:bg-[position:100%_50%] hover:shadow-[inset_0_1px_0_rgba(255,255,255,0.9),0_10px_28px_-8px_rgb(5_15_61/0.6)]",
         ghost:
           "text-[var(--color-muted)] hover:bg-[var(--color-track)] hover:text-[var(--color-foreground)]",
         link: "rounded-none px-0 text-[var(--color-cristal-light)] underline-offset-4 hover:underline",
