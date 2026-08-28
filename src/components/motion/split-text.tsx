@@ -53,10 +53,14 @@ export function SplitText({
       variants={{
         visible: { transition: { staggerChildren: stagger, delayChildren: delay } },
       }}
-      aria-label={text}
     >
+      <span className="sr-only">{text}</span>
       {units.map((unit, i) => (
-        <span key={i} aria-hidden className="inline-block overflow-hidden align-baseline">
+        <span
+          key={i}
+          aria-hidden="true"
+          className="inline-block overflow-hidden align-baseline"
+        >
           <motion.span
             className={cn(
               "inline-block will-change-transform",

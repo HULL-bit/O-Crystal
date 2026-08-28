@@ -61,7 +61,10 @@ export default async function BrandPage({ params }: Props) {
                   />
                 </Reveal>
                 <div>
-                  <span className="font-[family-name:var(--font-display)] text-5xl text-[var(--color-cristal-light)]/40">
+                  <span
+                    aria-hidden
+                    className="font-[family-name:var(--font-display)] text-5xl text-[var(--color-accent)]/70"
+                  >
                     {c.k}
                   </span>
                   <h2 className="mt-2 text-3xl md:text-4xl">

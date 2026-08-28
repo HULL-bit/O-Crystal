@@ -13,6 +13,27 @@ pnpm seed                     # données de démo (produits, articles, points de
 Au premier lancement, l'admin demande de créer le premier utilisateur, puis
 **impose la configuration 2FA (TOTP)** — scanner le QR avec une app d'authentification.
 
+## Tests & qualité
+
+```bash
+pnpm lint             # ESLint (next/core-web-vitals + typescript)
+pnpm typecheck        # tsc --noEmit
+pnpm test             # tests unitaires (Vitest) — logique pure : schémas, calculs, rate-limit
+pnpm test:e2e         # Playwright : smoke + accessibilité axe (WCAG A/AA)
+                      #   démarre `next start` tout seul (build préalable requis)
+                      #   ou cibler un serveur : E2E_BASE_URL=http://localhost:3210 pnpm test:e2e
+```
+
+Le pipeline **CI** (`.github/workflows/ci.yml`) rejoue lint + typecheck + tests unitaires
++ build, puis un job E2E (Postgres jetable, seed, Playwright).
+
+### Sécurité — en-têtes
+
+CSP stricte **sans nonce** (préserve le SSG + le cache CDN) définie dans
+`next.config.ts` : une politique pour le site public, une plus permissive pour
+`/admin` + `/api`. Vérifier après toute intégration tierce :
+`curl -sI http://localhost:3210/ | grep -i content-security-policy`.
+
 ## Portail d'administration
 
 - URL : `/admin` (non localisée, exclue de l'i18n par `proxy.ts`)
@@ -34,5 +55,8 @@ ou repartir d'une base vierge.
   - l'**import map** est régénérée automatiquement par `next dev` / `next build` ;
   - `payload-types.ts` (confort TS uniquement) : lancer `pnpm generate:types` depuis
     un environnement **Node 22**, ou attendre le correctif Payload.
-- Schéma DB : `push: true` (synchro auto). Passer en migrations versionnées avant la
-  mise en production (étape 6).
+- Schéma DB : `push` (synchro auto drizzle) activé par défaut, désactivable via
+  `PAYLOAD_DB_PUSH=false`. **Avant la vraie mise en production :**
+  1. depuis une machine **Node 22** : `pnpm migrate:create` (génère le SQL versionné
+     dans `src/payload/migrations/`), committer le résultat ;
+  2. en prod : `PAYLOAD_DB_PUSH=false` + `pnpm migrate` dans la commande de release Render.

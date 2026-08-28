@@ -89,10 +89,12 @@ export default buildConfig({
   db: postgresAdapter({
     pool: { connectionString: process.env.DATABASE_URI || "" },
     migrationDir: path.resolve(dirname, "payload/migrations"),
-    // TODO (étape 6) : passer en migrations versionnées pour la prod
-    // (`payload migrate:create`). En attendant, synchro auto du schéma
-    // (OK pour un service Render à instance unique).
-    push: true,
+    // Synchro auto du schéma (drizzle push) par défaut — OK pour le dev et un
+    // service Render à instance unique. En production, dès que les migrations
+    // versionnées existent (`payload migrate:create` depuis une machine Node 22,
+    // cf. docs/DEV.md « limites CLI »), poser `PAYLOAD_DB_PUSH=false` et lancer
+    // `payload migrate` dans la commande de release.
+    push: process.env.PAYLOAD_DB_PUSH !== "false",
   }),
   sharp,
 

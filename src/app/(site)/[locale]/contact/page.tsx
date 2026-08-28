@@ -57,7 +57,7 @@ export default async function ContactPage({ params }: Props) {
               <ul className="mt-4 flex flex-wrap gap-x-5 gap-y-2 text-sm">
                 {socials.map((s) => (
                   <li key={s.platform}>
-                    <a href={s.url} target="_blank" rel="noopener noreferrer me" className="text-[var(--color-muted)] hover:text-white">
+                    <a href={s.url} target="_blank" rel="noopener noreferrer me" className="text-[var(--color-muted)] hover:text-[var(--color-foreground)]">
                       {s.handle || s.platform}
                     </a>
                   </li>
@@ -67,7 +67,7 @@ export default async function ContactPage({ params }: Props) {
                 href={`https://wa.me/${wa}`}
                 target="_blank"
                 rel="noopener noreferrer"
-                className="mt-5 inline-flex rounded-full border border-[var(--color-border)] px-4 py-2 text-sm text-[#4ade80] hover:text-white"
+                className="mt-5 inline-flex rounded-full border border-[#15803d]/45 px-4 py-2 text-sm font-medium text-[#15803d] transition-colors hover:bg-[#15803d]/10"
               >
                 {t("whatsapp")}
               </a>

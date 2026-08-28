@@ -354,6 +354,9 @@
   --color-muted: #55617c;
   --color-border: color-mix(in oklab, var(--color-nuit) 14%, transparent);
   --color-accent: var(--color-royal);
+  /* Sur fond clair, le bleu « reflet d'eau » doit rester lisible (WCAG AA). */
+  --color-cristal-light: #1567ab;
+  --color-ring: #1567ab;
   --color-track: rgb(12 19 48 / 0.09);
   --color-field: rgb(12 19 48 / 0.04);
   background-color: var(--color-pearl);
@@ -367,6 +370,8 @@
   --color-muted: #566079;
   --color-border: color-mix(in oklab, var(--color-argent) 55%, transparent);
   --color-accent: var(--color-royal);
+  --color-cristal-light: #1567ab;
+  --color-ring: #1567ab;
   --color-track: rgb(12 19 48 / 0.09);
   --color-field: rgb(12 19 48 / 0.04);
   background: linear-gradient(180deg, #eef1f6, var(--color-mist));

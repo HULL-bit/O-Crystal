@@ -17,8 +17,11 @@ export function generateStaticParams() {
 export const dynamicParams = false;
 
 export const viewport: Viewport = {
-  themeColor: "#050f3d",
-  colorScheme: "dark",
+  themeColor: [
+    { media: "(prefers-color-scheme: dark)", color: "#050f3d" },
+    { media: "(prefers-color-scheme: light)", color: "#eef2f8" },
+  ],
+  colorScheme: "dark light",
 };
 
 export async function generateMetadata({
@@ -48,7 +51,11 @@ export async function generateMetadata({
     },
     twitter: { card: "summary_large_image", title: t("defaultTitle") },
     icons: {
-      icon: [{ url: "/brand/ocrystal-mark.svg", type: "image/svg+xml" }],
+      icon: [
+        { url: "/brand/ocrystal-mark.svg", type: "image/svg+xml" },
+        { url: "/brand/icon-192.png", type: "image/png", sizes: "192x192" },
+      ],
+      apple: [{ url: "/brand/apple-touch-icon.png", sizes: "180x180" }],
     },
   };
 }

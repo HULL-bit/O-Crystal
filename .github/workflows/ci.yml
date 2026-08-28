@@ -1,0 +1,108 @@
+name: CI
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+    branches: [main]
+
+concurrency:
+  group: ci-${{ github.ref }}
+  cancel-in-progress: true
+
+env:
+  # Valeurs factices : le build ne doit jamais dépendre de secrets réels.
+  PAYLOAD_SECRET: ci-not-a-real-secret-ci-not-a-real-secret
+  DATABASE_URI: postgres://ocrystal:ocrystal@localhost:5432/ocrystal
+  NEXT_PUBLIC_SITE_URL: http://localhost:3000
+  NEXT_TELEMETRY_DISABLED: "1"
+
+jobs:
+  quality:
+    runs-on: ubuntu-latest
+    services:
+      postgres:
+        image: postgres:16-alpine
+        env:
+          POSTGRES_USER: ocrystal
+          POSTGRES_PASSWORD: ocrystal
+          POSTGRES_DB: ocrystal
+        ports: ["5432:5432"]
+        options: >-
+          --health-cmd "pg_isready -U ocrystal"
+          --health-interval 10s --health-timeout 5s --health-retries 5
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: pnpm/action-setup@v4
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: pnpm
+
+      - run: pnpm install --frozen-lockfile
+
+      - name: Lint
+        run: pnpm lint
+
+      - name: Typecheck
+        run: pnpm typecheck
+
+      - name: Tests unitaires
+        run: pnpm test
+
+      - name: Build
+        run: pnpm build
+
+  e2e:
+    runs-on: ubuntu-latest
+    needs: quality
+    services:
+      postgres:
+        image: postgres:16-alpine
+        env:
+          POSTGRES_USER: ocrystal
+          POSTGRES_PASSWORD: ocrystal
+          POSTGRES_DB: ocrystal
+        ports: ["5432:5432"]
+        options: >-
+          --health-cmd "pg_isready -U ocrystal"
+          --health-interval 10s --health-timeout 5s --health-retries 5
+    env:
+      CRON_SECRET: ci-seed-secret
+      DISABLE_TOTP: "true"
+    steps:
+      - uses: actions/checkout@v4
+      - uses: pnpm/action-setup@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: pnpm
+
+      - run: pnpm install --frozen-lockfile
+
+      - name: Installer le navigateur Playwright
+        run: pnpm exec playwright install --with-deps chromium
+
+      - name: Build
+        run: pnpm build
+
+      - name: Démarrer le serveur + amorcer la base
+        run: |
+          pnpm exec next start -p 3210 &
+          npx --yes wait-on http://localhost:3210 --timeout 60000
+          curl -fsS -X POST http://localhost:3210/api/seed -H "x-seed-secret: $CRON_SECRET" || true
+
+      - name: Tests E2E + accessibilité (axe)
+        run: pnpm exec playwright test --project=chromium
+        env:
+          E2E_BASE_URL: http://localhost:3210
+          CI: "true"
+
+      - uses: actions/upload-artifact@v4
+        if: ${{ !cancelled() }}
+        with:
+          name: playwright-report
+          path: playwright-report/
+          retention-days: 7

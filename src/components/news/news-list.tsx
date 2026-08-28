@@ -47,17 +47,18 @@ export function NewsList({
           value={q}
           onChange={(e) => setQ(e.target.value)}
           placeholder={t("readArticle")}
-          className="min-w-48 flex-1 rounded-full border border-[var(--color-border)] bg-white/[0.03] px-4 py-2 text-sm text-white placeholder:text-[var(--color-muted)]/60 focus:border-[var(--color-cristal)] focus-visible:outline-none"
+          className="min-w-48 flex-1 rounded-full border border-[var(--color-border)] bg-[var(--color-field)] px-4 py-2 text-sm text-[var(--color-foreground)] placeholder:text-[var(--color-muted)] focus:border-[var(--color-cristal)] focus-visible:outline-none"
         />
         <div className="flex flex-wrap gap-2">
           <button
             type="button"
             onClick={() => setCat(null)}
+            aria-pressed={!cat}
             className={cn(
               "rounded-full border px-3 py-1 text-xs transition-colors",
               !cat
-                ? "border-[var(--color-cristal)] text-white"
-                : "border-[var(--color-border)] text-[var(--color-muted)] hover:text-white",
+                ? "border-[var(--color-cristal)] bg-[var(--color-track)] text-[var(--color-foreground)]"
+                : "border-[var(--color-border)] text-[var(--color-muted)] hover:text-[var(--color-foreground)]",
             )}
           >
             {t("allCategories")}
@@ -67,11 +68,12 @@ export function NewsList({
               key={c.id}
               type="button"
               onClick={() => setCat(String(c.id))}
+              aria-pressed={cat === String(c.id)}
               className={cn(
                 "rounded-full border px-3 py-1 text-xs transition-colors",
                 cat === String(c.id)
-                  ? "border-[var(--color-cristal)] text-white"
-                  : "border-[var(--color-border)] text-[var(--color-muted)] hover:text-white",
+                  ? "border-[var(--color-cristal)] bg-[var(--color-track)] text-[var(--color-foreground)]"
+                  : "border-[var(--color-border)] text-[var(--color-muted)] hover:text-[var(--color-foreground)]",
               )}
             >
               {c.title}
