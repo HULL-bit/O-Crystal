@@ -248,5 +248,200 @@
       "title": "Notices & compliance",
       "intro": "Legal notice, privacy policy and cookie settings."
     }
+  },
+  "forms": {
+    "name": "Name",
+    "fullName": "Full name",
+    "email": "Email",
+    "phone": "Phone",
+    "company": "Company",
+    "subject": "Subject",
+    "message": "Message",
+    "activity": "Activity",
+    "volumes": "Estimated monthly volumes",
+    "city": "City",
+    "cv": "CV (PDF)",
+    "consent": "I agree to my data being processed to answer my request.",
+    "send": "Send",
+    "sending": "Sending…",
+    "success": "Thank you — your message has been sent. We'll get back to you shortly.",
+    "error": "Something went wrong. Try again or email us directly.",
+    "required": "This field is required",
+    "invalidEmail": "Invalid email address",
+    "stubNotice": "Demo form — real submission (email + storage) is wired at step 4."
+  },
+  "share": {
+    "label": "Share",
+    "copied": "Link copied"
+  },
+  "whereToBuy": {
+    "eyebrow": "Where to buy",
+    "title": "Find O'Crystal near you",
+    "intro": "Shops, supermarkets, hospitality: locate the nearest point of sale, get directions, or contact a distributor.",
+    "searchPlaceholder": "City, district, retailer…",
+    "useLocation": "Locate me",
+    "allTypes": "All",
+    "noResults": "No point of sale matches your search.",
+    "directions": "Directions",
+    "distributorsTitle": "Our partner distributors",
+    "ecommerceTitle": "Buy online",
+    "ecommerceText": "Find O'Crystal on partner e-commerce platforms."
+  },
+  "productsPage": {
+    "eyebrow": "Our Products",
+    "title": "One range, six formats",
+    "intro": "From the 33 cl on-the-go bottle to the 19 L dispenser — the same purity in every sip.",
+    "filterFormat": "Format",
+    "filterUsage": "Use",
+    "all": "All",
+    "usages": {
+      "maison": "Home",
+      "sport": "Sport",
+      "evenementiel": "Events",
+      "chr": "Hospitality"
+    },
+    "availability": {
+      "available": "Available",
+      "soon": "Coming soon",
+      "on-order": "On order"
+    },
+    "viewProduct": "View details",
+    "backToRange": "The full range",
+    "compositionTitle": "Mineral composition",
+    "usesTitle": "Uses",
+    "galleryTitle": "In pictures",
+    "view360": "360° view",
+    "buyThis": "Where to buy this format",
+    "residue": "Dry residue at 180 °C"
+  },
+  "sourcePage": {
+    "eyebrow": "Source & Quality",
+    "title": "From the Niague rock to your glass",
+    "intro": "Water drawn from the heart of a preserved nature, naturally filtered, bottled at the source.",
+    "journeyTitle": "The water's journey",
+    "compositionTitle": "Balanced minerality",
+    "compositionText": "Dry residue at 180 °C: 320 mg/L. A light water with fine, refreshing bubbles.",
+    "certTitle": "Food safety & certifications",
+    "certText": "ISO 22000 and HACCP processes underway. The full mineral analysis is available for download.",
+    "download": "Download the analysis (PDF)",
+    "whyTitle": "Why this water",
+    "why1Title": "Natural filtration",
+    "why1Text": "The rock retains impurities and enriches the water with essential minerals.",
+    "why2Title": "Bottled at the source",
+    "why2Text": "No transport before bottling: the original purity is preserved.",
+    "why3Title": "Fine bubbles",
+    "why3Text": "A delicate effervescence — the signature of a living, light water."
+  },
+  "brandPage": {
+    "eyebrow": "The Brand",
+    "title": "Senegalese pride, raised to world standards",
+    "intro": "O'Crystal was born from a conviction: Senegal deserves an exceptional mineral water, carried with the elegance of a great house.",
+    "chapters": [
+      {
+        "k": "01",
+        "title": "One source, one promise",
+        "text": "In the heart of Niague, water the earth took years to filter. We chose to reveal it, intact."
+      },
+      {
+        "k": "02",
+        "title": "The right gesture",
+        "text": "Bottle at the source, adding nothing. Restraint as a requirement, purity as a result."
+      },
+      {
+        "k": "03",
+        "title": "An owned ambition",
+        "text": "To rival the world's best waters — and to do it from Senegal, for West Africa and beyond."
+      }
+    ],
+    "timelineTitle": "Milestones",
+    "timeline": [
+      {
+        "year": "2024",
+        "text": "Cristal Waters SARL founded and the Niague site developed."
+      },
+      {
+        "year": "2025",
+        "text": "1.5 L format launched and rolled out in Dakar supermarkets."
+      },
+      {
+        "year": "2026",
+        "text": "Range extended (33 cl to 19 L) and distributor network opened."
+      }
+    ]
+  },
+  "newsPage": {
+    "eyebrow": "News",
+    "title": "O'Crystal news",
+    "intro": "Events, hydration tips, behind the scenes at the source.",
+    "allCategories": "All",
+    "readArticle": "Read article",
+    "backToNews": "All news",
+    "publishedOn": "Published on",
+    "noArticles": "No articles yet.",
+    "relatedTitle": "Also read"
+  },
+  "careersPage": {
+    "eyebrow": "Careers",
+    "title": "Join O'Crystal",
+    "intro": "We are building an exceptional brand — and the team to match.",
+    "openings": "Open positions",
+    "noJobs": "No open positions right now — spontaneous applications are always welcome.",
+    "spontaneousTitle": "Open application",
+    "apply": "Apply",
+    "contract": "Contract",
+    "location": "Location"
+  },
+  "contactPage": {
+    "eyebrow": "Contact",
+    "title": "Let's talk",
+    "intro": "A question, a press request, a partnership? Write to us.",
+    "factoryTitle": "The factory",
+    "hoursTitle": "Opening hours",
+    "followTitle": "Follow us",
+    "whatsapp": "Message on WhatsApp"
+  },
+  "proPage": {
+    "eyebrow": "Professionals & Distributors",
+    "title": "Become an O'Crystal partner",
+    "intro": "Wholesalers, hospitality, events: join the network and enjoy dedicated terms.",
+    "offerTitle": "The B2B offer",
+    "offers": [
+      {
+        "title": "Wholesalers & resellers",
+        "text": "Volume pricing, reliable logistics, sales support."
+      },
+      {
+        "title": "Hospitality & hotels",
+        "text": "Table-friendly formats, regular delivery, premium image."
+      },
+      {
+        "title": "Events",
+        "text": "One-off volumes, custom label, fast quote."
+      }
+    ],
+    "formTitle": "Partnership / quote request"
+  },
+  "csrPage": {
+    "eyebrow": "Sustainability",
+    "title": "Preserved nature, owned responsibility",
+    "intro": "Protecting the resource that sustains us isn't optional — it's the heart of the business.",
+    "pillars": [
+      {
+        "title": "Protecting the source",
+        "text": "Monitoring the aquifer and protecting the natural perimeter of Niague."
+      },
+      {
+        "title": "Recycling",
+        "text": "\"Sort your waste\" — bottles designed to be recycled, retailer awareness."
+      },
+      {
+        "title": "Eco-design",
+        "text": "Lighter packaging, optimised logistics, controlled energy use."
+      },
+      {
+        "title": "Local roots",
+        "text": "Jobs and know-how in Senegal, community action around water access."
+      }
+    ]
   }
 }

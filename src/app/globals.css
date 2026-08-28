@@ -18,12 +18,17 @@
   --color-cristal: #2e9fdf; /* bleu cristal — accents, liens, survols */
   --color-cristal-light: #7fd0f5; /* reflets d'eau, halos */
   --color-platine: #c7ced8; /* argent / platine — filets, texte secondaire */
-  --color-platine-bright: #e8edf3; /* reflet métallique haute lumière */
+  --color-platine-bright: #eef2f6; /* reflet métallique haute lumière */
+  --color-argent: #9fabbd; /* argent brillant de l'étiquette (mi-ton) */
+  --color-argent-bright: #dbe3ec; /* argent poli — reflets */
   --color-blanc: #ffffff;
+  --color-pearl: #f4f6fa; /* fond de section clair (nacre) */
+  --color-mist: #e6ebf2; /* fond de section argent-gris */
   --color-nuit: #0c1330; /* bleu nuit — corps de texte sur fond clair */
   --color-or: #b8912e; /* or discret — distinctions, certifications */
 
-  /* — Rôles sémantiques (thème sombre "bleu joaillerie", lumineux) — */
+  /* — Rôles sémantiques : thème sombre "bleu joaillerie" par défaut.
+       Les tons clairs (.tone-light / .tone-silver) redéfinissent ces variables. */
   --color-background: #0b1c5e;
   --color-surface: #14286e;
   --color-surface-raised: #1c3585;
@@ -31,6 +36,9 @@
   --color-muted: #bcc8e6; /* texte secondaire — AA sur --background */
   --color-border: color-mix(in oklab, var(--color-platine) 26%, transparent);
   --color-ring: var(--color-cristal-light);
+  --color-accent: var(--color-cristal-light);
+  --color-track: rgb(255 255 255 / 0.06); /* fond de jauge / piste */
+  --color-field: rgb(255 255 255 / 0.03); /* fond de champ de saisie */
 
   /* — Typographie — (familles injectées par next/font, cf. src/lib/fonts.ts) */
   --font-display: var(--font-fraunces), ui-serif, Georgia, "Times New Roman", serif;
@@ -296,13 +304,83 @@
   }
 }
 
-/* Verre dépoli premium — flou modéré (coût GPU maîtrisé), fond assez opaque
-   pour rester lisible même si le backdrop-filter est bridé. */
+/* Texte « argent poli » de l'étiquette — dégradé métallique froid et brillant */
+@utility text-metal {
+  color: var(--color-argent-bright);
+  background-image: linear-gradient(
+    100deg,
+    #8b97a8 0%,
+    #d7dee7 26%,
+    #ffffff 44%,
+    #c2cbd6 58%,
+    #9aa6b6 74%,
+    #e4ebf2 100%
+  );
+  background-size: 220% auto;
+  background-clip: text;
+  -webkit-background-clip: text;
+  animation: shimmer 9s linear infinite;
+}
+@supports (background-clip: text) or (-webkit-background-clip: text) {
+  .text-metal {
+    color: transparent;
+  }
+}
+
+/* Verre dépoli premium — s'adapte au ton de section (clair / sombre). */
 @utility glass {
   background: color-mix(in oklab, var(--color-royal-soft) 72%, transparent);
   backdrop-filter: blur(10px);
   -webkit-backdrop-filter: blur(10px);
   border: 1px solid color-mix(in oklab, var(--color-platine) 20%, transparent);
+}
+.tone-light .glass,
+.tone-silver .glass {
+  background: color-mix(in oklab, var(--color-blanc) 78%, transparent);
+  border-color: color-mix(in oklab, var(--color-argent) 45%, transparent);
+  box-shadow:
+    0 1px 2px -1px rgb(12 19 48 / 0.08),
+    0 12px 32px -12px rgb(12 19 48 / 0.14);
+}
+
+/* ------------------------------------------------------------------ *
+ *  TONS DE SECTION — alterner clair / argent / sombre pour la clarté
+ * ------------------------------------------------------------------ */
+.tone-light {
+  --color-background: var(--color-pearl);
+  --color-surface: var(--color-blanc);
+  --color-surface-raised: var(--color-blanc);
+  --color-foreground: var(--color-nuit);
+  --color-muted: #55617c;
+  --color-border: color-mix(in oklab, var(--color-nuit) 14%, transparent);
+  --color-accent: var(--color-royal);
+  --color-track: rgb(12 19 48 / 0.09);
+  --color-field: rgb(12 19 48 / 0.04);
+  background-color: var(--color-pearl);
+  color: var(--color-foreground);
+}
+.tone-silver {
+  --color-background: var(--color-mist);
+  --color-surface: #f1f4f8;
+  --color-surface-raised: var(--color-blanc);
+  --color-foreground: var(--color-nuit);
+  --color-muted: #566079;
+  --color-border: color-mix(in oklab, var(--color-argent) 55%, transparent);
+  --color-accent: var(--color-royal);
+  --color-track: rgb(12 19 48 / 0.09);
+  --color-field: rgb(12 19 48 / 0.04);
+  background: linear-gradient(180deg, #eef1f6, var(--color-mist));
+  color: var(--color-foreground);
+}
+/* Sur ton clair, le "shimmer" argent doit rester lisible → bleu royal dégradé */
+.tone-light .text-shimmer,
+.tone-silver .text-shimmer {
+  background-image: linear-gradient(
+    100deg,
+    var(--color-royal) 0%,
+    #2b57c4 45%,
+    var(--color-cristal) 100%
+  );
 }
 
 /* Bordure en dégradé subtile */
@@ -340,6 +418,37 @@
   .grain-overlay {
     display: none;
   }
+}
+
+/* ------------------------------------------------------------------ *
+ *  LOCALISATEUR DE POINTS DE VENTE (MapLibre)
+ * ------------------------------------------------------------------ */
+.oc-marker {
+  cursor: pointer;
+  padding: 0;
+  border: 0;
+  background: none;
+  line-height: 0;
+  filter: drop-shadow(0 4px 8px rgb(5 15 61 / 0.5));
+  transition: transform 0.2s var(--ease-eau);
+}
+.oc-marker:hover,
+.oc-marker.is-active {
+  transform: scale(1.18) translateY(-2px);
+}
+.oc-map .maplibregl-ctrl-group {
+  background: color-mix(in oklab, var(--color-royal-soft) 85%, transparent);
+  border: 1px solid var(--color-border);
+}
+.oc-map .maplibregl-ctrl button {
+  color: var(--color-foreground);
+}
+.oc-map .maplibregl-ctrl-attrib {
+  background: color-mix(in oklab, var(--color-royal-deep) 80%, transparent);
+  color: var(--color-muted);
+}
+.oc-map .maplibregl-ctrl-attrib a {
+  color: var(--color-cristal-light);
 }
 
 /* ------------------------------------------------------------------ *

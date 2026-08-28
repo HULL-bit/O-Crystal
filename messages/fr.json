@@ -248,5 +248,200 @@
       "title": "Mentions & conformité",
       "intro": "Mentions légales, politique de confidentialité et gestion des cookies."
     }
+  },
+  "forms": {
+    "name": "Nom",
+    "fullName": "Nom complet",
+    "email": "E-mail",
+    "phone": "Téléphone",
+    "company": "Société",
+    "subject": "Sujet",
+    "message": "Message",
+    "activity": "Activité",
+    "volumes": "Volumes mensuels estimés",
+    "city": "Ville",
+    "cv": "CV (PDF)",
+    "consent": "J'accepte que mes données soient traitées pour répondre à ma demande.",
+    "send": "Envoyer",
+    "sending": "Envoi…",
+    "success": "Merci — votre message a bien été envoyé. Nous revenons vers vous rapidement.",
+    "error": "Une erreur est survenue. Réessayez ou écrivez-nous directement.",
+    "required": "Ce champ est requis",
+    "invalidEmail": "Adresse e-mail invalide",
+    "stubNotice": "Formulaire de démonstration — l'envoi réel (e-mail + enregistrement) est branché à l'étape 4."
+  },
+  "share": {
+    "label": "Partager",
+    "copied": "Lien copié"
+  },
+  "whereToBuy": {
+    "eyebrow": "Où acheter",
+    "title": "Trouvez O'Crystal près de chez vous",
+    "intro": "Boutiques, grande distribution, CHR : localisez le point de vente le plus proche, obtenez un itinéraire, ou contactez un distributeur.",
+    "searchPlaceholder": "Ville, quartier, enseigne…",
+    "useLocation": "Me localiser",
+    "allTypes": "Tous",
+    "noResults": "Aucun point de vente ne correspond à votre recherche.",
+    "directions": "Itinéraire",
+    "distributorsTitle": "Nos distributeurs partenaires",
+    "ecommerceTitle": "Acheter en ligne",
+    "ecommerceText": "Retrouvez O'Crystal sur les plateformes e-commerce partenaires."
+  },
+  "productsPage": {
+    "eyebrow": "Nos Produits",
+    "title": "Une gamme, six formats",
+    "intro": "De la bouteille nomade 33 cl à la bonbonne 19 L — la même pureté à chaque gorgée.",
+    "filterFormat": "Format",
+    "filterUsage": "Usage",
+    "all": "Tous",
+    "usages": {
+      "maison": "Maison",
+      "sport": "Sport",
+      "evenementiel": "Événementiel",
+      "chr": "CHR"
+    },
+    "availability": {
+      "available": "Disponible",
+      "soon": "Bientôt disponible",
+      "on-order": "Sur commande"
+    },
+    "viewProduct": "Voir la fiche",
+    "backToRange": "Toute la gamme",
+    "compositionTitle": "Composition minérale",
+    "usesTitle": "Usages",
+    "galleryTitle": "En images",
+    "view360": "Vue 360°",
+    "buyThis": "Où acheter ce format",
+    "residue": "Résidu sec à 180 °C"
+  },
+  "sourcePage": {
+    "eyebrow": "La Source & la Qualité",
+    "title": "De la roche de Niague à votre verre",
+    "intro": "Une eau puisée au cœur d'une nature préservée, filtrée naturellement, embouteillée à la source.",
+    "journeyTitle": "Le parcours de l'eau",
+    "compositionTitle": "Une minéralité d'équilibre",
+    "compositionText": "Résidu sec à 180 °C : 320 mg/L. Une eau légère, aux fines bulles rafraîchissantes.",
+    "certTitle": "Sécurité alimentaire & certifications",
+    "certText": "Démarches ISO 22000 et HACCP engagées. L'analyse minérale complète est disponible au téléchargement.",
+    "download": "Télécharger l'analyse (PDF)",
+    "whyTitle": "Pourquoi cette eau",
+    "why1Title": "Filtration naturelle",
+    "why1Text": "La roche retient les impuretés et enrichit l'eau en minéraux essentiels.",
+    "why2Title": "Embouteillée à la source",
+    "why2Text": "Aucun transport avant conditionnement : la pureté d'origine est préservée.",
+    "why3Title": "Fines bulles",
+    "why3Text": "Une effervescence délicate, signature d'une eau vivante et légère."
+  },
+  "brandPage": {
+    "eyebrow": "La Marque",
+    "title": "Une fierté sénégalaise, hissée aux standards du monde",
+    "intro": "O'Crystal est née d'une conviction : le Sénégal mérite une eau minérale d'exception, portée avec l'élégance d'une grande maison.",
+    "chapters": [
+      {
+        "k": "01",
+        "title": "Une source, une promesse",
+        "text": "Au cœur de Niague, une eau que la terre a mis des années à filtrer. Nous avons choisi de la révéler, intacte."
+      },
+      {
+        "k": "02",
+        "title": "Le geste juste",
+        "text": "Embouteiller à la source, sans rien ajouter. La sobriété comme exigence, la pureté comme résultat."
+      },
+      {
+        "k": "03",
+        "title": "Une ambition assumée",
+        "text": "Rivaliser avec les meilleures eaux du monde — et le faire depuis le Sénégal, pour l'Afrique de l'Ouest et au-delà."
+      }
+    ],
+    "timelineTitle": "Étapes clés",
+    "timeline": [
+      {
+        "year": "2024",
+        "text": "Création de Cristal Waters SARL et aménagement du site de Niague."
+      },
+      {
+        "year": "2025",
+        "text": "Lancement du format 1,5 L et déploiement en grande distribution à Dakar."
+      },
+      {
+        "year": "2026",
+        "text": "Extension de la gamme (33 cl à 19 L) et ouverture du réseau distributeurs."
+      }
+    ]
+  },
+  "newsPage": {
+    "eyebrow": "Actualités",
+    "title": "Les actualités O'Crystal",
+    "intro": "Événements, conseils d'hydratation, coulisses de la source.",
+    "allCategories": "Toutes",
+    "readArticle": "Lire l'article",
+    "backToNews": "Toutes les actualités",
+    "publishedOn": "Publié le",
+    "noArticles": "Aucun article pour le moment.",
+    "relatedTitle": "À lire aussi"
+  },
+  "careersPage": {
+    "eyebrow": "Carrières",
+    "title": "Rejoindre O'Crystal",
+    "intro": "Nous construisons une marque d'exception — et l'équipe qui va avec.",
+    "openings": "Postes ouverts",
+    "noJobs": "Aucune offre ouverte pour le moment — les candidatures spontanées restent les bienvenues.",
+    "spontaneousTitle": "Candidature spontanée",
+    "apply": "Postuler",
+    "contract": "Contrat",
+    "location": "Lieu"
+  },
+  "contactPage": {
+    "eyebrow": "Contact",
+    "title": "Parlons-en",
+    "intro": "Une question, une demande presse, un partenariat ? Écrivez-nous.",
+    "factoryTitle": "L'usine",
+    "hoursTitle": "Horaires",
+    "followTitle": "Nous suivre",
+    "whatsapp": "Écrire sur WhatsApp"
+  },
+  "proPage": {
+    "eyebrow": "Professionnels & Distributeurs",
+    "title": "Devenez partenaire O'Crystal",
+    "intro": "Grossistes, CHR, événementiel : rejoignez le réseau et bénéficiez de conditions dédiées.",
+    "offerTitle": "L'offre B2B",
+    "offers": [
+      {
+        "title": "Grossistes & revendeurs",
+        "text": "Tarifs dégressifs, logistique fiable, accompagnement commercial."
+      },
+      {
+        "title": "CHR & hôtellerie",
+        "text": "Formats adaptés à la table, livraison régulière, image premium."
+      },
+      {
+        "title": "Événementiel",
+        "text": "Volumes ponctuels, étiquette personnalisable, devis rapide."
+      }
+    ],
+    "formTitle": "Demande de partenariat / devis"
+  },
+  "csrPage": {
+    "eyebrow": "Engagements RSE",
+    "title": "Nature préservée, responsabilité assumée",
+    "intro": "Protéger la ressource qui nous fait vivre : ce n'est pas une option, c'est le cœur du métier.",
+    "pillars": [
+      {
+        "title": "Préservation de la source",
+        "text": "Surveillance de la nappe et protection du périmètre naturel de Niague."
+      },
+      {
+        "title": "Recyclage",
+        "text": "« Pensez au tri » — bouteilles conçues pour être recyclées, sensibilisation des points de vente."
+      },
+      {
+        "title": "Éco-conception",
+        "text": "Allègement des emballages, optimisation logistique, énergie maîtrisée."
+      },
+      {
+        "title": "Ancrage local",
+        "text": "Emplois et savoir-faire au Sénégal, actions communautaires autour de l'accès à l'eau."
+      }
+    ]
   }
 }

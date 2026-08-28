@@ -8,7 +8,9 @@ import { ProductRange } from "@/components/sections/home/product-range";
 import { Proof } from "@/components/sections/home/proof";
 import { CtaDuo } from "@/components/sections/home/cta-duo";
 import { NewsletterSection } from "@/components/sections/home/newsletter-section";
-import { getHomeContent } from "@/lib/cms";
+import { Ornament } from "@/components/brand/ornament";
+import { getHomeContent, toLocale } from "@/lib/cms";
+import type { HomeContent } from "@/lib/cms-types";
 import { routing } from "@/i18n/routing";
 
 type Props = { params: Promise<{ locale: string }> };
@@ -17,9 +19,7 @@ export default async function HomePage({ params }: Props) {
   const { locale } = await params;
   setRequestLocale(locale);
 
-  const home = await getHomeContent(
-    locale === "en" ? "en" : "fr",
-  ).catch(() => null);
+  const home = (await getHomeContent(toLocale(locale))) as HomeContent | null;
 
   return (
     <>
@@ -36,12 +36,15 @@ export default async function HomePage({ params }: Props) {
         }
       />
       <ValuesMarquee />
-      <BrandTeaser />
+      <BrandTeaser content={home} />
+      <div className="tone-silver py-10">
+        <Ornament />
+      </div>
       <SourceJourney />
-      <Minerality />
+      <Minerality tone="silver" />
       <ProductRange />
-      <Proof />
-      <CtaDuo />
+      <Proof tone="dark" />
+      <CtaDuo tone="silver" />
       <NewsletterSection />
     </>
   );

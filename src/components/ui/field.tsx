@@ -2,7 +2,7 @@ import { forwardRef, useId } from "react";
 import { cn } from "@/lib/utils";
 
 const baseField =
-  "w-full rounded-[var(--radius-md)] border border-[var(--color-border)] bg-white/[0.03] px-4 py-3 text-[var(--color-foreground)] placeholder:text-[var(--color-muted)]/60 transition-colors duration-[var(--duration-fast)] focus:border-[var(--color-cristal)] focus:bg-white/[0.05] focus-visible:outline-none";
+  "w-full rounded-[var(--radius-md)] border border-[var(--color-border)] bg-[var(--color-field)] px-4 py-3 text-[var(--color-foreground)] placeholder:text-[var(--color-muted)]/60 transition-colors duration-[var(--duration-fast)] focus:border-[var(--color-cristal)] focus:bg-[var(--color-track)] focus-visible:outline-none";
 
 type FieldChildProps = {
   id: string;

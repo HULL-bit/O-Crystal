@@ -12,7 +12,7 @@ type RevealProps = {
   /** Délai (s) — pour orchestrer une cascade manuelle. */
   delay?: number;
   /** Balise rendue. */
-  as?: "div" | "section" | "li" | "span" | "p";
+  as?: "div" | "section" | "li" | "span" | "p" | "article" | "blockquote";
 };
 
 const offset = 28;

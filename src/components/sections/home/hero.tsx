@@ -9,6 +9,7 @@ import { Button } from "@/components/ui/button";
 import { Aurora } from "@/components/backgrounds/aurora";
 import { Bubbles } from "@/components/backgrounds/bubbles";
 import { SceneCanvas } from "@/components/three/scene-canvas";
+import { Photo } from "@/components/media/photo";
 import { ease } from "@/lib/motion";
 
 /** Contenus optionnels venant du CMS (global "Page d'accueil"). */
@@ -42,6 +43,14 @@ export function Hero({ content }: { content?: HeroContent }) {
       ref={ref}
       className="relative isolate flex min-h-[100svh] flex-col justify-center overflow-hidden pt-20 pb-14 sm:pt-24 sm:pb-20"
     >
+      <Photo
+        src="heroWater"
+        alt=""
+        priority
+        tint="strong"
+        sizes="100vw"
+        className="absolute inset-0 -z-10 opacity-45"
+      />
       <Aurora />
       <Bubbles count={12} />
 

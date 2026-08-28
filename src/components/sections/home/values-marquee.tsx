@@ -27,7 +27,7 @@ const VALUES: Record<string, string[]> = {
 export async function ValuesMarquee() {
   const locale = await getLocale();
   return (
-    <div className="border-y border-[var(--color-border)] py-5">
+    <div className="tone-silver border-y border-[var(--color-border)] py-5">
       <Marquee items={VALUES[locale] ?? VALUES.fr} speed={44} />
     </div>
   );

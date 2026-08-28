@@ -1,5 +1,9 @@
-import { setRequestLocale } from "next-intl/server";
-import { PlaceholderPage } from "@/components/layout/placeholder-page";
+import { getTranslations, setRequestLocale } from "next-intl/server";
+import { PageHeader } from "@/components/layout/page-header";
+import { Section } from "@/components/ui/section";
+import { NewsList } from "@/components/news/news-list";
+import { getArticleCategories, getArticles, toLocale } from "@/lib/cms";
+import type { Article, ArticleCategory } from "@/lib/cms-types";
 import { pageMetadata } from "@/lib/seo";
 
 type Props = { params: Promise<{ locale: string }> };
@@ -9,8 +13,21 @@ export async function generateMetadata({ params }: Props) {
   return pageMetadata(locale, "news", "/actualites");
 }
 
-export default async function Page({ params }: Props) {
+export default async function NewsPage({ params }: Props) {
   const { locale } = await params;
   setRequestLocale(locale);
-  return <PlaceholderPage nsKey="news" step="Étape 3 · CMS" />;
+  const t = await getTranslations("newsPage");
+  const l = toLocale(locale);
+
+  const articles = (await getArticles(l)) as Article[];
+  const categories = (await getArticleCategories(l)) as ArticleCategory[];
+
+  return (
+    <>
+      <PageHeader eyebrow={t("eyebrow")} title={t("title")} intro={t("intro")} />
+      <Section spacing="lg" tone="light">
+        <NewsList articles={articles} categories={categories} locale={locale} />
+      </Section>
+    </>
+  );
 }

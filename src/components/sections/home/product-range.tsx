@@ -13,7 +13,7 @@ export function ProductRange() {
   const locale = useLocale();
 
   return (
-    <section className="overflow-hidden py-20 md:py-28">
+    <section className="tone-light overflow-hidden py-20 md:py-28">
       <div className="container-page flex flex-wrap items-end justify-between gap-4">
         <div>
           <Eyebrow>{tn("products")}</Eyebrow>

@@ -12,11 +12,11 @@ const STATS = [
   { key: "since", to: 2024, suffix: "" },
 ] as const;
 
-export async function Proof() {
+export async function Proof({ tone = "dark" }: { tone?: "dark" | "light" | "silver" }) {
   const t = await getTranslations("home.proof");
 
   return (
-    <Section spacing="lg">
+    <Section spacing="lg" tone={tone}>
       <div className="flex flex-wrap items-end justify-between gap-6">
         <h2 className="max-w-md text-3xl md:text-4xl">{t("title")}</h2>
         <div className="flex flex-wrap gap-2">

@@ -9,12 +9,12 @@ import { Button } from "@/components/ui/button";
 import { minerals, dryResidue } from "@/content/minerals";
 import { ease, inView } from "@/lib/motion";
 
-export function Minerality() {
+export function Minerality({ tone = "silver" }: { tone?: "dark" | "light" | "silver" }) {
   const t = useTranslations("home.minerality");
   const locale = useLocale();
 
   return (
-    <Section spacing="lg" className="relative">
+    <Section spacing="lg" tone={tone} className="relative">
       <div className="grid gap-14 lg:grid-cols-[0.9fr_1.1fr] lg:gap-20">
         <div>
           <Eyebrow>{t("eyebrow")}</Eyebrow>
@@ -52,7 +52,7 @@ export function Minerality() {
                     {m.value} <span className="text-[var(--color-muted)]">mg/L</span>
                   </span>
                 </div>
-                <div className="mt-2 h-2.5 overflow-hidden rounded-full bg-white/[0.05]">
+                <div className="mt-2 h-2.5 overflow-hidden rounded-full bg-[var(--color-track)]">
                   <motion.div
                     className="h-full rounded-full bg-[linear-gradient(90deg,var(--color-royal),var(--color-cristal),var(--color-cristal-light))] bg-[length:200%_100%]"
                     initial={{ width: 0 }}

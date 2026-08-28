@@ -5,12 +5,12 @@ import { Card } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Eyebrow } from "@/components/ui/section";
 
-export async function CtaDuo() {
+export async function CtaDuo({ tone = "silver" }: { tone?: "dark" | "light" | "silver" }) {
   const w = await getTranslations("home.whereToBuy");
   const d = await getTranslations("home.distributor");
 
   return (
-    <Section spacing="lg">
+    <Section spacing="lg" tone={tone}>
       <div className="grid gap-6 md:grid-cols-2">
         <Reveal from="up">
           <Card interactive className="flex h-full flex-col">
