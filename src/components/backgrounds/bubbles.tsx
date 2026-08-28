@@ -1,8 +1,4 @@
-"use client";
-
-import { useMemo } from "react";
 import { cn } from "@/lib/utils";
-import { usePrefersReducedMotion } from "@/hooks/use-reduced-motion";
 
 /** Suite pseudo-aléatoire déterministe (SSR = client, pas de mismatch). */
 function seeded(i: number, salt: number) {
@@ -12,34 +8,31 @@ function seeded(i: number, salt: number) {
 
 /**
  * Champ de fines bulles qui montent — fraîcheur & légèreté.
- * CSS pur (transform/opacity), se fige en reduced-motion.
+ * 100 % CSS (transform/opacity), composant serveur : rien à hydrater.
+ * Masqué en reduced-motion via media query (voir globals.css `.oc-bubbles`).
  */
 export function Bubbles({
-  count = 10,
+  count = 8,
   className,
 }: {
   count?: number;
   className?: string;
 }) {
-  const reduced = usePrefersReducedMotion();
-  const bubbles = useMemo(
-    () =>
-      Array.from({ length: count }, (_, i) => ({
-        left: seeded(i, 1) * 100,
-        size: 3 + seeded(i, 2) * 12,
-        delay: -seeded(i, 3) * 22,
-        duration: 16 + seeded(i, 4) * 16,
-        drift: (seeded(i, 5) - 0.5) * 40,
-      })),
-    [count],
-  );
-
-  if (reduced) return null;
+  const bubbles = Array.from({ length: count }, (_, i) => ({
+    left: seeded(i, 1) * 100,
+    size: 3 + seeded(i, 2) * 12,
+    delay: -seeded(i, 3) * 22,
+    duration: 16 + seeded(i, 4) * 16,
+    drift: (seeded(i, 5) - 0.5) * 40,
+  }));
 
   return (
     <div
       aria-hidden
-      className={cn("pointer-events-none absolute inset-0 overflow-hidden", className)}
+      className={cn(
+        "oc-bubbles pointer-events-none absolute inset-0 overflow-hidden",
+        className,
+      )}
     >
       {bubbles.map((b, i) => (
         <span

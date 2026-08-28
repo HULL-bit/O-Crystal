@@ -192,6 +192,51 @@
   }
 }
 
+/* Révélation mot par mot du hero — CSS pur : joue dès le 1er rendu, sans
+   attendre l'hydratation JS (préserve le LCP du titre). */
+@keyframes word-in {
+  from {
+    transform: translateY(105%) rotate(2deg);
+    opacity: 0;
+  }
+  to {
+    transform: translateY(0) rotate(0);
+    opacity: 1;
+  }
+}
+.split-word {
+  display: inline-block;
+  animation: word-in 0.72s cubic-bezier(0.22, 1, 0.36, 1) both;
+  animation-delay: var(--word-delay, 0s);
+  will-change: transform, opacity;
+}
+
+/* Entrée douce (fade + montée) — CSS pur, joue au 1er rendu. Pour le contenu
+   au-dessus de la ligne de flottaison (hero) où Motion gèlerait le LCP. */
+@keyframes fade-rise {
+  from {
+    opacity: 0;
+    transform: translateY(12px);
+  }
+  to {
+    opacity: 1;
+    transform: none;
+  }
+}
+.oc-enter {
+  animation: fade-rise 0.7s cubic-bezier(0.22, 1, 0.36, 1) both;
+  animation-delay: var(--enter-delay, 0s);
+}
+@media (prefers-reduced-motion: reduce) {
+  .split-word,
+  .oc-enter {
+    animation: none;
+  }
+  .oc-bubbles {
+    display: none;
+  }
+}
+
 /* ------------------------------------------------------------------ *
  *  BASE
  * ------------------------------------------------------------------ */
@@ -206,6 +251,9 @@
     -webkit-text-size-adjust: 100%;
     text-rendering: optimizeLegibility;
     /* Le smooth scroll est piloté par Lenis (JS) — surtout pas en CSS. */
+    /* Réserve la gouttière de scrollbar : pas de décalage (CLS) quand le
+       préchargeur verrouille puis libère le scroll. */
+    scrollbar-gutter: stable;
   }
 
   body {

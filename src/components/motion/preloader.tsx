@@ -2,114 +2,75 @@
 
 import { useEffect, useState } from "react";
 import { AnimatePresence, motion } from "motion/react";
-import { useTranslations } from "next-intl";
 import { BrandMark } from "@/components/brand/BrandMark";
 import { usePreferences } from "@/components/providers/preferences-provider";
-import { usePrefersReducedMotion } from "@/hooks/use-media-query";
+import { usePrefersReducedMotion, useMediaQuery } from "@/hooks/use-media-query";
+import { useDeviceTier } from "@/hooks/use-device-tier";
 import { ease } from "@/lib/motion";
 
 /**
- * Préchargeur cinématique : la goutte-cristal se forme, puis une nappe d'eau
- * se retire pour révéler le hero. Mémorisé : à la 2ᵉ visite, on saute l'intro.
- * Repli reduced-motion : simple fondu court.
+ * Voile d'ouverture : une nappe d'eau se retire pour révéler le hero.
+ *
+ * Volontairement bref (< 0,8 s) et réservé à la 1ʳᵉ visite desktop sur appareil
+ * capable — ailleurs (mobile = audience cible, visites suivantes, reduced-motion,
+ * data saver) un fondu quasi instantané. La perception de vitesse prime sur
+ * l'effet (LCP / cible Lighthouse). Aucun verrou de scroll.
  */
 export function Preloader() {
-  const t = useTranslations("preloader");
-  const tA = useTranslations("actions");
+  // `ready` (useSyncExternalStore) est faux au SSR et au 1er rendu client : le
+  // hero est donc peint sans attendre (élément LCP). Le voile n'est monté
+  // qu'ensuite, et seulement pour la 1ʳᵉ visite desktop sur appareil capable.
   const { ready, hasSeenIntro, markIntroSeen } = usePreferences();
   const reduced = usePrefersReducedMotion();
-  const [phase, setPhase] = useState<"hold" | "form" | "reveal" | "done">("hold");
+  const coarse = useMediaQuery("(pointer: coarse)", false);
+  const { tier, saveData } = useDeviceTier();
+  const [phase, setPhase] = useState<"cover" | "reveal" | "done">("cover");
+
+  const fullIntro =
+    ready && !hasSeenIntro && !reduced && !coarse && tier === "high" && !saveData;
 
   useEffect(() => {
     if (!ready) return;
-
-    if (hasSeenIntro || reduced) {
-      const to = setTimeout(() => setPhase("done"), reduced ? 220 : 120);
-      return () => clearTimeout(to);
+    if (!fullIntro) {
+      markIntroSeen();
+      return;
     }
 
-    const toForm = setTimeout(() => setPhase("form"), 20);
-    const toReveal = setTimeout(() => setPhase("reveal"), 1150);
+    const toReveal = setTimeout(() => setPhase("reveal"), 240);
     const toDone = setTimeout(() => {
       setPhase("done");
       markIntroSeen();
-    }, 1850);
+    }, 760);
     return () => {
-      clearTimeout(toForm);
       clearTimeout(toReveal);
       clearTimeout(toDone);
     };
-  }, [ready, hasSeenIntro, reduced, markIntroSeen]);
-
-  // Verrouille le scroll pendant l'intro.
-  useEffect(() => {
-    if (phase === "done") return;
-    const prev = document.documentElement.style.overflow;
-    document.documentElement.style.overflow = "hidden";
-    return () => {
-      document.documentElement.style.overflow = prev;
-    };
-  }, [phase]);
+  }, [ready, fullIntro, markIntroSeen]);
 
   return (
     <AnimatePresence>
-      {phase !== "done" && (
+      {fullIntro && phase !== "done" && (
         <motion.div
           key="preloader"
-          className="fixed inset-0 z-[9990] grid place-items-center overflow-hidden bg-[var(--color-royal-deep)]"
+          aria-hidden
+          className="pointer-events-none fixed inset-0 z-[9990] grid place-items-center overflow-hidden"
           initial={{ opacity: 1 }}
           exit={{ opacity: 0 }}
-          transition={{ duration: 0.4 }}
+          transition={{ duration: 0.3 }}
         >
-          {/* Nappe d'eau qui se retire (deux volets + reflet) */}
           <motion.div
             className="absolute inset-0 bg-[image:var(--gradient-eau)]"
             initial={{ y: 0 }}
             animate={{ y: phase === "reveal" ? "-100%" : 0 }}
-            transition={{ duration: 0.9, ease: ease.plonge }}
+            transition={{ duration: 0.55, ease: ease.plonge }}
           />
           <motion.div
-            aria-hidden
-            className="absolute inset-x-0 h-24 bg-[linear-gradient(180deg,transparent,rgba(127,208,245,0.5),transparent)] blur-md"
-            initial={{ top: "100%" }}
-            animate={{ top: phase === "reveal" ? "-10%" : "100%" }}
-            transition={{ duration: 0.9, ease: ease.plonge }}
-          />
-
-          <motion.div
-            className="relative z-10 flex flex-col items-center gap-6"
+            className="relative"
             animate={{ opacity: phase === "reveal" ? 0 : 1 }}
-            transition={{ duration: 0.3 }}
+            transition={{ duration: 0.25 }}
           >
-            <motion.div
-              initial={{ opacity: 0, scale: 0.6, filter: "blur(8px)" }}
-              animate={{ opacity: 1, scale: 1, filter: "blur(0px)" }}
-              transition={{ duration: 1, ease: ease.eau }}
-            >
-              <BrandMark className="h-24 w-auto drop-shadow-[0_0_30px_rgba(127,208,245,0.5)]" />
-            </motion.div>
-            <motion.span
-              className="text-xs tracking-[0.3em] text-[var(--color-platine)] uppercase"
-              initial={{ opacity: 0 }}
-              animate={{ opacity: phase === "form" ? 1 : 0 }}
-              transition={{ delay: 0.4 }}
-            >
-              {t("loading")}
-            </motion.span>
+            <BrandMark className="h-20 w-auto drop-shadow-[0_0_28px_rgba(127,208,245,0.45)]" />
           </motion.div>
-
-          {phase === "form" && (
-            <button
-              type="button"
-              onClick={() => {
-                setPhase("done");
-                markIntroSeen();
-              }}
-              className="absolute bottom-8 right-8 z-10 text-xs tracking-[0.2em] text-[var(--color-muted)] uppercase transition-colors hover:text-white"
-            >
-              {tA("skipIntro")}
-            </button>
-          )}
         </motion.div>
       )}
     </AnimatePresence>

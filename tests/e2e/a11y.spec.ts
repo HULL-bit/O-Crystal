@@ -11,8 +11,8 @@ const ROUTES = ["/", "/produits", "/source-qualite", "/la-marque", "/contact", "
 for (const route of ROUTES) {
   test(`a11y ${route} — aucune violation WCAG A/AA`, async ({ page }, testInfo) => {
     await page.goto(route, { waitUntil: "domcontentloaded" });
-    // Laisser les animations d'entrée se stabiliser.
-    await page.waitForTimeout(800);
+    // Laisser l'hydratation + les animations d'entrée (`.oc-enter`, ~1,6 s) se stabiliser.
+    await page.waitForTimeout(2200);
 
     const results = await new AxeBuilder({ page })
       .withTags(["wcag2a", "wcag2aa", "wcag21a", "wcag21aa"])

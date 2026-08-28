@@ -2,14 +2,16 @@
 
 import { useEffect, useState } from "react";
 import { AnimatePresence, motion } from "motion/react";
-import { useLenis } from "lenis/react";
 import { useTranslations } from "next-intl";
 import { spring } from "@/lib/motion";
 
-/** Bouton "haut de page" animé — remonte via Lenis (ou scrollTo natif en repli). */
+/**
+ * Bouton "haut de page". `window.scrollTo` natif : Lenis l'intercepte et le
+ * lisse quand il est actif (desktop), scroll natif sinon — pas de dépendance
+ * directe à Lenis, qui reste hors du bundle critique mobile.
+ */
 export function BackToTop() {
   const [visible, setVisible] = useState(false);
-  const lenis = useLenis();
   const t = useTranslations("actions");
 
   useEffect(() => {
@@ -28,11 +30,7 @@ export function BackToTop() {
           animate={{ opacity: 1, y: 0, scale: 1 }}
           exit={{ opacity: 0, y: 16, scale: 0.8 }}
           transition={spring.snappy}
-          onClick={() =>
-            lenis
-              ? lenis.scrollTo(0, { duration: 1.4 })
-              : window.scrollTo({ top: 0, behavior: "smooth" })
-          }
+          onClick={() => window.scrollTo({ top: 0, behavior: "smooth" })}
           className="glass fixed right-5 bottom-5 z-50 flex h-11 w-11 items-center justify-center rounded-full text-[var(--color-cristal-light)] shadow-[var(--shadow-soft)] transition-colors hover:text-white md:right-8 md:bottom-8"
           aria-label={t("backToTop")}
         >

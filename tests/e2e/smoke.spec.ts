@@ -40,9 +40,13 @@ test("la CSP stricte est envoyée sur le site public", async ({ request }) => {
 
 test("le lien d'évitement place le focus sur le contenu", async ({ page }) => {
   await page.goto("/");
+  // Laisser l'hydratation se terminer (sinon le 1er Tab est absorbé par <body>).
+  await expect(page.locator("header")).toBeVisible();
+  await page.waitForTimeout(1200);
   await page.keyboard.press("Tab");
   const skip = page.getByRole("link", { name: /contenu|content/i });
   await expect(skip).toBeFocused();
+  await expect(skip).toHaveAttribute("href", "#main");
 });
 
 test("navigation vers une fiche produit", async ({ page }) => {
