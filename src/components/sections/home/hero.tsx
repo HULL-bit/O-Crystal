@@ -10,6 +10,7 @@ import { Aurora } from "@/components/backgrounds/aurora";
 import { Bubbles } from "@/components/backgrounds/bubbles";
 import { SceneCanvas } from "@/components/three/scene-canvas";
 import { Photo } from "@/components/media/photo";
+import { useParallaxTilt } from "@/hooks/use-parallax-tilt";
 import { ease } from "@/lib/motion";
 
 /** Contenus optionnels venant du CMS (global "Page d'accueil"). */
@@ -38,6 +39,11 @@ export function Hero({ content }: { content?: HeroContent }) {
   const opacity = useTransform(scrollYProgress, [0, 0.7], [1, 0]);
   const sceneScale = useTransform(scrollYProgress, [0, 1], [1, 1.15]);
 
+  // Parallaxe du regard sur la scène (souris desktop / gyroscope Android).
+  const { tiltX, tiltY } = useParallaxTilt();
+  const sceneX = useTransform(tiltX, [-1, 1], [22, -22]);
+  const sceneY = useTransform(tiltY, [-1, 1], [16, -16]);
+
   return (
     <section
       ref={ref}
@@ -56,8 +62,8 @@ export function Hero({ content }: { content?: HeroContent }) {
 
       {/* Scène 3D — décalée à droite pour ne jamais gêner la lecture */}
       <motion.div
-        style={{ scale: sceneScale }}
-        className="pointer-events-none absolute inset-y-0 right-[-18%] z-0 flex items-center justify-center opacity-70 sm:right-[-6%] lg:right-[2%] lg:opacity-100"
+        style={{ scale: sceneScale, x: sceneX, y: sceneY }}
+        className="pointer-events-none absolute inset-y-0 right-[-18%] z-0 flex items-center justify-center opacity-70 will-change-transform sm:right-[-6%] lg:right-[2%] lg:opacity-100"
       >
         <SceneCanvas className="h-[62vmin] w-[62vmin] lg:h-[72vmin] lg:w-[72vmin]" />
       </motion.div>

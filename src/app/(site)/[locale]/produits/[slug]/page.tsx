@@ -11,7 +11,7 @@ import { CmsImage } from "@/components/cms/cms-image";
 import { RichText } from "@/components/cms/rich-text";
 import { MineralGauges } from "@/components/products/mineral-gauges";
 import { Product360 } from "@/components/products/product-360";
-import { BrandMark } from "@/components/brand/BrandMark";
+import { SceneCanvas } from "@/components/three/scene-canvas";
 import { getProduct, getProducts, payloadClient, toLocale } from "@/lib/cms";
 import { asMedia, type Product } from "@/lib/cms-types";
 import { minerals as fallbackMinerals, dryResidue } from "@/content/minerals";
@@ -124,19 +124,13 @@ export default async function ProductPage({ params }: Props) {
                     {t("view360")}
                   </p>
                 </>
-              ) : asMedia(product.packshot) ? (
-                <div className="relative aspect-[3/4]">
-                  <CmsImage
-                    media={product.packshot}
-                    sizes="(max-width:1024px) 80vw, 30vw"
-                    priority
-                    className="object-contain"
-                  />
-                </div>
               ) : (
-                <div className="grid aspect-[3/4] place-items-center">
-                  <BrandMark className="h-2/3 w-auto opacity-80" />
-                </div>
+                <SceneCanvas
+                  variant="bottle"
+                  fallbackImage={product.packshot ?? null}
+                  fallbackAlt={product.name}
+                  className="aspect-[3/4] w-full"
+                />
               )}
             </div>
           </Reveal>
