@@ -20,7 +20,7 @@ export function RouteTransition() {
       return;
     }
     const raf = requestAnimationFrame(() => setActive(true));
-    const to = setTimeout(() => setActive(false), 520);
+    const to = setTimeout(() => setActive(false), 360);
     return () => {
       cancelAnimationFrame(raf);
       clearTimeout(to);
@@ -37,7 +37,7 @@ export function RouteTransition() {
           initial={{ scaleX: 0, opacity: 1 }}
           animate={{ scaleX: 1 }}
           exit={{ scaleX: 1, opacity: 0 }}
-          transition={{ scaleX: { duration: 0.5, ease: [0.16, 1, 0.3, 1] }, opacity: { duration: 0.18 } }}
+          transition={{ scaleX: { duration: 0.3, ease: [0.16, 1, 0.3, 1] }, opacity: { duration: 0.14 } }}
         />
       )}
     </AnimatePresence>

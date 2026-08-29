@@ -52,6 +52,7 @@ export function Header() {
               >
                 <Link
                   href={item.href}
+                  prefetch
                   className={cn(
                     "relative block rounded-full px-2.5 py-2 text-[0.82rem] whitespace-nowrap transition-colors xl:px-3",
                     isActive
@@ -188,6 +189,7 @@ export function Header() {
                 >
                   <Link
                     href={item.href}
+                    prefetch
                     onClick={() => setMobileOpen(false)}
                     className="block py-2 font-[family-name:var(--font-display)] text-3xl text-[var(--color-platine-bright)] transition-colors hover:text-white"
                   >
