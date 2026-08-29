@@ -57,6 +57,15 @@ confirme dans l'admin (groupe « Espace pro »).
 - Prix pro de démo injectés sur les 6 formats par le seed.
 - Tarification : `src/lib/pro-pricing.ts` (FCFA, TVA 18 %). Tests unitaires.
 
+### Promouvoir un compte en admin
+
+Payload n'attribue pas toujours le rôle `admin` au 1ᵉʳ compte selon le contexte
+de création. Pour promouvoir (ou réparer) un compte :
+
+```bash
+pnpm promote-admin <email>     # lit DATABASE_URI depuis .env.local
+```
+
 ### Bypass 2FA (dev/CI uniquement)
 
 `DISABLE_TOTP=true pnpm dev` — **jamais en production** (le code l'ignore si `NODE_ENV=production`).

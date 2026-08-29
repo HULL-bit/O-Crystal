@@ -29,7 +29,16 @@ services:
         fromDatabase:
           name: ocrystal-db
           property: connectionString
-      # Secrets renseignés dans le dashboard Render (sync:false)
+      # Schéma DB : synchro auto (drizzle push). Instance unique Render =
+      # acceptable. Poser "false" une fois des migrations versionnées créées
+      # (cf. docs/DEPLOY.md).
+      - key: PAYLOAD_DB_PUSH
+        value: "true"
+      # Scène 3D temps réel désactivée par défaut (perf 4G / Chromebook).
+      - key: NEXT_PUBLIC_ENABLE_3D
+        value: "false"
+
+      # --- Médias : Cloudflare R2 (compatible S3) — dashboard ---
       - key: R2_ACCOUNT_ID
         sync: false
       - key: R2_ACCESS_KEY_ID
@@ -40,13 +49,31 @@ services:
         sync: false
       - key: R2_PUBLIC_URL
         sync: false
+
+      # --- Formulaires / e-mail ---
+      - key: MAIL_FROM
+        value: O'Crystal <no-reply@ocrystal.sn>
+      - key: CONTACT_INBOX
+        value: contact@ocrystal.sn
       - key: RESEND_API_KEY
         sync: false
       - key: HCAPTCHA_SECRET
         sync: false
       - key: NEXT_PUBLIC_HCAPTCHA_SITE_KEY
         sync: false
+
+      # --- Carte ---
       - key: NEXT_PUBLIC_MAP_STYLE_URL
+        value: https://tiles.openfreemap.org/styles/liberty
+
+      # --- Mesure d'audience (Plausible, après consentement) ---
+      - key: NEXT_PUBLIC_PLAUSIBLE_DOMAIN
+        value: ocrystal.sn
+
+      # --- Monitoring (Sentry) — laisser vide = désactivé ---
+      - key: SENTRY_DSN
+        sync: false
+      - key: NEXT_PUBLIC_SENTRY_DSN
         sync: false
 
   # Publication programmée : traite la file de jobs Payload toutes les 5 min.
