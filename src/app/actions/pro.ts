@@ -5,6 +5,7 @@ import { redirect } from "next/navigation";
 import { getPayload } from "payload";
 import config from "@payload-config";
 import { rateLimit } from "@/lib/rate-limit";
+import { verifyCaptcha } from "@/lib/captcha";
 import { sendMail, MAIL_INBOX } from "@/lib/mail";
 import type { ActionResult } from "@/lib/schemas";
 import {
@@ -14,7 +15,11 @@ import {
   cartLineSchema,
 } from "@/lib/pro-schemas";
 import { setProCookie, clearProCookie, getProSessionRaw } from "@/lib/pro-auth";
-import { priceCart, formatXOF } from "@/lib/pro-pricing";
+import { priceCart } from "@/lib/pro-pricing";
+import { ProAccountRequest } from "@/emails/pro-account";
+import { ProOrderStaff, ProOrderCustomer } from "@/emails/pro-order";
+
+const siteUrl = () => process.env.NEXT_PUBLIC_SITE_URL || "http://localhost:3000";
 
 const t = (l: string, fr: string, en: string) => (l === "en" ? en : fr);
 
@@ -50,6 +55,8 @@ export async function registerPro(
   }
   const d = parsed.data;
   if (d.website) return { ok: true };
+  if (!(await verifyCaptcha(formData.get("h-captcha-response") as string | null)))
+    return { ok: false, error: t(locale, "Vérification anti-robot échouée.", "Anti-bot check failed.") };
 
   const payload = await getPayload({ config });
 
@@ -89,8 +96,16 @@ export async function registerPro(
     await sendMail({
       to: MAIL_INBOX,
       subject: `[espace pro] Nouvelle demande — ${d.companyName}`,
-      text: `Société : ${d.companyName}\nContact : ${d.contactName} · ${d.phone} · ${d.email}\nType : ${d.type}\nZone : ${d.region || "—"}\nNINEA : ${d.ninea || "—"}\n\nÀ valider dans l'admin (Comptes pros).`,
       replyTo: d.email,
+      react: ProAccountRequest({
+        companyName: d.companyName,
+        contactName: d.contactName,
+        email: d.email,
+        phone: d.phone,
+        type: d.type,
+        region: d.region || undefined,
+        ninea: d.ninea || undefined,
+      }),
     });
   } catch (err) {
     console.error("registerPro", err);
@@ -248,26 +263,41 @@ export async function submitProOrder(
     });
 
     const ref = String((order as { reference?: string }).reference ?? order.id);
+    const emailLines = priced.lines.map((l) => ({
+      name: l.name,
+      packs: l.packs,
+      unitPriceHT: l.unitPriceHT,
+    }));
+    const common = {
+      reference: ref,
+      lines: emailLines,
+      totalHT: priced.totalHT,
+      totalVAT: priced.totalVAT,
+      totalTTC: priced.totalTTC,
+      deliveryAddress: parsed.data.deliveryAddress,
+      requestedDate: parsed.data.requestedDate || undefined,
+      customerNote: parsed.data.customerNote || undefined,
+    };
     await sendMail({
       to: MAIL_INBOX,
       subject: `[commande pro] ${ref} — ${account.companyName}`,
-      text:
-        `Commande ${ref} — ${account.companyName} (${account.contactName}, ${account.email})\n` +
-        priced.lines.map((l) => `  ${l.packs} × ${l.name} @ ${formatXOF(l.unitPriceHT)} HT`).join("\n") +
-        `\n\nTotal HT ${formatXOF(priced.totalHT)} · TVA ${formatXOF(priced.totalVAT)} · TTC ${formatXOF(priced.totalTTC)}` +
-        `\nLivraison : ${parsed.data.deliveryAddress}` +
-        (parsed.data.requestedDate ? `\nDate souhaitée : ${parsed.data.requestedDate}` : "") +
-        (parsed.data.customerNote ? `\nNote : ${parsed.data.customerNote}` : ""),
       replyTo: account.email,
+      react: ProOrderStaff({
+        ...common,
+        companyName: account.companyName,
+        contactName: account.contactName,
+        email: account.email,
+      }),
     });
     await sendMail({
       to: account.email,
       subject: t(locale, `Votre commande ${ref} est bien reçue`, `Your order ${ref} has been received`),
-      text: t(
+      react: ProOrderCustomer({
+        ...common,
+        contactName: account.contactName,
+        ordersUrl: `${siteUrl()}${locale === "en" ? "/en" : ""}/pro/commandes`,
         locale,
-        `Bonjour ${account.contactName},\n\nNous avons bien reçu votre commande ${ref} (total TTC ${formatXOF(priced.totalTTC)}). Notre équipe la confirme et vous recontacte pour la livraison et le règlement.\n\nO'Crystal`,
-        `Hello ${account.contactName},\n\nWe received your order ${ref} (total incl. VAT ${formatXOF(priced.totalTTC)}). Our team will confirm it and get back to you about delivery and payment.\n\nO'Crystal`,
-      ),
+      }),
     });
 
     return {

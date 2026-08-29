@@ -32,7 +32,11 @@
     "tools": "Tools",
     "hydration": "Hydration calculator",
     "quiz": "\"Your water\" quiz",
-    "proSpace": "Pro area"
+    "proSpace": "Pro area",
+    "sourceShort": "Source",
+    "productsShort": "Products",
+    "csrShort": "Commitments",
+    "proShort": "Trade"
   },
   "actions": {
     "discover": "Discover",
@@ -104,7 +108,14 @@
           "title": "Bottled at the source",
           "text": "Drawn and bottled on site, the water keeps its original purity intact — nothing is added."
         }
-      }
+      },
+      "layers": [
+        "Surface rock",
+        "Sandstone",
+        "Clay",
+        "Limestone",
+        "Aquifer"
+      ]
     },
     "proof": {
       "title": "The scale of excellence",
@@ -317,7 +328,8 @@
     "galleryTitle": "In pictures",
     "view360": "360° view",
     "buyThis": "Where to buy this format",
-    "residue": "Dry residue at 180 °C"
+    "residue": "Dry residue at 180 °C",
+    "viewInAR": "View in augmented reality"
   },
   "sourcePage": {
     "eyebrow": "Source & Quality",

@@ -3,6 +3,7 @@
 import { useActionState } from "react";
 import { useLocale, useTranslations } from "next-intl";
 import { Field, Input, Textarea } from "@/components/ui/field";
+import { HCaptchaField } from "@/components/forms/hcaptcha-field";
 import { registerPro } from "@/app/actions/pro";
 import type { ActionResult } from "@/lib/schemas";
 
@@ -89,6 +90,8 @@ export function ProRegisterForm() {
         <input type="checkbox" name="consent" required className="mt-1 h-4 w-4 accent-[var(--color-cristal)]" />
         {t("consent")}
       </label>
+
+      <HCaptchaField />
 
       {state && !state.ok && state.error && (
         <p className="text-sm text-[#ff9d9d]" role="alert">

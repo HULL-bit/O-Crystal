@@ -5,6 +5,7 @@ import { getPayload } from "payload";
 import config from "@payload-config";
 import crypto from "node:crypto";
 import { rateLimit } from "@/lib/rate-limit";
+import { verifyCaptcha } from "@/lib/captcha";
 import { sendMail, MAIL_INBOX } from "@/lib/mail";
 import {
   leadSchema,
@@ -21,19 +22,6 @@ async function clientKey() {
     h.get("x-forwarded-for")?.split(",")[0]?.trim() ||
     "unknown";
   return ip;
-}
-
-async function verifyCaptcha(token: string | null) {
-  const secret = process.env.HCAPTCHA_SECRET;
-  if (!secret) return true; // pas de captcha configuré → on s'appuie sur honeypot + rate-limit
-  if (!token) return false;
-  const res = await fetch("https://api.hcaptcha.com/siteverify", {
-    method: "POST",
-    headers: { "content-type": "application/x-www-form-urlencoded" },
-    body: new URLSearchParams({ secret, response: token }),
-  });
-  const data = (await res.json()) as { success: boolean };
-  return data.success === true;
 }
 
 const KIND_MAP: Record<string, "contact" | "quote" | "distributor" | "chr"> = {
@@ -167,6 +155,8 @@ export async function subscribeNewsletter(
   if (!parsed.success)
     return { ok: false, error: t(locale, "Adresse e-mail invalide.", "Invalid email address.") };
   if (parsed.data.website) return { ok: true };
+  // Pas de widget hCaptcha sur ce formulaire compact : honeypot + time-trap
+  // implicite + rate-limit + double opt-in suffisent.
 
   const email = parsed.data.email.toLowerCase();
   const token = crypto.randomBytes(24).toString("hex");

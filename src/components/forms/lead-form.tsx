@@ -4,6 +4,7 @@ import { useActionState, useEffect, useRef, useState } from "react";
 import { useLocale, useTranslations } from "next-intl";
 import { AnimatePresence, motion } from "motion/react";
 import { Field, Input, Textarea } from "@/components/ui/field";
+import { HCaptchaField } from "@/components/forms/hcaptcha-field";
 import { spring } from "@/lib/motion";
 import { submitLead } from "@/app/actions/forms";
 import type { ActionResult } from "@/lib/schemas";
@@ -117,6 +118,8 @@ export function LeadForm({ variant = "contact" }: { variant?: Variant }) {
         />
         {t("consent")}
       </label>
+
+      <HCaptchaField />
 
       <AnimatePresence>
         {state && !state.ok && (

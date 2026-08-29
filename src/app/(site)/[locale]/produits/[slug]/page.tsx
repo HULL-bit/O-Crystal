@@ -12,6 +12,7 @@ import { RichText } from "@/components/cms/rich-text";
 import { MineralGauges } from "@/components/products/mineral-gauges";
 import { Product360 } from "@/components/products/product-360";
 import { SceneCanvas } from "@/components/three/scene-canvas";
+import { ARLaunch } from "@/components/three/ar-launch";
 import { getProduct, getProducts, payloadClient, toLocale } from "@/lib/cms";
 import { asMedia, type Product } from "@/lib/cms-types";
 import { minerals as fallbackMinerals, dryResidue } from "@/content/minerals";
@@ -110,9 +111,12 @@ export default async function ProductPage({ params }: Props) {
                 <Badge key={u}>{t(`usages.${u}`)}</Badge>
               ))}
             </div>
-            <Button href="/ou-acheter" className="mt-8" magnetic>
-              {t("buyThis")}
-            </Button>
+            <div className="mt-8 flex flex-wrap items-center gap-3">
+              <Button href="/ou-acheter" magnetic>
+                {t("buyThis")}
+              </Button>
+              <ARLaunch />
+            </div>
           </div>
 
           <Reveal from="right" className="relative mx-auto w-full max-w-sm">

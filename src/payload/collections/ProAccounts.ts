@@ -7,6 +7,8 @@ import {
   isStaffField,
 } from "../access";
 import { logChange, logDelete } from "../hooks/activity-log";
+import { sendMail } from "../../lib/mail";
+import { ProAccountApproved } from "../../emails/pro-account";
 
 /**
  * Comptes « espace professionnel » (grossistes, CHR, revendeurs, collectivités).
@@ -43,7 +45,36 @@ export const ProAccounts: CollectionConfig = {
     delete: isAdmin,
   },
   hooks: {
-    afterChange: [logChange],
+    afterChange: [
+      logChange,
+      async ({ doc, previousDoc, operation }) => {
+        // E-mail « compte validé » au passage pending/rejected → approved.
+        const wasApproved = previousDoc?.status === "approved";
+        if (
+          operation === "update" &&
+          doc?.status === "approved" &&
+          !wasApproved &&
+          doc?.email
+        ) {
+          const base = process.env.NEXT_PUBLIC_SITE_URL || "http://localhost:3000";
+          try {
+            await sendMail({
+              to: doc.email as string,
+              subject: "Votre compte professionnel O'Crystal est actif",
+              react: ProAccountApproved({
+                contactName: (doc.contactName as string) ?? "",
+                companyName: (doc.companyName as string) ?? "",
+                discountPct: (doc.discountPct as number) ?? 0,
+                loginUrl: `${base}/pro/connexion`,
+              }),
+            });
+          } catch (err) {
+            console.error("pro-account approved mail", err);
+          }
+        }
+        return doc;
+      },
+    ],
     afterDelete: [logDelete],
   },
   fields: [

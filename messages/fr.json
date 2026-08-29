@@ -32,7 +32,11 @@
     "tools": "Outils",
     "hydration": "Calculateur d'hydratation",
     "quiz": "Quiz « Votre eau »",
-    "proSpace": "Espace pro"
+    "proSpace": "Espace pro",
+    "sourceShort": "La Source",
+    "productsShort": "Produits",
+    "csrShort": "Engagements",
+    "proShort": "Pros"
   },
   "actions": {
     "discover": "Découvrir",
@@ -104,7 +108,14 @@
           "title": "L'embouteillage à la source",
           "text": "Captée puis embouteillée sur place, l'eau garde intacte sa pureté d'origine — rien n'est ajouté."
         }
-      }
+      },
+      "layers": [
+        "Roche de surface",
+        "Grès",
+        "Argile",
+        "Calcaire",
+        "Nappe phréatique"
+      ]
     },
     "proof": {
       "title": "L'échelle de l'excellence",
@@ -317,7 +328,8 @@
     "galleryTitle": "En images",
     "view360": "Vue 360°",
     "buyThis": "Où acheter ce format",
-    "residue": "Résidu sec à 180 °C"
+    "residue": "Résidu sec à 180 °C",
+    "viewInAR": "Voir en réalité augmentée"
   },
   "sourcePage": {
     "eyebrow": "La Source & la Qualité",

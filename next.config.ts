@@ -3,6 +3,11 @@ import { fileURLToPath } from "url";
 import type { NextConfig } from "next";
 import createNextIntlPlugin from "next-intl/plugin";
 import { withPayload } from "@payloadcms/next/withPayload";
+import { withSentryConfig } from "@sentry/nextjs";
+
+const SENTRY_ENABLED = Boolean(
+  process.env.SENTRY_DSN || process.env.NEXT_PUBLIC_SENTRY_DSN,
+);
 
 const dirname = path.dirname(fileURLToPath(import.meta.url));
 const withNextIntl = createNextIntlPlugin("./src/i18n/request.ts");
@@ -36,14 +41,14 @@ const siteCsp = [
   `form-action 'self'`,
   `script-src 'self' 'unsafe-inline'${isDev ? " 'unsafe-eval'" : ""} https://plausible.io ${HCAPTCHA}`,
   `style-src 'self' 'unsafe-inline' ${HCAPTCHA}`,
-  `img-src 'self' blob: data: ${IMG_HOSTS}`,
+  `img-src 'self' blob: data: ${IMG_HOSTS} ${HCAPTCHA}`,
   `font-src 'self' data:`,
   `media-src 'self' blob: https://assets.mixkit.co`,
   `worker-src 'self' blob:`,
   `child-src 'self' blob:`,
   `frame-src 'self' blob: ${HCAPTCHA}`,
   `manifest-src 'self'`,
-  `connect-src 'self'${isDev ? " ws: http://localhost:*" : ""} https://plausible.io https://api.hcaptcha.com ${HCAPTCHA} https://tiles.openfreemap.org`,
+  `connect-src 'self'${isDev ? " ws: http://localhost:*" : ""} https://plausible.io https://api.hcaptcha.com ${HCAPTCHA} https://tiles.openfreemap.org https://*.sentry.io`,
   `upgrade-insecure-requests`,
 ].join("; ");
 
@@ -81,7 +86,7 @@ const baseSecurityHeaders = [
   {
     key: "Permissions-Policy",
     value:
-      "camera=(), microphone=(), payment=(), usb=(), gyroscope=(self), accelerometer=(self), geolocation=(self), browsing-topics=()",
+      "camera=(self), microphone=(), payment=(), usb=(), gyroscope=(self), accelerometer=(self), magnetometer=(self), geolocation=(self), xr-spatial-tracking=(self), browsing-topics=()",
   },
 ];
 
@@ -132,4 +137,22 @@ const nextConfig: NextConfig = {
   },
 };
 
-export default withPayload(withNextIntl(nextConfig), { devBundleServerPackages: false });
+const composed = withPayload(withNextIntl(nextConfig), {
+  devBundleServerPackages: false,
+});
+
+/**
+ * Sentry n'est appliqué que si un DSN est configuré : sinon le build reste
+ * intact (pas de route `/monitoring`, pas d'upload de source maps).
+ */
+export default SENTRY_ENABLED
+  ? withSentryConfig(composed, {
+      org: process.env.SENTRY_ORG,
+      project: process.env.SENTRY_PROJECT,
+      authToken: process.env.SENTRY_AUTH_TOKEN,
+      silent: true,
+      disableLogger: true,
+      tunnelRoute: "/monitoring",
+      widenClientFileUpload: true,
+    })
+  : composed;

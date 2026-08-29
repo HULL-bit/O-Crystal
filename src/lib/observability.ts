@@ -1,58 +1,29 @@
+import * as Sentry from "@sentry/nextjs";
+
 /**
- * Couche d'observabilité indépendante du fournisseur.
- *
- * - Par défaut : journal structuré (JSON) sur stderr — capté par Render / tout hébergeur.
- * - Optionnel : si `@sentry/nextjs` est installé ET `SENTRY_DSN` défini, les erreurs
- *   y sont aussi transmises. Aucune dépendance dure : import dynamique, tolérant à
- *   l'absence du paquet.
- *
- * Brancher Sentry pour de bon (source maps, SDK navigateur) : installer
- * `@sentry/nextjs`, renseigner SENTRY_DSN / NEXT_PUBLIC_SENTRY_DSN, cf. docs/DEV.md.
+ * Couche d'observabilité.
+ * - Toujours : journal structuré (JSON) sur stderr — capté par Render.
+ * - Optionnel : Sentry, actif uniquement si `SENTRY_DSN` (serveur) est défini.
  */
+const DSN = process.env.SENTRY_DSN || process.env.NEXT_PUBLIC_SENTRY_DSN;
 
-type SentryLike = {
-  init: (opts: Record<string, unknown>) => void;
-  captureException: (e: unknown, hint?: Record<string, unknown>) => void;
-};
+let sentryReady = false;
 
-let sentry: SentryLike | null = null;
-let sentryTried = false;
-
-async function loadSentry(): Promise<SentryLike | null> {
-  if (sentryTried) return sentry;
-  sentryTried = true;
-  const dsn = process.env.SENTRY_DSN || process.env.NEXT_PUBLIC_SENTRY_DSN;
-  if (!dsn) return null;
-  try {
-    // Specifier calculé + commentaires d'exclusion : le bundler ne tente pas de
-    // résoudre le paquet au build (il est optionnel). Résolution au runtime (Node).
-    const spec = ["@sentry", "nextjs"].join("/");
-    const mod = (await import(
-      /* webpackIgnore: true */ /* turbopackIgnore: true */ spec
-    )) as SentryLike;
-    mod.init({
-      dsn,
-      environment: process.env.NODE_ENV,
-      tracesSampleRate: 0.1,
-      release: process.env.NEXT_PUBLIC_APP_VERSION,
-    });
-    sentry = mod;
-  } catch {
-    sentry = null;
-  }
-  return sentry;
+/** Initialise Sentry côté serveur (appelé depuis `instrumentation.ts#register`). */
+export function initObservability(): void {
+  if (sentryReady || !DSN) return;
+  Sentry.init({
+    dsn: DSN,
+    environment: process.env.NODE_ENV,
+    tracesSampleRate: 0.1,
+    release: process.env.NEXT_PUBLIC_APP_VERSION,
+    enabled: process.env.NODE_ENV === "production",
+  });
+  sentryReady = true;
 }
 
-/** Initialise la télémétrie (appelé depuis `instrumentation.ts#register`). */
-export async function initObservability(): Promise<void> {
-  await loadSentry();
-}
-
-/** Rapporte une erreur serveur : stderr structuré (+ Sentry si dispo). */
-export async function reportError(
-  error: unknown,
-  meta: Record<string, unknown> = {},
-): Promise<void> {
+/** Rapporte une erreur serveur : stderr structuré (+ Sentry si configuré). */
+export function reportError(error: unknown, meta: Record<string, unknown> = {}): void {
   const err = error instanceof Error ? error : new Error(String(error));
   const digest =
     typeof error === "object" && error !== null && "digest" in error
@@ -71,6 +42,5 @@ export async function reportError(
     }),
   );
 
-  const s = await loadSentry();
-  s?.captureException(err, { data: meta });
+  if (DSN) Sentry.captureException(err, { data: meta } as never);
 }
