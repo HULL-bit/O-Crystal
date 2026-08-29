@@ -46,12 +46,12 @@ export function SourceJourney() {
     target: root,
     offset: ["start start", "end end"],
   });
-  // Progression lissée par ressort : les nappes glissent au lieu de « coller »
-  // image par image au scroll (ressenti plus fluide).
+  // Progression légèrement lissée — assez rapide pour suivre la molette de
+  // près (pas d'effet « caoutchouc »), juste de quoi éviter les micro-saccades.
   const progress = useSpring(scrollYProgress, {
-    stiffness: 55,
-    damping: 22,
-    restDelta: 0.0004,
+    stiffness: 140,
+    damping: 30,
+    restDelta: 0.0005,
   });
 
   // ---- Repli mobile / reduced-motion : 3 étapes empilées, sobres ----
@@ -114,7 +114,7 @@ export function SourceJourney() {
   }
 
   return (
-    <div ref={root} className="relative h-[320vh]">
+    <div ref={root} className="relative h-[240vh]">
       <div className="sticky top-0 flex h-[100svh] items-center overflow-hidden">
         <Strata progress={progress} />
         <Caustics progress={progress} />
