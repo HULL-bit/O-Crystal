@@ -20,6 +20,8 @@ import { Articles, ArticleCategories } from "./payload/collections/Articles";
 import { PointsOfSale } from "./payload/collections/PointsOfSale";
 import { Distributors } from "./payload/collections/Distributors";
 import { Jobs, Applications } from "./payload/collections/Jobs";
+import { ProAccounts } from "./payload/collections/ProAccounts";
+import { Orders } from "./payload/collections/Orders";
 import { Messages } from "./payload/collections/Messages";
 import { NewsletterSubscribers } from "./payload/collections/NewsletterSubscribers";
 import { Banners, Testimonials, PressKit } from "./payload/collections/Marketing";
@@ -54,6 +56,8 @@ export default buildConfig({
     Distributors,
     Jobs,
     Applications,
+    ProAccounts,
+    Orders,
     Messages,
     NewsletterSubscribers,
     Banners,

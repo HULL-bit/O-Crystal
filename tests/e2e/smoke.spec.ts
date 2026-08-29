@@ -9,6 +9,8 @@ const PAGES = [
   { path: "/actualites", heading: /actualité|presse|journal/i },
   { path: "/professionnels", heading: /professionnel|chr|distribut/i },
   { path: "/contact", heading: /contact|écri/i },
+  { path: "/pro", heading: /commandez|order/i },
+  { path: "/pro/connexion", heading: /connexion|sign in/i },
   { path: "/en", heading: /purity|light|water/i },
 ];
 
@@ -47,6 +49,15 @@ test("le lien d'évitement place le focus sur le contenu", async ({ page }) => {
   const skip = page.getByRole("link", { name: /contenu|content/i });
   await expect(skip).toBeFocused();
   await expect(skip).toHaveAttribute("href", "#main");
+});
+
+test("l'espace pro protège les pages compte", async ({ page }) => {
+  const res = await page.goto("/pro/tableau-de-bord", { waitUntil: "domcontentloaded" });
+  // Redirigé vers la connexion (aucune session pro).
+  await expect(page).toHaveURL(/\/pro\/connexion/);
+  expect(res?.status()).toBeLessThan(400);
+  await expect(page.locator('input[name="password"]')).toBeVisible();
+  await expect(page.locator('input[name="email"]').first()).toBeVisible();
 });
 
 test("navigation vers une fiche produit", async ({ page }) => {

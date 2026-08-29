@@ -55,6 +55,7 @@ export const footerNav: { headingKey: string; items: NavItem[] }[] = [
     headingKey: "pro",
     items: [
       { labelKey: "pro", href: "/professionnels" },
+      { labelKey: "proSpace", href: "/pro" },
       { labelKey: "press", href: "/presse" },
       { labelKey: "contact", href: "/contact" },
     ],

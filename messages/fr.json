@@ -31,7 +31,8 @@
     "search": "Rechercher",
     "tools": "Outils",
     "hydration": "Calculateur d'hydratation",
-    "quiz": "Quiz « Votre eau »"
+    "quiz": "Quiz « Votre eau »",
+    "proSpace": "Espace pro"
   },
   "actions": {
     "discover": "Découvrir",
@@ -447,5 +448,185 @@
         "text": "Emplois et savoir-faire au Sénégal, actions communautaires autour de l'accès à l'eau."
       }
     ]
+  },
+  "pro": {
+    "nav": {
+      "spaceLabel": "Espace professionnel",
+      "discount": "Remise catalogue {pct}%",
+      "dashboard": "Tableau de bord",
+      "catalogue": "Catalogue",
+      "cart": "Panier",
+      "orders": "Commandes",
+      "account": "Mon compte",
+      "logout": "Déconnexion"
+    },
+    "landing": {
+      "metaTitle": "Espace professionnel",
+      "eyebrow": "Espace professionnel",
+      "title": "Commandez O'Crystal en ligne",
+      "intro": "Grossistes, CHR, revendeurs et collectivités : consultez vos tarifs, composez votre commande et suivez vos livraisons depuis un espace dédié.",
+      "perks": [
+        {
+          "title": "Tarifs dédiés",
+          "text": "Prix HT par pack, remise catalogue selon votre accord commercial, TVA affichée."
+        },
+        {
+          "title": "Commande en quelques clics",
+          "text": "Catalogue par format, quantités par pack, minimum de commande indiqué."
+        },
+        {
+          "title": "Suivi des commandes",
+          "text": "Historique complet, statut en temps réel, adresse de livraison mémorisée."
+        }
+      ],
+      "ctaEyebrow": "Rejoindre le réseau",
+      "ctaText": "Créez votre compte : notre équipe le valide sous 1 jour ouvré et fixe votre remise.",
+      "register": "Créer un compte pro",
+      "login": "J'ai déjà un compte",
+      "distributorHint": "Vous cherchez plutôt un point de vente ?",
+      "distributorLink": "Voir où acheter"
+    },
+    "auth": {
+      "eyebrow": "Espace professionnel",
+      "loginTitle": "Connexion",
+      "loginIntro": "Accédez à votre catalogue, vos commandes et vos livraisons.",
+      "registerTitle": "Créer un compte professionnel",
+      "registerIntro": "Renseignez votre société : la validation prend en général moins d'un jour ouvré.",
+      "email": "E-mail",
+      "password": "Mot de passe",
+      "passwordHint": "10 caractères minimum.",
+      "companyName": "Raison sociale",
+      "contactName": "Nom du contact",
+      "phone": "Téléphone",
+      "type": "Type d'activité",
+      "region": "Région / zone desservie",
+      "ninea": "NINEA / RCCM",
+      "deliveryAddress": "Adresse de livraison habituelle",
+      "consent": "J'accepte que ces informations soient utilisées pour traiter ma demande de compte.",
+      "signIn": "Se connecter",
+      "signingIn": "Connexion…",
+      "submitRequest": "Envoyer ma demande",
+      "submitting": "Envoi…",
+      "noAccount": "Pas encore de compte ? En créer un",
+      "haveAccount": "Vous avez déjà un compte ?",
+      "types": {
+        "wholesaler": "Grossiste / distributeur",
+        "chr": "Café, hôtel, restaurant",
+        "retailer": "Revendeur / boutique",
+        "institution": "Collectivité / entreprise",
+        "events": "Événementiel"
+      }
+    },
+    "pending": {
+      "eyebrow": "Espace professionnel",
+      "title": "Compte en cours de validation",
+      "intro": "Votre demande a bien été reçue.",
+      "body": "Le compte « {company} » est en cours de validation par notre équipe commerciale. Vous recevrez un e-mail dès qu'il sera actif.",
+      "logout": "Se déconnecter"
+    },
+    "dashboard": {
+      "ordersCount": "Commandes passées",
+      "formatsCount": "Formats au catalogue",
+      "discount": "Votre remise",
+      "newOrder": "Nouvelle commande",
+      "allOrders": "Toutes mes commandes",
+      "recentTitle": "Commandes récentes",
+      "noOrders": "Aucune commande pour le moment."
+    },
+    "catalogue": {
+      "eyebrow": "Catalogue",
+      "intro": "Prix HT par pack, remise catalogue appliquée. Indiquez le nombre de packs souhaités.",
+      "empty": "Le catalogue professionnel n'est pas encore disponible. Contactez-nous pour un devis.",
+      "packSize": "Conditionnement",
+      "units": "unités",
+      "minOrder": "Minimum",
+      "packs": "packs",
+      "leadTime": "Délai",
+      "days": "{n} j",
+      "perPackHT": "le pack HT",
+      "decrease": "Retirer un pack",
+      "increase": "Ajouter un pack",
+      "packsFor": "Packs pour {name}",
+      "belowMin": "Minimum {n} pack(s)",
+      "goToCart": "Voir le panier"
+    },
+    "cart": {
+      "eyebrow": "Panier",
+      "title": "Votre commande",
+      "empty": "Votre panier est vide.",
+      "browse": "Parcourir le catalogue",
+      "perPackHT": "le pack HT",
+      "units": "unités",
+      "packsFor": "Packs pour {name}",
+      "remove": "Retirer",
+      "totalHT": "Total HT",
+      "vat": "TVA (18 %)",
+      "totalTTC": "Total TTC",
+      "deliveryAddress": "Adresse de livraison",
+      "requestedDate": "Date de livraison souhaitée",
+      "note": "Note (optionnel)",
+      "disclaimer": "Cette commande est une demande : notre équipe la confirme, ajuste si besoin la disponibilité et vous recontacte pour la livraison et le règlement.",
+      "submit": "Envoyer la commande",
+      "submitting": "Envoi…",
+      "belowMin": "Minimum {n} pack(s) pour cet article",
+      "thanksTitle": "Commande envoyée",
+      "thanksBody": "Votre commande {ref} est enregistrée. Vous recevez un e-mail de confirmation ; notre équipe revient vers vous rapidement.",
+      "seeOrders": "Suivre mes commandes"
+    },
+    "orders": {
+      "eyebrow": "Commandes",
+      "title": "Historique des commandes",
+      "empty": "Vous n'avez pas encore passé de commande.",
+      "browse": "Aller au catalogue",
+      "ref": "Référence",
+      "date": "Date",
+      "items": "Articles",
+      "total": "Total TTC",
+      "status": "Statut",
+      "packs": "packs"
+    },
+    "orderDetail": {
+      "back": "Retour aux commandes",
+      "product": "Produit",
+      "qty": "Packs",
+      "unit": "PU HT",
+      "lineTotal": "Total HT",
+      "totalHT": "Total HT",
+      "vat": "TVA (18 %)",
+      "totalTTC": "Total TTC",
+      "delivery": "Livraison",
+      "requestedDate": "Date souhaitée",
+      "note": "Note"
+    },
+    "orderStatus": {
+      "submitted": "Reçue",
+      "confirmed": "Confirmée",
+      "preparing": "En préparation",
+      "shipped": "Expédiée",
+      "delivered": "Livrée",
+      "cancelled": "Annulée"
+    },
+    "account": {
+      "eyebrow": "Mon compte",
+      "title": "Informations",
+      "companyName": "Raison sociale",
+      "type": "Type d'activité",
+      "contactName": "Contact",
+      "phone": "Téléphone",
+      "email": "E-mail",
+      "region": "Région",
+      "ninea": "NINEA / RCCM",
+      "discount": "Remise catalogue",
+      "deliveryAddress": "Adresse de livraison",
+      "editHint": "Pour modifier ces informations,",
+      "contactLink": "contactez-nous",
+      "types": {
+        "wholesaler": "Grossiste / distributeur",
+        "chr": "Café, hôtel, restaurant",
+        "retailer": "Revendeur / boutique",
+        "institution": "Collectivité / entreprise",
+        "events": "Événementiel"
+      }
+    }
   }
 }

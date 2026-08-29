@@ -109,6 +109,12 @@ export function Header() {
 
         <div className="flex items-center gap-2">
           <Link
+            href="/pro"
+            className="hidden rounded-full border border-[color-mix(in_oklab,var(--color-argent)_35%,transparent)] px-3.5 py-1.5 text-[0.8rem] text-[var(--color-platine)] transition-colors hover:border-[color-mix(in_oklab,var(--color-argent-bright)_60%,transparent)] hover:text-white lg:inline-flex"
+          >
+            {t("proSpace")}
+          </Link>
+          <Link
             href="/recherche"
             aria-label={t("search")}
             className="hidden h-9 w-9 items-center justify-center rounded-full border border-[color-mix(in_oklab,var(--color-argent)_35%,transparent)] text-[var(--color-platine-bright)] transition-colors hover:border-[color-mix(in_oklab,var(--color-argent-bright)_60%,transparent)] hover:text-white sm:flex"
@@ -189,8 +195,15 @@ export function Header() {
                   </Link>
                 </motion.div>
               ))}
-              <div className="mt-8 flex items-center gap-6">
+              <div className="mt-8 flex flex-wrap items-center gap-x-6 gap-y-3">
                 <LocaleSwitcher />
+                <Link
+                  href="/pro"
+                  onClick={() => setMobileOpen(false)}
+                  className="text-sm text-[var(--color-cristal-light)]"
+                >
+                  {t("proSpace")}
+                </Link>
                 <Link
                   href="/contact"
                   onClick={() => setMobileOpen(false)}

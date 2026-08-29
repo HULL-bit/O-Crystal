@@ -31,7 +31,8 @@
     "search": "Search",
     "tools": "Tools",
     "hydration": "Hydration calculator",
-    "quiz": "\"Your water\" quiz"
+    "quiz": "\"Your water\" quiz",
+    "proSpace": "Pro area"
   },
   "actions": {
     "discover": "Discover",
@@ -447,5 +448,185 @@
         "text": "Jobs and know-how in Senegal, community action around water access."
       }
     ]
+  },
+  "pro": {
+    "nav": {
+      "spaceLabel": "Professional area",
+      "discount": "Catalogue discount {pct}%",
+      "dashboard": "Dashboard",
+      "catalogue": "Catalogue",
+      "cart": "Cart",
+      "orders": "Orders",
+      "account": "My account",
+      "logout": "Sign out"
+    },
+    "landing": {
+      "metaTitle": "Professional area",
+      "eyebrow": "Professional area",
+      "title": "Order O'Crystal online",
+      "intro": "Wholesalers, hospitality, resellers and institutions: view your pricing, build your order and track deliveries from a dedicated area.",
+      "perks": [
+        {
+          "title": "Dedicated pricing",
+          "text": "Price per pack ex-VAT, catalogue discount per your agreement, VAT shown."
+        },
+        {
+          "title": "Order in a few clicks",
+          "text": "Catalogue by format, quantities by pack, minimum order shown."
+        },
+        {
+          "title": "Order tracking",
+          "text": "Full history, real-time status, saved delivery address."
+        }
+      ],
+      "ctaEyebrow": "Join the network",
+      "ctaText": "Create your account: our team approves it within 1 business day and sets your discount.",
+      "register": "Create a pro account",
+      "login": "I already have an account",
+      "distributorHint": "Looking for a point of sale instead?",
+      "distributorLink": "See where to buy"
+    },
+    "auth": {
+      "eyebrow": "Professional area",
+      "loginTitle": "Sign in",
+      "loginIntro": "Access your catalogue, orders and deliveries.",
+      "registerTitle": "Create a professional account",
+      "registerIntro": "Tell us about your company: approval usually takes less than one business day.",
+      "email": "Email",
+      "password": "Password",
+      "passwordHint": "At least 10 characters.",
+      "companyName": "Company name",
+      "contactName": "Contact name",
+      "phone": "Phone",
+      "type": "Business type",
+      "region": "Region / area served",
+      "ninea": "Business ID (NINEA / RCCM)",
+      "deliveryAddress": "Usual delivery address",
+      "consent": "I agree that this information may be used to process my account request.",
+      "signIn": "Sign in",
+      "signingIn": "Signing in…",
+      "submitRequest": "Send my request",
+      "submitting": "Sending…",
+      "noAccount": "No account yet? Create one",
+      "haveAccount": "Already have an account?",
+      "types": {
+        "wholesaler": "Wholesaler / distributor",
+        "chr": "Café, hotel, restaurant",
+        "retailer": "Reseller / shop",
+        "institution": "Institution / company",
+        "events": "Events"
+      }
+    },
+    "pending": {
+      "eyebrow": "Professional area",
+      "title": "Account under review",
+      "intro": "Your request has been received.",
+      "body": "The account “{company}” is being reviewed by our sales team. You'll get an email as soon as it's active.",
+      "logout": "Sign out"
+    },
+    "dashboard": {
+      "ordersCount": "Orders placed",
+      "formatsCount": "Formats in catalogue",
+      "discount": "Your discount",
+      "newOrder": "New order",
+      "allOrders": "All my orders",
+      "recentTitle": "Recent orders",
+      "noOrders": "No orders yet."
+    },
+    "catalogue": {
+      "eyebrow": "Catalogue",
+      "intro": "Price per pack ex-VAT, catalogue discount applied. Enter the number of packs.",
+      "empty": "The professional catalogue isn't available yet. Contact us for a quote.",
+      "packSize": "Pack size",
+      "units": "units",
+      "minOrder": "Minimum",
+      "packs": "packs",
+      "leadTime": "Lead time",
+      "days": "{n} d",
+      "perPackHT": "per pack ex-VAT",
+      "decrease": "Remove one pack",
+      "increase": "Add one pack",
+      "packsFor": "Packs for {name}",
+      "belowMin": "Minimum {n} pack(s)",
+      "goToCart": "View cart"
+    },
+    "cart": {
+      "eyebrow": "Cart",
+      "title": "Your order",
+      "empty": "Your cart is empty.",
+      "browse": "Browse the catalogue",
+      "perPackHT": "per pack ex-VAT",
+      "units": "units",
+      "packsFor": "Packs for {name}",
+      "remove": "Remove",
+      "totalHT": "Total ex-VAT",
+      "vat": "VAT (18%)",
+      "totalTTC": "Total incl. VAT",
+      "deliveryAddress": "Delivery address",
+      "requestedDate": "Requested delivery date",
+      "note": "Note (optional)",
+      "disclaimer": "This order is a request: our team confirms it, adjusts availability if needed and gets back to you about delivery and payment.",
+      "submit": "Submit order",
+      "submitting": "Sending…",
+      "belowMin": "Minimum {n} pack(s) for this item",
+      "thanksTitle": "Order sent",
+      "thanksBody": "Your order {ref} has been recorded. You'll get a confirmation email; our team will be in touch shortly.",
+      "seeOrders": "Track my orders"
+    },
+    "orders": {
+      "eyebrow": "Orders",
+      "title": "Order history",
+      "empty": "You haven't placed any orders yet.",
+      "browse": "Go to catalogue",
+      "ref": "Reference",
+      "date": "Date",
+      "items": "Items",
+      "total": "Total incl. VAT",
+      "status": "Status",
+      "packs": "packs"
+    },
+    "orderDetail": {
+      "back": "Back to orders",
+      "product": "Product",
+      "qty": "Packs",
+      "unit": "Unit ex-VAT",
+      "lineTotal": "Line total ex-VAT",
+      "totalHT": "Total ex-VAT",
+      "vat": "VAT (18%)",
+      "totalTTC": "Total incl. VAT",
+      "delivery": "Delivery",
+      "requestedDate": "Requested date",
+      "note": "Note"
+    },
+    "orderStatus": {
+      "submitted": "Received",
+      "confirmed": "Confirmed",
+      "preparing": "Preparing",
+      "shipped": "Shipped",
+      "delivered": "Delivered",
+      "cancelled": "Cancelled"
+    },
+    "account": {
+      "eyebrow": "My account",
+      "title": "Details",
+      "companyName": "Company name",
+      "type": "Business type",
+      "contactName": "Contact",
+      "phone": "Phone",
+      "email": "Email",
+      "region": "Region",
+      "ninea": "Business ID",
+      "discount": "Catalogue discount",
+      "deliveryAddress": "Delivery address",
+      "editHint": "To change these details,",
+      "contactLink": "contact us",
+      "types": {
+        "wholesaler": "Wholesaler / distributor",
+        "chr": "Café, hotel, restaurant",
+        "retailer": "Reseller / shop",
+        "institution": "Institution / company",
+        "events": "Events"
+      }
+    }
   }
 }

@@ -7,6 +7,8 @@ import { hasRole } from "../access";
  * statut brouillon si un contributeur tente de publier.
  */
 export const publishGate: CollectionBeforeValidateHook = ({ data, req }) => {
+  // Opérations serveur de confiance (seed, imports) : `req.context.skipPublishGate`.
+  if (req?.context?.skipPublishGate) return data;
   if (
     data?._status === "published" &&
     !hasRole(req.user, "admin", "editor")

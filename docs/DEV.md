@@ -42,6 +42,21 @@ CSP stricte **sans nonce** (préserve le SSG + le cache CDN) définie dans
 - Groupes : Contenus · Actualités · Réseau · Carrières · Réception · Marketing · Administration
 - Le **journal d'activité** trace qui a créé/modifié/supprimé quoi et quand.
 
+## Espace professionnel (`/pro`)
+
+Portail B2B séparé du back-office : collection d'auth `pro-accounts`
+(jamais d'accès à `/admin`), commandes en ligne (`orders`), tarif pro par
+format sur `products` (`proPriceHT` en FCFA HT / pack, remise au niveau du
+compte). Le flux commande = **demande** : statut `submitted` → l'équipe
+confirme dans l'admin (groupe « Espace pro »).
+
+- Session : cookie httpOnly `oc_pro_token` (JWT Payload, 7 j), validé via
+  `payload.auth()`. Helpers dans `src/lib/pro-auth.ts`.
+- **Compte démo** (créé par `pnpm seed`) : `pro.demo@ocrystal.sn` /
+  `OCrystalPro!2026` — validé, remise 8 %.
+- Prix pro de démo injectés sur les 6 formats par le seed.
+- Tarification : `src/lib/pro-pricing.ts` (FCFA, TVA 18 %). Tests unitaires.
+
 ### Bypass 2FA (dev/CI uniquement)
 
 `DISABLE_TOTP=true pnpm dev` — **jamais en production** (le code l'ignore si `NODE_ENV=production`).

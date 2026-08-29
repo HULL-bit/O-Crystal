@@ -34,3 +34,5 @@ export const isAdminOrSelf: Access = ({ req: { user } }) => {
 export const isAdminField: FieldAccess = ({ req: { user } }) => hasRole(user, "admin");
 export const isAdminOrEditorField: FieldAccess = ({ req: { user } }) =>
   hasRole(user, "admin", "editor");
+export const isStaffField: FieldAccess = ({ req: { user } }) =>
+  hasRole(user, "admin", "editor", "contributor");

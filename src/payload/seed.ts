@@ -8,10 +8,13 @@ import { products as productData } from "../content/products";
  */
 export async function seed(payload: Payload): Promise<{ created: string[] }> {
   const created: string[] = [];
-  const ctx = { skipRevalidate: true, skipActivityLog: true };
+  const ctx = { skipRevalidate: true, skipActivityLog: true, skipPublishGate: true };
 
   const existing = await payload.count({ collection: "products" });
-  if (existing.totalDocs > 0) return { created: ["(déjà initialisé — rien à faire)"] };
+  if (existing.totalDocs > 0) {
+    const pro = await seedProExtras(payload, ctx);
+    return { created: ["(contenu déjà initialisé)", ...pro] };
+  }
 
   // — Paramètres du site —
   await payload.updateGlobal({
@@ -135,5 +138,78 @@ export async function seed(payload: Payload): Promise<{ created: string[] }> {
     created.push(`pos:${s.name}`);
   }
 
+  created.push(...(await seedProExtras(payload, ctx)));
+
   return { created };
+}
+
+/** Tarif pro + compte pro de démonstration. Idempotent, exécuté à chaque seed. */
+async function seedProExtras(
+  payload: Payload,
+  ctx: { skipRevalidate: boolean; skipActivityLog: boolean },
+): Promise<string[]> {
+  const out: string[] = [];
+
+  // Prix pro par format (FCFA HT / pack). Renseigné une seule fois.
+  const proPrices: Record<string, { proPriceHT: number; proPackSize: number; proMinPacks: number }> = {
+    "33cl": { proPriceHT: 2600, proPackSize: 24, proMinPacks: 10 },
+    "50cl": { proPriceHT: 3200, proPackSize: 24, proMinPacks: 10 },
+    "1-5l": { proPriceHT: 4200, proPackSize: 6, proMinPacks: 12 },
+    "5l": { proPriceHT: 2800, proPackSize: 2, proMinPacks: 20 },
+    "10l": { proPriceHT: 2400, proPackSize: 1, proMinPacks: 20 },
+    "19l": { proPriceHT: 3500, proPackSize: 1, proMinPacks: 10 },
+  };
+  for (const [slug, pricing] of Object.entries(proPrices)) {
+    const found = await payload.find({
+      collection: "products",
+      where: { slug: { equals: slug } },
+      limit: 1,
+      draft: true,
+    });
+    const doc = found.docs[0] as
+      | (Record<string, unknown> & { id: string | number; _status?: string })
+      | undefined;
+    if (doc && (!doc.proPriceHT || doc._status !== "published")) {
+      await payload.update({
+        collection: "products",
+        id: doc.id,
+        context: ctx,
+        data: {
+          ...pricing,
+          proVatRate: 18,
+          proLeadTimeDays: 3,
+          _status: "published",
+        } as never,
+      });
+      out.push(`product:${slug}:pricing`);
+    }
+  }
+
+  // Compte pro de démonstration (dev).
+  const demoEmail = "pro.demo@ocrystal.sn";
+  const hasDemo = await payload.count({
+    collection: "pro-accounts",
+    where: { email: { equals: demoEmail } },
+  });
+  if (hasDemo.totalDocs === 0) {
+    await payload.create({
+      collection: "pro-accounts",
+      context: ctx,
+      data: {
+        email: demoEmail,
+        password: "OCrystalPro!2026",
+        companyName: "Restaurant Le Baobab (démo)",
+        contactName: "Awa Ndiaye",
+        phone: "+221 77 123 45 67",
+        type: "chr",
+        region: "Dakar",
+        deliveryAddress: "Route de la Corniche Ouest, Dakar",
+        status: "approved",
+        discountPct: 8,
+      } as never,
+    });
+    out.push("pro-account:demo");
+  }
+
+  return out;
 }

@@ -48,6 +48,31 @@ export const Products: CollectionConfig = contentCollection({
     },
     {
       type: "collapsible",
+      label: "Tarif professionnel (espace pro)",
+      admin: {
+        description:
+          "Renseigné → le format apparaît au catalogue pro. Prix HT unitaire du pack, en FCFA.",
+      },
+      fields: [
+        {
+          type: "row",
+          fields: [
+            { name: "proPriceHT", type: "number", label: "Prix pack HT (FCFA)", min: 0, admin: { width: "34%" } },
+            { name: "proPackSize", type: "number", label: "Unités / pack", min: 1, defaultValue: 12, admin: { width: "33%" } },
+            { name: "proVatRate", type: "number", label: "TVA %", defaultValue: 18, admin: { width: "33%" } },
+          ],
+        },
+        {
+          type: "row",
+          fields: [
+            { name: "proMinPacks", type: "number", label: "Minimum de commande (packs)", min: 1, defaultValue: 1, admin: { width: "50%" } },
+            { name: "proLeadTimeDays", type: "number", label: "Délai indicatif (jours)", min: 0, admin: { width: "50%" } },
+          ],
+        },
+      ],
+    },
+    {
+      type: "collapsible",
       label: "Composition minérale (mg/L)",
       fields: [
         {
