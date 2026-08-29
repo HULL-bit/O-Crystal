@@ -17,22 +17,22 @@ const STAGES = ["source", "filtration", "bottling"] as const;
 
 /**
  * Les strates géologiques que l'eau traverse : roche de surface → grès →
- * argile → calcaire → nappe. `swatch` = teinte pleine (diagramme mobile),
- * `tint` = dégradé + `edge` = arête irrégulière (bandes en parallaxe desktop).
+ * argile → calcaire → nappe. `top`/`bottom` d'un dégradé + `wave` = arête
+ * supérieure ONDULÉE (courbe douce, jamais en zig-zag).
  */
 const LAYERS = [
-  { swatch: "#4a5a72", tint: "linear-gradient(180deg,#3a4a63,#2b3a54)", edge: "polygon(0 22%,18% 8%,42% 20%,68% 6%,88% 18%,100% 9%,100% 100%,0 100%)" },
-  { swatch: "#6a6150", tint: "linear-gradient(180deg,#4c4738,#3a3730)", edge: "polygon(0 16%,26% 4%,54% 16%,78% 3%,100% 14%,100% 100%,0 100%)" },
-  { swatch: "#4d5a76", tint: "linear-gradient(180deg,#43506a,#333f57)", edge: "polygon(0 12%,30% 2%,60% 12%,85% 1%,100% 10%,100% 100%,0 100%)" },
-  { swatch: "#6a7488", tint: "linear-gradient(180deg,#5a6478,#454f63)", edge: "polygon(0 10%,34% 0,66% 10%,100% 2%,100% 100%,0 100%)" },
-  { swatch: "#1b3a97", tint: "linear-gradient(180deg,#123a97,#0a1e7a)", edge: "polygon(0 8%,45% 0,85% 8%,100% 3%,100% 100%,0 100%)" },
+  { top: "#3a4a63", bottom: "#2b3a54", swatch: "#4a5a72", wave: "M0,70 C 360,20 600,110 960,60 S 1320,20 1440,70 L1440,240 L0,240 Z" },
+  { top: "#4c4738", bottom: "#3a3730", swatch: "#6a6150", wave: "M0,60 C 300,110 560,15 880,70 S 1200,120 1440,55 L1440,240 L0,240 Z" },
+  { top: "#43506a", bottom: "#333f57", swatch: "#4d5a76", wave: "M0,75 C 380,25 620,105 980,55 S 1280,15 1440,65 L1440,240 L0,240 Z" },
+  { top: "#5a6478", bottom: "#454f63", swatch: "#6a7488", wave: "M0,55 C 320,105 600,20 920,65 S 1240,110 1440,60 L1440,240 L0,240 Z" },
+  { top: "#123a97", bottom: "#0a1e7a", swatch: "#1b3a97", wave: "M0,70 C 400,25 640,100 1000,55 S 1320,20 1440,68 L1440,240 L0,240 Z" },
 ];
 
 /**
  * SÉQUENCE SIGNATURE (scrollytelling) — « De la roche à la bouteille ».
  * Section épinglée : on descend à travers les strates minérales de Niague,
  * la lumière filtre, les particules dérivent, la goutte poursuit sa route.
- * Piloté au scroll via motion `useScroll` (robuste avec Lenis).
+ * Piloté au scroll via motion `useScroll` (défilement natif).
  */
 export function SourceJourney() {
   const root = useRef<HTMLDivElement>(null);
@@ -47,7 +47,7 @@ export function SourceJourney() {
     offset: ["start start", "end end"],
   });
   // Progression lissée par ressort : les nappes glissent au lieu de « coller »
-  // image par image au scroll (ressenti beaucoup plus fluide, surtout Lenis).
+  // image par image au scroll (ressenti plus fluide).
   const progress = useSpring(scrollYProgress, {
     stiffness: 55,
     damping: 22,
@@ -68,10 +68,23 @@ export function SourceJourney() {
             <div
               key={i}
               className="relative flex items-center px-5 py-4"
-              style={{ background: l.tint }}
+              style={{ background: `linear-gradient(180deg, ${l.top}, ${l.bottom})` }}
             >
-              {/* filet d'infiltration */}
-              <span className="absolute inset-x-0 top-0 h-px bg-[linear-gradient(90deg,transparent,rgba(190,236,255,0.75),transparent)]" />
+              {/* filet d'infiltration — courbe douce */}
+              <svg
+                viewBox="0 0 400 12"
+                preserveAspectRatio="none"
+                className="absolute inset-x-0 top-0 h-3 w-full"
+                aria-hidden
+              >
+                <path
+                  d="M0,7 C 90,1 150,11 230,6 S 350,1 400,6"
+                  fill="none"
+                  stroke="rgba(190,236,255,0.7)"
+                  strokeWidth="1.4"
+                  vectorEffect="non-scaling-stroke"
+                />
+              </svg>
               <span className="h-2.5 w-2.5 shrink-0 rounded-full" style={{ background: l.swatch, boxShadow: "0 0 0 3px rgb(255 255 255 / 0.12)" }} />
               <span className="ml-3 text-[0.72rem] tracking-[0.24em] text-white/75 uppercase">
                 {layers[i] ?? ""}
@@ -194,12 +207,12 @@ function Caption({
 }
 
 /**
- * Les strates géologiques que l'eau traverse : roche de surface → grès →
- * argile → calcaire → nappe. Bandes sédimentaires teintées, chacune en
- * parallaxe (elles remontent quand on descend), séparées par un fin filet
- * clair = l'eau qui s'infiltre. 100 % CSS.
+ * Les strates géologiques que l'eau traverse. Chaque bande a une arête
+ * supérieure ONDULÉE (courbe de Bézier douce, jamais en zig-zag), en
+ * parallaxe (elle remonte quand on descend), avec un filet lumineux qui
+ * épouse la vague = l'eau qui s'infiltre. 100 % SVG/CSS.
  */
-const LAYER_TOPS = ["6vh", "30vh", "54vh", "78vh", "102vh"];
+const LAYER_TOPS = ["-16vh", "12vh", "40vh", "68vh", "96vh"];
 
 function Strata({ progress }: { progress: MotionValue<number> }) {
   return (
@@ -223,25 +236,38 @@ function StratumBand({
   const t = useTranslations("home.journey");
   const label = (t.raw("layers") as string[] | undefined)?.[index];
   // Bandes hautes = plus rapides (effet de profondeur en descendant).
-  const speed = 90 - index * 14;
+  const speed = 116 - index * 9;
   const y = useTransform(progress, [0, 1], ["0vh", `-${speed}vh`]);
+  // Trait de la vague seule (sans le remplissage) pour le filet d'infiltration.
+  const stroke = layer.wave.replace(/\s*L1440,240 L0,240 Z$/, "");
   return (
     <motion.div
       aria-hidden
       style={{ y, top: LAYER_TOPS[index] }}
-      className="absolute inset-x-0 h-[130vh]"
+      className="absolute inset-x-0 h-[135vh]"
     >
-      <div
-        className="absolute inset-0"
-        style={{ background: layer.tint, clipPath: layer.edge, opacity: 0.9 }}
-      />
-      {/* Filet d'infiltration lumineux à l'interface. */}
-      <div
-        className="absolute inset-x-0 top-0 h-px bg-[linear-gradient(90deg,transparent,rgba(190,236,255,0.7),transparent)]"
-        style={{ clipPath: layer.edge }}
-      />
+      <svg
+        viewBox="0 0 1440 240"
+        preserveAspectRatio="none"
+        className="absolute inset-0 h-full w-full"
+      >
+        <defs>
+          <linearGradient id={`strata-${index}`} x1="0" y1="0" x2="0" y2="1">
+            <stop offset="0" stopColor={layer.top} />
+            <stop offset="1" stopColor={layer.bottom} />
+          </linearGradient>
+        </defs>
+        <path d={layer.wave} fill={`url(#strata-${index})`} opacity="0.94" />
+        <path
+          d={stroke}
+          fill="none"
+          stroke="rgba(190,236,255,0.6)"
+          strokeWidth="1.4"
+          vectorEffect="non-scaling-stroke"
+        />
+      </svg>
       {label ? (
-        <span className="absolute right-6 top-[7vh] hidden items-center gap-2 text-[0.65rem] tracking-[0.3em] text-white/40 uppercase lg:flex">
+        <span className="absolute right-6 top-[8vh] hidden items-center gap-2 text-[0.65rem] tracking-[0.3em] text-white/45 uppercase lg:flex">
           {label}
           <span className="h-px w-8 bg-white/25" />
         </span>

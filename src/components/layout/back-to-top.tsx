@@ -6,9 +6,7 @@ import { useTranslations } from "next-intl";
 import { spring } from "@/lib/motion";
 
 /**
- * Bouton "haut de page". `window.scrollTo` natif : Lenis l'intercepte et le
- * lisse quand il est actif (desktop), scroll natif sinon — pas de dépendance
- * directe à Lenis, qui reste hors du bundle critique mobile.
+ * Bouton "haut de page" — `window.scrollTo({ behavior: "smooth" })` natif.
  */
 export function BackToTop() {
   const [visible, setVisible] = useState(false);

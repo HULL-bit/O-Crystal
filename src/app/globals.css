@@ -250,7 +250,8 @@
   html {
     -webkit-text-size-adjust: 100%;
     text-rendering: optimizeLegibility;
-    /* Le smooth scroll est piloté par Lenis (JS) — surtout pas en CSS. */
+    /* Défilement natif (pas de smooth-scroll JS). Douceur réservée aux ancres. */
+    scroll-behavior: auto;
     overflow-x: clip;
   }
 
