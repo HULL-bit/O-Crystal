@@ -2,8 +2,9 @@ import { cn } from "@/lib/utils";
 
 /**
  * Fond « aurora » / mesh gradient — nappes de lumière bleue.
- * Statique et peu coûteux (un seul dégradé composé, pas de transform animée
- * sur des éléments floutés). Un très léger pouls d'opacité donne la vie.
+ * Entièrement STATIQUE : un seul dégradé composé, aucune animation
+ * (une opacité animée en boucle = travail compositor permanent, sur toutes
+ * les pages — sensible sur mobile / Chromebook).
  */
 export function Aurora({ className }: { className?: string }) {
   return (
@@ -15,7 +16,7 @@ export function Aurora({ className }: { className?: string }) {
       )}
     >
       <div
-        className="absolute inset-0 opacity-90 [animation:aurora-pulse_16s_ease-in-out_infinite] motion-reduce:animate-none"
+        className="absolute inset-0 opacity-90"
         style={{
           background:
             "radial-gradient(60% 55% at 12% 8%, rgba(46,159,223,0.28), transparent 60%)," +

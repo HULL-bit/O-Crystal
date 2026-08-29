@@ -31,15 +31,36 @@ export function Cursor() {
     if (!enabled) return;
     document.body.dataset.cursor = "on";
 
+    // Position : mise à jour groupée en rAF (1 écriture / frame max), pas de
+    // travail DOM dans le handler de `pointermove`.
+    let px = -100;
+    let py = -100;
+    let frame = 0;
+    const flush = () => {
+      frame = 0;
+      x.set(px);
+      y.set(py);
+    };
     const onMove = (e: PointerEvent) => {
-      x.set(e.clientX);
-      y.set(e.clientY);
-      const el = e.target as HTMLElement | null;
-      const interactive = el?.closest(
-        "a,button,[role='button'],input,textarea,select,label,summary",
-      );
-      scale.set(interactive ? 2.8 : 1);
-      opacity.set(interactive ? 0.5 : 1);
+      px = e.clientX;
+      py = e.clientY;
+      if (!frame) frame = requestAnimationFrame(flush);
+    };
+
+    // Survol des éléments interactifs : délégation via `pointerover`/`pointerout`
+    // (se déclenche au changement de cible, pas à chaque pixel parcouru).
+    const SEL = "a,button,[role='button'],input,textarea,select,label,summary";
+    const onOver = (e: PointerEvent) => {
+      if ((e.target as HTMLElement | null)?.closest(SEL)) {
+        scale.set(2.8);
+        opacity.set(0.5);
+      }
+    };
+    const onOut = (e: PointerEvent) => {
+      if ((e.target as HTMLElement | null)?.closest(SEL)) {
+        scale.set(1);
+        opacity.set(1);
+      }
     };
     const onDown = (e: PointerEvent) => {
       const id = performance.now();
@@ -50,11 +71,16 @@ export function Cursor() {
     const onEnterWindow = () => opacity.set(1);
 
     window.addEventListener("pointermove", onMove, { passive: true });
+    window.addEventListener("pointerover", onOver, { passive: true });
+    window.addEventListener("pointerout", onOut, { passive: true });
     window.addEventListener("pointerdown", onDown, { passive: true });
     document.documentElement.addEventListener("pointerleave", onLeaveWindow);
     document.documentElement.addEventListener("pointerenter", onEnterWindow);
     return () => {
+      if (frame) cancelAnimationFrame(frame);
       window.removeEventListener("pointermove", onMove);
+      window.removeEventListener("pointerover", onOver);
+      window.removeEventListener("pointerout", onOut);
       window.removeEventListener("pointerdown", onDown);
       document.documentElement.removeEventListener("pointerleave", onLeaveWindow);
       document.documentElement.removeEventListener("pointerenter", onEnterWindow);

@@ -37,7 +37,9 @@ export default function LenisRuntime({ children }: { children: React.ReactNode }
       ref={lenisRef}
       options={{
         autoRaf: false,
-        lerp: 0.12,
+        // `lerp` plus élevé = suit la molette de plus près (moins « flottant »,
+        // ressenti plus réactif — retour récurrent de l'utilisateur).
+        lerp: 0.17,
         wheelMultiplier: 1,
         syncTouch: false,
       }}

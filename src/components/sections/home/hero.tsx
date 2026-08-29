@@ -106,13 +106,18 @@ export function Hero({ content }: { content?: HeroContent }) {
         </p>
 
         <div
-          className="oc-enter mt-7 flex flex-wrap items-center gap-3 sm:mt-10 sm:gap-4"
+          className="oc-enter mt-7 flex flex-col gap-3 sm:mt-10 sm:flex-row sm:flex-wrap sm:items-center sm:gap-4"
           style={{ "--enter-delay": "0.9s" } as CSSProperties}
         >
-          <Button href="/produits" size="lg" magnetic>
+          <Button href="/produits" size="lg" className="w-full sm:w-auto" magnetic>
             {tA("seeProducts")}
           </Button>
-          <Button href="/source-qualite" variant="secondary" size="lg">
+          <Button
+            href="/source-qualite"
+            variant="secondary"
+            size="lg"
+            className="w-full sm:w-auto"
+          >
             {tA("discover")}
           </Button>
         </div>

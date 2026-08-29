@@ -251,9 +251,7 @@
     -webkit-text-size-adjust: 100%;
     text-rendering: optimizeLegibility;
     /* Le smooth scroll est piloté par Lenis (JS) — surtout pas en CSS. */
-    /* Réserve la gouttière de scrollbar : pas de décalage (CLS) quand le
-       préchargeur verrouille puis libère le scroll. */
-    scrollbar-gutter: stable;
+    overflow-x: clip;
   }
 
   body {
@@ -265,7 +263,7 @@
     -webkit-font-smoothing: antialiased;
     -moz-osx-font-smoothing: grayscale;
     font-synthesis-weight: none;
-    overflow-x: hidden;
+    overflow-x: clip;
   }
 
   /* Nappe de lumière fixe derrière tout le contenu (couche composite,
@@ -341,10 +339,11 @@
 @utility text-shimmer {
   color: var(--color-platine-bright);
   background-image: var(--gradient-argent);
-  background-size: 200% auto;
+  background-size: 100% auto;
   background-clip: text;
   -webkit-background-clip: text;
-  animation: var(--animate-shimmer);
+  /* Dégradé métallique STATIQUE : animer `background-position` en boucle repeint
+     le texte à chaque frame (jank continu, sensible sur Chromebook). */
 }
 @supports (background-clip: text) or (-webkit-background-clip: text) {
   .text-shimmer {
@@ -364,10 +363,9 @@
     #9aa6b6 74%,
     #e4ebf2 100%
   );
-  background-size: 220% auto;
+  background-size: 100% auto;
   background-clip: text;
   -webkit-background-clip: text;
-  animation: shimmer 9s linear infinite;
 }
 @supports (background-clip: text) or (-webkit-background-clip: text) {
   .text-metal {
@@ -375,16 +373,18 @@
   }
 }
 
-/* Verre dépoli premium — s'adapte au ton de section (clair / sombre). */
+/* Verre dépoli premium — s'adapte au ton de section (clair / sombre).
+   Fond assez opaque + blur léger : plusieurs cartes `.glass` empilées, chacune
+   ré-échantillonne le fond au scroll — le blur est le poste coûteux. */
 @utility glass {
-  background: color-mix(in oklab, var(--color-royal-soft) 72%, transparent);
-  backdrop-filter: blur(10px);
-  -webkit-backdrop-filter: blur(10px);
+  background: color-mix(in oklab, var(--color-royal-soft) 88%, transparent);
+  backdrop-filter: blur(5px);
+  -webkit-backdrop-filter: blur(5px);
   border: 1px solid color-mix(in oklab, var(--color-platine) 20%, transparent);
 }
 .tone-light .glass,
 .tone-silver .glass {
-  background: color-mix(in oklab, var(--color-blanc) 78%, transparent);
+  background: color-mix(in oklab, var(--color-blanc) 90%, transparent);
   border-color: color-mix(in oklab, var(--color-argent) 45%, transparent);
   box-shadow:
     0 1px 2px -1px rgb(12 19 48 / 0.08),
@@ -465,12 +465,14 @@
     background:
       linear-gradient(
         180deg,
-        color-mix(in oklab, var(--color-argent-bright) 18%, transparent),
+        color-mix(in oklab, var(--color-argent-bright) 16%, transparent),
         transparent 44%
       ),
-      color-mix(in oklab, var(--color-royal-abysse) 74%, transparent);
-    -webkit-backdrop-filter: blur(16px) saturate(1.5);
-    backdrop-filter: blur(16px) saturate(1.5);
+      color-mix(in oklab, var(--color-royal-abysse) 88%, transparent);
+    /* Blur réduit : `backdrop-filter` sur une barre fixe large repeint pendant
+       le scroll — le fond quasi opaque compense le blur plus léger. */
+    -webkit-backdrop-filter: blur(7px);
+    backdrop-filter: blur(7px);
     box-shadow:
       inset 0 1px 0 color-mix(in oklab, var(--color-argent-bright) 55%, transparent),
       inset 0 -1px 0 rgb(5 15 61 / 0.35),
@@ -508,10 +510,10 @@
     background:
       linear-gradient(
         180deg,
-        color-mix(in oklab, var(--color-argent-bright) 22%, transparent),
+        color-mix(in oklab, var(--color-argent-bright) 20%, transparent),
         transparent 40%
       ),
-      color-mix(in oklab, var(--color-royal-abysse) 88%, transparent);
+      color-mix(in oklab, var(--color-royal-abysse) 95%, transparent);
     border-color: color-mix(in oklab, var(--color-argent) 55%, transparent);
     box-shadow:
       inset 0 1px 0 color-mix(in oklab, var(--color-argent-bright) 65%, transparent),
@@ -591,6 +593,44 @@
 
   .grain-overlay {
     display: none;
+  }
+}
+
+/* ------------------------------------------------------------------ *
+ *  MOBILE — budget de fluidité strict (audience cible, 4G Sénégal)
+ *  On coupe le décor « qui tourne en boucle » et les effets compositor
+ *  coûteux : sur petit écran ils n'apportent presque rien et coûtent cher.
+ * ------------------------------------------------------------------ */
+@media (max-width: 767px) {
+  /* Décor animé en boucle → figé (bulles, flottaison du cristal, marquee…). */
+  .oc-bubbles {
+    display: none;
+  }
+  .oc-decor,
+  .oc-marquee {
+    animation: none !important;
+  }
+
+  /* `backdrop-filter` sur la navbar fixe = repaint à chaque frame de scroll.
+     Sur mobile : fond opaque, zéro blur. */
+  .oc-navbar {
+    -webkit-backdrop-filter: none;
+    backdrop-filter: none;
+    background: color-mix(in oklab, var(--color-royal-abysse) 96%, transparent);
+  }
+  .oc-navbar[data-scrolled="true"] {
+    background: var(--color-royal-abysse);
+  }
+
+  /* Cartes verre : plus de blur (empilées, elles ré-échantillonnent au scroll). */
+  .glass {
+    -webkit-backdrop-filter: none;
+    backdrop-filter: none;
+    background: color-mix(in oklab, var(--color-royal-soft) 94%, transparent);
+  }
+  .tone-light .glass,
+  .tone-silver .glass {
+    background: color-mix(in oklab, var(--color-blanc) 96%, transparent);
   }
 }
 

@@ -6,17 +6,13 @@ import { usePrefersReducedMotion } from "@/hooks/use-media-query";
 
 type Tilt = { tiltX: MotionValue<number>; tiltY: MotionValue<number> };
 
-type OrientationCtor = typeof DeviceOrientationEvent & {
-  requestPermission?: () => Promise<"granted" | "denied">;
-};
-
 /**
- * Renvoie deux MotionValues normalisées [-1, 1] : l'inclinaison horizontale /
- * verticale du regard. Alimentées par la souris (desktop, pointeur fin) ou par
- * le gyroscope (mobile Android — jamais de prompt de permission iOS).
+ * Renvoie deux MotionValues normalisées [-1, 1] : l'inclinaison du regard,
+ * alimentée par la souris (desktop, pointeur fin uniquement).
  *
  * - respecte `prefers-reduced-motion` (valeurs figées à 0, aucun listener) ;
- * - throttle en rAF, valeurs lissées par ressort → pas de re-render.
+ * - throttle en rAF, valeurs lissées par ressort → pas de re-render ;
+ * - inactif sur mobile (coût continu pour un effet imperceptible).
  */
 export function useParallaxTilt(disabled = false): Tilt {
   const rawX = useMotionValue(0);
@@ -42,7 +38,14 @@ export function useParallaxTilt(disabled = false): Tilt {
       });
     };
 
+    // Desktop uniquement : sur mobile, un flux `deviceorientation` qui pilote
+    // des transforms en continu coûte cher pour un effet quasi invisible.
     const finePointer = window.matchMedia("(hover: hover) and (pointer: fine)").matches;
+    if (!finePointer) {
+      rawX.set(0);
+      rawY.set(0);
+      return;
+    }
 
     const onPointer = (e: PointerEvent) => {
       schedule(
@@ -51,34 +54,9 @@ export function useParallaxTilt(disabled = false): Tilt {
       );
     };
 
-    const onOrientation = (e: DeviceOrientationEvent) => {
-      if (e.gamma == null || e.beta == null) return;
-      // gamma ∈ [-90,90] gauche/droite · beta ∈ [-180,180] avant/arrière
-      schedule(e.gamma / 35, (e.beta - 45) / 35);
-    };
-
-    if (finePointer) {
-      window.addEventListener("pointermove", onPointer, { passive: true });
-      return () => {
-        window.removeEventListener("pointermove", onPointer);
-        if (frame) cancelAnimationFrame(frame);
-      };
-    }
-
-    const Ctor =
-      typeof window !== "undefined"
-        ? (window.DeviceOrientationEvent as OrientationCtor | undefined)
-        : undefined;
-    // iOS expose requestPermission() et exige un geste utilisateur : on s'abstient.
-    if (Ctor && typeof Ctor.requestPermission !== "function") {
-      window.addEventListener("deviceorientation", onOrientation, { passive: true });
-      return () => {
-        window.removeEventListener("deviceorientation", onOrientation);
-        if (frame) cancelAnimationFrame(frame);
-      };
-    }
-
+    window.addEventListener("pointermove", onPointer, { passive: true });
     return () => {
+      window.removeEventListener("pointermove", onPointer);
       if (frame) cancelAnimationFrame(frame);
     };
   }, [disabled, reduced, rawX, rawY]);

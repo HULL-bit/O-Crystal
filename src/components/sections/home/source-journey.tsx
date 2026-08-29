@@ -1,13 +1,32 @@
 "use client";
 
 import { useRef } from "react";
-import { motion, useScroll, useTransform, type MotionValue } from "motion/react";
+import {
+  motion,
+  useScroll,
+  useSpring,
+  useTransform,
+  type MotionValue,
+} from "motion/react";
 import { useTranslations } from "next-intl";
 import { Eyebrow } from "@/components/ui/section";
 import { BrandMark } from "@/components/brand/BrandMark";
-import { usePrefersReducedMotion } from "@/hooks/use-media-query";
+import { usePrefersReducedMotion, useMediaQuery } from "@/hooks/use-media-query";
 
 const STAGES = ["source", "filtration", "bottling"] as const;
+
+/**
+ * Les strates géologiques que l'eau traverse : roche de surface → grès →
+ * argile → calcaire → nappe. `swatch` = teinte pleine (diagramme mobile),
+ * `tint` = dégradé + `edge` = arête irrégulière (bandes en parallaxe desktop).
+ */
+const LAYERS = [
+  { swatch: "#4a5a72", tint: "linear-gradient(180deg,#3a4a63,#2b3a54)", edge: "polygon(0 22%,18% 8%,42% 20%,68% 6%,88% 18%,100% 9%,100% 100%,0 100%)" },
+  { swatch: "#6a6150", tint: "linear-gradient(180deg,#4c4738,#3a3730)", edge: "polygon(0 16%,26% 4%,54% 16%,78% 3%,100% 14%,100% 100%,0 100%)" },
+  { swatch: "#4d5a76", tint: "linear-gradient(180deg,#43506a,#333f57)", edge: "polygon(0 12%,30% 2%,60% 12%,85% 1%,100% 10%,100% 100%,0 100%)" },
+  { swatch: "#6a7488", tint: "linear-gradient(180deg,#5a6478,#454f63)", edge: "polygon(0 10%,34% 0,66% 10%,100% 2%,100% 100%,0 100%)" },
+  { swatch: "#1b3a97", tint: "linear-gradient(180deg,#123a97,#0a1e7a)", edge: "polygon(0 8%,45% 0,85% 8%,100% 3%,100% 100%,0 100%)" },
+];
 
 /**
  * SÉQUENCE SIGNATURE (scrollytelling) — « De la roche à la bouteille ».
@@ -18,23 +37,60 @@ const STAGES = ["source", "filtration", "bottling"] as const;
 export function SourceJourney() {
   const root = useRef<HTMLDivElement>(null);
   const reduced = usePrefersReducedMotion();
+  // Le scroll-jacking (section épinglée de 320vh) est lourd et peu fluide au
+  // toucher → sur mobile, version empilée nette (audience cible).
+  const coarse = useMediaQuery("(max-width: 900px)", true);
   const t = useTranslations("home.journey");
 
   const { scrollYProgress } = useScroll({
     target: root,
     offset: ["start start", "end end"],
   });
+  // Progression lissée par ressort : les nappes glissent au lieu de « coller »
+  // image par image au scroll (ressenti beaucoup plus fluide, surtout Lenis).
+  const progress = useSpring(scrollYProgress, {
+    stiffness: 55,
+    damping: 22,
+    restDelta: 0.0004,
+  });
 
-  // ---- Repli reduced-motion : 3 étapes empilées, sobres ----
-  if (reduced) {
+  // ---- Repli mobile / reduced-motion : 3 étapes empilées, sobres ----
+  if (reduced || coarse) {
+    const layers = (t.raw("layers") as string[] | undefined) ?? [];
     return (
-      <section className="container-page py-24">
+      <section className="container-page py-20 sm:py-24">
         <Eyebrow>{t("eyebrow")}</Eyebrow>
         <h2 className="mt-6 max-w-2xl text-3xl md:text-4xl">{t("title")}</h2>
-        <ol className="mt-12 grid gap-8 md:grid-cols-3">
+
+        {/* Les couches traversées par l'eau — diagramme de strates. */}
+        <div className="mt-8 overflow-hidden rounded-[var(--radius-lg)] ring-1 ring-[color-mix(in_oklab,var(--color-argent)_45%,transparent)]">
+          {LAYERS.map((l, i) => (
+            <div
+              key={i}
+              className="relative flex items-center px-5 py-4"
+              style={{ background: l.tint }}
+            >
+              {/* filet d'infiltration */}
+              <span className="absolute inset-x-0 top-0 h-px bg-[linear-gradient(90deg,transparent,rgba(190,236,255,0.75),transparent)]" />
+              <span className="h-2.5 w-2.5 shrink-0 rounded-full" style={{ background: l.swatch, boxShadow: "0 0 0 3px rgb(255 255 255 / 0.12)" }} />
+              <span className="ml-3 text-[0.72rem] tracking-[0.24em] text-white/75 uppercase">
+                {layers[i] ?? ""}
+              </span>
+            </div>
+          ))}
+          {/* la goutte arrive en bas */}
+          <div className="relative flex items-center justify-center gap-2 bg-[#0a1e7a] py-3 text-2xs tracking-[0.24em] text-[var(--color-cristal-light)] uppercase">
+            <BrandMark className="h-4 w-auto" />
+            {t("eyebrow")}
+          </div>
+        </div>
+
+        <ol className="mt-8 grid gap-5 sm:gap-8 md:grid-cols-3">
           {STAGES.map((s, i) => (
             <li key={s} className="glass rounded-[var(--radius-lg)] p-6">
-              <span className="text-sm text-[var(--color-cristal-light)]">0{i + 1}</span>
+              <span className="font-[family-name:var(--font-display)] text-2xl text-[var(--color-cristal-light)]">
+                0{i + 1}
+              </span>
               <h3 className="mt-3 text-xl">{t(`stages.${s}.title`)}</h3>
               <p className="mt-2 text-sm text-[var(--color-muted)]">{t(`stages.${s}.text`)}</p>
             </li>
@@ -47,23 +103,30 @@ export function SourceJourney() {
   return (
     <div ref={root} className="relative h-[320vh]">
       <div className="sticky top-0 flex h-[100svh] items-center overflow-hidden">
-        <Strata progress={scrollYProgress} />
-        <LightShaft progress={scrollYProgress} />
-        <Minerals progress={scrollYProgress} />
-        <TravellingDrop progress={scrollYProgress} />
+        <Strata progress={progress} />
+        <Caustics progress={progress} />
+        <LightShaft progress={progress} />
+        <Minerals progress={progress} />
+        <TravellingDrop progress={progress} />
+
+        {/* Voile de lisibilité à gauche, derrière les légendes. */}
+        <div
+          aria-hidden
+          className="absolute inset-y-0 left-0 w-[46rem] max-w-[75%] bg-[linear-gradient(90deg,rgba(5,15,61,0.72),rgba(5,15,61,0.35)_45%,transparent)]"
+        />
 
         {/* Barre de progression verticale */}
         <div className="absolute left-6 top-1/2 hidden h-40 w-px -translate-y-1/2 bg-white/10 md:block">
           <motion.div
             className="absolute inset-x-0 top-0 h-full origin-top bg-[var(--color-cristal-light)]"
-            style={{ scaleY: scrollYProgress }}
+            style={{ scaleY: progress }}
           />
         </div>
 
         {/* Légendes qui se relaient */}
         <div className="container-page relative">
           {STAGES.map((s, i) => (
-            <Caption key={s} progress={scrollYProgress} index={i}>
+            <Caption key={s} progress={progress} index={i}>
               <Eyebrow>{t("eyebrow")}</Eyebrow>
               <h3 className="mt-4 font-[family-name:var(--font-display)] text-3xl md:text-5xl">
                 {t(`stages.${s}.title`)}
@@ -76,6 +139,26 @@ export function SourceJourney() {
         </div>
       </div>
     </div>
+  );
+}
+
+/** Caustiques : deux nappes de lumière qui dérivent au scroll (transform only). */
+function Caustics({ progress }: { progress: MotionValue<number> }) {
+  const x1 = useTransform(progress, [0, 1], ["-8%", "10%"]);
+  const y1 = useTransform(progress, [0, 1], ["-4%", "6%"]);
+  const x2 = useTransform(progress, [0, 1], ["8%", "-12%"]);
+  const opacity = useTransform(progress, [0, 0.5, 1], [0.25, 0.6, 0.3]);
+  return (
+    <motion.div style={{ opacity }} className="absolute inset-0" aria-hidden>
+      <motion.div
+        style={{ x: x1, y: y1 }}
+        className="absolute -inset-x-1/4 top-[8%] h-[58%] bg-[radial-gradient(60%_100%_at_30%_0%,rgba(127,208,245,0.3),transparent_70%)]"
+      />
+      <motion.div
+        style={{ x: x2 }}
+        className="absolute -inset-x-1/4 bottom-[4%] h-[52%] bg-[radial-gradient(55%_100%_at_70%_100%,rgba(46,159,223,0.24),transparent_72%)]"
+      />
+    </motion.div>
   );
 }
 
@@ -110,34 +193,71 @@ function Caption({
   );
 }
 
+/**
+ * Les strates géologiques que l'eau traverse : roche de surface → grès →
+ * argile → calcaire → nappe. Bandes sédimentaires teintées, chacune en
+ * parallaxe (elles remontent quand on descend), séparées par un fin filet
+ * clair = l'eau qui s'infiltre. 100 % CSS.
+ */
+const LAYER_TOPS = ["6vh", "30vh", "54vh", "78vh", "102vh"];
+
 function Strata({ progress }: { progress: MotionValue<number> }) {
-  const y1 = useTransform(progress, [0, 1], ["0%", "-70%"]);
-  const y2 = useTransform(progress, [0, 1], ["10%", "-40%"]);
-  const y3 = useTransform(progress, [0, 1], ["25%", "-15%"]);
   return (
     <>
-      <motion.div
-        style={{ y: y1 }}
-        className="absolute inset-x-0 top-[40vh] h-[90vh] bg-[linear-gradient(180deg,#0a1e7a,#050f3d)] [clip-path:polygon(0_14%,25%_2%,55%_12%,80%_3%,100%_15%,100%_100%,0_100%)]"
-      />
-      <motion.div
-        style={{ y: y2 }}
-        className="absolute inset-x-0 top-[70vh] h-[90vh] bg-[linear-gradient(180deg,#0b1c4d,#071238)] opacity-95 [clip-path:polygon(0_10%,35%_0,65%_10%,100%_2%,100%_100%,0_100%)]"
-      />
-      <motion.div
-        style={{ y: y3 }}
-        className="absolute inset-x-0 top-[100vh] h-[90vh] bg-[linear-gradient(180deg,#12327f,#0b1c4d)] opacity-90 [clip-path:polygon(0_8%,45%_0,85%_8%,100%_3%,100%_100%,0_100%)]"
-      />
+      {LAYERS.map((l, i) => (
+        <StratumBand key={i} progress={progress} layer={l} index={i} />
+      ))}
     </>
+  );
+}
+
+function StratumBand({
+  progress,
+  layer,
+  index,
+}: {
+  progress: MotionValue<number>;
+  layer: (typeof LAYERS)[number];
+  index: number;
+}) {
+  const t = useTranslations("home.journey");
+  const label = (t.raw("layers") as string[] | undefined)?.[index];
+  // Bandes hautes = plus rapides (effet de profondeur en descendant).
+  const speed = 90 - index * 14;
+  const y = useTransform(progress, [0, 1], ["0vh", `-${speed}vh`]);
+  return (
+    <motion.div
+      aria-hidden
+      style={{ y, top: LAYER_TOPS[index] }}
+      className="absolute inset-x-0 h-[130vh]"
+    >
+      <div
+        className="absolute inset-0"
+        style={{ background: layer.tint, clipPath: layer.edge, opacity: 0.9 }}
+      />
+      {/* Filet d'infiltration lumineux à l'interface. */}
+      <div
+        className="absolute inset-x-0 top-0 h-px bg-[linear-gradient(90deg,transparent,rgba(190,236,255,0.7),transparent)]"
+        style={{ clipPath: layer.edge }}
+      />
+      {label ? (
+        <span className="absolute right-6 top-[7vh] hidden items-center gap-2 text-[0.65rem] tracking-[0.3em] text-white/40 uppercase lg:flex">
+          {label}
+          <span className="h-px w-8 bg-white/25" />
+        </span>
+      ) : null}
+    </motion.div>
   );
 }
 
 function LightShaft({ progress }: { progress: MotionValue<number> }) {
   const opacity = useTransform(progress, [0, 0.4, 1], [0.15, 0.5, 0.85]);
+  // Halo « soft » sans `filter: blur()` (animer l'opacité d'un élément flouté
+  // force un re-raster à chaque frame). Un dégradé large fait le même effet.
   return (
     <motion.div
       style={{ opacity }}
-      className="absolute left-1/2 top-0 h-full w-56 -translate-x-1/2 bg-[linear-gradient(180deg,rgba(127,208,245,0.4),transparent_72%)] blur-xl"
+      className="absolute left-1/2 top-0 h-full w-[26rem] -translate-x-1/2 bg-[radial-gradient(50%_60%_at_50%_20%,rgba(127,208,245,0.34),transparent_70%)]"
     />
   );
 }
@@ -171,7 +291,12 @@ function TravellingDrop({ progress }: { progress: MotionValue<number> }) {
       style={{ y, rotate, scale }}
       className="absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 will-change-transform"
     >
-      <BrandMark className="h-24 w-auto drop-shadow-[0_0_36px_rgba(127,208,245,0.6)]" />
+      {/* Halo en dégradé (pas de `drop-shadow` animé). */}
+      <span
+        aria-hidden
+        className="absolute left-1/2 top-1/2 h-48 w-48 -translate-x-1/2 -translate-y-1/2 rounded-full bg-[radial-gradient(circle,rgba(127,208,245,0.5),transparent_68%)]"
+      />
+      <BrandMark className="relative h-24 w-auto" />
     </motion.div>
   );
 }

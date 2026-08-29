@@ -3,14 +3,13 @@
 import { useEffect, useRef, useState } from "react";
 import { AnimatePresence, motion } from "motion/react";
 import { usePathname } from "@/i18n/navigation";
-import { ease } from "@/lib/motion";
 import { usePrefersReducedMotion } from "@/hooks/use-media-query";
 
 /**
- * Transition de page « liquide » : à chaque changement de route, un voile
- * chromé recouvre l'écran puis se retire — jamais de coupure brutale.
- * TODO (étape 5) : basculer sur l'API View Transitions + élément partagé
- * (la bouteille qui « vole » d'une carte vers la fiche produit).
+ * Transition de page — volontairement MINIMALE : un fondu très court (~160 ms)
+ * d'un voile discret. Priorité absolue au ressenti « le clic répond tout de
+ * suite » (retour utilisateur récurrent) ; pas de wipe plein écran qui rallonge
+ * chaque navigation.
  */
 export function RouteTransition() {
   const pathname = usePathname();
@@ -25,7 +24,7 @@ export function RouteTransition() {
     }
     if (reduced) return;
     const raf = requestAnimationFrame(() => setKey(pathname));
-    const to = setTimeout(() => setKey(null), 620);
+    const to = setTimeout(() => setKey(null), 240);
     return () => {
       cancelAnimationFrame(raf);
       clearTimeout(to);
@@ -38,14 +37,11 @@ export function RouteTransition() {
         <motion.div
           key={key}
           aria-hidden
-          className="pointer-events-none fixed inset-0 z-[9980] origin-bottom bg-[image:var(--gradient-eau)]"
-          initial={{ scaleY: 0 }}
-          animate={{ scaleY: 1 }}
-          exit={{ scaleY: 0, originY: 0 }}
-          transition={{ duration: 0.32, ease: ease.plonge }}
-        >
-          <span className="absolute inset-x-0 top-0 h-16 bg-[linear-gradient(180deg,rgba(127,208,245,0.5),transparent)]" />
-        </motion.div>
+          className="pointer-events-none fixed inset-0 z-[9980] bg-[var(--color-royal-abysse)]"
+          initial={{ opacity: 0.28 }}
+          animate={{ opacity: 0 }}
+          transition={{ duration: 0.16, ease: "linear" }}
+        />
       )}
     </AnimatePresence>
   );

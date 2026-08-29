@@ -8,16 +8,19 @@
 export type NavItem = {
   labelKey: string;
   href: string;
+  /** Libellé court pour la navbar (les phrases longues débordent la capsule). */
+  shortKey?: string;
   /** Sous-éléments (méga-menu). */
   children?: { labelKey: string; href: string; descKey?: string }[];
 };
 
 export const primaryNav: NavItem[] = [
   { labelKey: "brand", href: "/la-marque" },
-  { labelKey: "source", href: "/source-qualite" },
+  { labelKey: "source", href: "/source-qualite", shortKey: "sourceShort" },
   {
     labelKey: "products",
     href: "/produits",
+    shortKey: "productsShort",
     children: [
       { labelKey: "format33", href: "/produits/33cl" },
       { labelKey: "format50", href: "/produits/50cl" },
@@ -29,7 +32,7 @@ export const primaryNav: NavItem[] = [
   },
   { labelKey: "whereToBuy", href: "/ou-acheter" },
   { labelKey: "pro", href: "/professionnels" },
-  { labelKey: "csr", href: "/rse" },
+  { labelKey: "csr", href: "/rse", shortKey: "csrShort" },
   { labelKey: "news", href: "/actualites" },
 ];
 

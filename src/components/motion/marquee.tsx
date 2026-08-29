@@ -36,7 +36,7 @@ export function Marquee({
       )}
     >
       <div
-        className="flex min-w-full animate-[marquee_var(--marquee-speed)_linear_infinite] motion-reduce:animate-none"
+        className="oc-marquee flex min-w-full animate-[marquee_var(--marquee-speed)_linear_infinite] motion-reduce:animate-none"
         style={{ ["--marquee-speed" as string]: `${speed}s` }}
       >
         {track}

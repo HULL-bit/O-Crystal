@@ -25,7 +25,7 @@ export function Badge({
         "inline-flex items-center gap-1.5 rounded-full border px-3 py-1 text-2xs font-medium tracking-[0.14em] uppercase",
         tones[tone],
         shimmer &&
-          "relative overflow-hidden after:absolute after:inset-y-0 after:-left-full after:w-full after:bg-[linear-gradient(100deg,transparent,rgba(255,255,255,0.3),transparent)] after:[animation:sheen_4.5s_ease-in-out_infinite] motion-reduce:after:hidden",
+          "relative overflow-hidden after:absolute after:inset-y-0 after:-left-full after:w-full after:bg-[linear-gradient(100deg,transparent,rgba(255,255,255,0.3),transparent)] sm:after:[animation:sheen_4.5s_ease-in-out_infinite] motion-reduce:after:hidden",
         className,
       )}
     >

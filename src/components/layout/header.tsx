@@ -28,7 +28,7 @@ export function Header() {
       <div
         data-scrolled={scrolled}
         className={cn(
-          "oc-navbar pointer-events-auto flex w-full max-w-[82rem] items-center justify-between gap-2 rounded-full px-3 sm:px-4",
+          "oc-navbar pointer-events-auto flex w-full max-w-[87rem] items-center justify-between gap-1 rounded-full px-2.5 sm:px-3",
           scrolled ? "py-1.5" : "py-2.5",
         )}
       >
@@ -36,7 +36,7 @@ export function Header() {
 
         {/* Nav desktop */}
         <nav
-          className="hidden items-center gap-0.5 lg:flex"
+          className="hidden shrink items-center lg:flex xl:gap-0.5"
           onMouseLeave={() => setOpenMenu(null)}
         >
           {primaryNav.map((item) => {
@@ -53,7 +53,7 @@ export function Header() {
                 <Link
                   href={item.href}
                   className={cn(
-                    "relative block rounded-full px-3 py-2 text-[0.8rem] whitespace-nowrap transition-colors",
+                    "relative block rounded-full px-2.5 py-2 text-[0.82rem] whitespace-nowrap transition-colors xl:px-3",
                     isActive
                       ? "text-white"
                       : "text-[var(--color-platine)] hover:text-white",
@@ -69,7 +69,7 @@ export function Header() {
                       transition={{ duration: duration.base, ease: ease.eau }}
                     />
                   )}
-                  <span className="relative">{t(item.labelKey)}</span>
+                  <span className="relative">{t(item.shortKey ?? item.labelKey)}</span>
                 </Link>
 
                 <AnimatePresence>
@@ -107,17 +107,17 @@ export function Header() {
           })}
         </nav>
 
-        <div className="flex items-center gap-2">
+        <div className="flex shrink-0 items-center gap-1.5">
           <Link
             href="/pro"
-            className="hidden rounded-full border border-[color-mix(in_oklab,var(--color-argent)_35%,transparent)] px-3.5 py-1.5 text-[0.8rem] text-[var(--color-platine)] transition-colors hover:border-[color-mix(in_oklab,var(--color-argent-bright)_60%,transparent)] hover:text-white lg:inline-flex"
+            className="hidden rounded-full border border-[color-mix(in_oklab,var(--color-argent)_35%,transparent)] px-3 py-1.5 text-[0.8rem] whitespace-nowrap text-[var(--color-platine)] transition-colors hover:border-[color-mix(in_oklab,var(--color-argent-bright)_60%,transparent)] hover:text-white xl:inline-flex"
           >
             {t("proSpace")}
           </Link>
           <Link
             href="/recherche"
             aria-label={t("search")}
-            className="hidden h-9 w-9 items-center justify-center rounded-full border border-[color-mix(in_oklab,var(--color-argent)_35%,transparent)] text-[var(--color-platine-bright)] transition-colors hover:border-[color-mix(in_oklab,var(--color-argent-bright)_60%,transparent)] hover:text-white sm:flex"
+            className="hidden h-9 w-9 shrink-0 items-center justify-center rounded-full border border-[color-mix(in_oklab,var(--color-argent)_35%,transparent)] text-[var(--color-platine-bright)] transition-colors hover:border-[color-mix(in_oklab,var(--color-argent-bright)_60%,transparent)] hover:text-white sm:flex"
           >
             <svg viewBox="0 0 24 24" className="h-4 w-4" fill="none" stroke="currentColor" strokeWidth="2">
               <circle cx="11" cy="11" r="7" />
@@ -125,13 +125,13 @@ export function Header() {
             </svg>
           </Link>
 
-          <LocaleSwitcher className="hidden rounded-full border border-[color-mix(in_oklab,var(--color-argent)_35%,transparent)] px-2.5 py-1.5 sm:inline-flex" />
+          <LocaleSwitcher className="hidden shrink-0 rounded-full border border-[color-mix(in_oklab,var(--color-argent)_35%,transparent)] px-2.5 py-1.5 sm:inline-flex" />
 
           <Button
             href="/professionnels"
             variant="metal"
             size="sm"
-            className="hidden md:inline-flex"
+            className="hidden whitespace-nowrap xl:inline-flex"
             magnetic
           >
             {tA("becomeDistributor")}
@@ -168,23 +168,23 @@ export function Header() {
         </div>
       </div>
 
-      {/* Overlay mobile */}
+      {/* Overlay mobile — fondu + montée (léger, pas de `clip-path` animé). */}
       <AnimatePresence>
         {mobileOpen && (
           <motion.div
-            initial={{ clipPath: "circle(0% at calc(100% - 2.5rem) 2.5rem)" }}
-            animate={{ clipPath: "circle(150% at calc(100% - 2.5rem) 2.5rem)" }}
-            exit={{ clipPath: "circle(0% at calc(100% - 2.5rem) 2.5rem)" }}
-            transition={{ duration: duration.slow, ease: ease.plonge }}
-            className="pointer-events-auto fixed inset-0 z-40 bg-[var(--color-royal-deep)] lg:hidden"
+            initial={{ opacity: 0, y: -8 }}
+            animate={{ opacity: 1, y: 0 }}
+            exit={{ opacity: 0, y: -8 }}
+            transition={{ duration: 0.22, ease: ease.eau }}
+            className="pointer-events-auto fixed inset-0 z-40 bg-[var(--color-royal-abysse)] lg:hidden"
           >
             <nav className="container-page flex h-full flex-col justify-center gap-1 pt-16">
               {primaryNav.map((item, i) => (
                 <motion.div
                   key={item.href}
-                  initial={{ opacity: 0, x: 24 }}
+                  initial={{ opacity: 0, x: 16 }}
                   animate={{ opacity: 1, x: 0 }}
-                  transition={{ delay: 0.15 + i * 0.05, ease: ease.eau }}
+                  transition={{ delay: 0.03 + i * 0.028, duration: 0.28, ease: ease.eau }}
                 >
                   <Link
                     href={item.href}
