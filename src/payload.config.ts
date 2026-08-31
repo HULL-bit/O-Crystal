@@ -37,6 +37,8 @@ const r2Configured = Boolean(process.env.R2_BUCKET && process.env.R2_ACCESS_KEY_
 export default buildConfig({
   admin: {
     user: Users.slug,
+    // Interface claire forcée (ne suit pas le thème sombre de l'OS).
+    theme: "light",
     importMap: { baseDir: path.resolve(dirname) },
     dateFormat: "dd/MM/yyyy HH:mm",
     meta: {

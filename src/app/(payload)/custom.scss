@@ -1,14 +1,55 @@
-/* Personnalisation légère du portail admin O'Crystal.
-   Palette « bleu joaillerie » sur l'écran de connexion et les accents. */
+/* ------------------------------------------------------------------ *
+ *  Portail admin O'Crystal — habillage clair & sobre.
+ *  Le thème « light » est forcé dans payload.config (admin.theme).
+ *  On ne fait ici que quelques accents « bleu joaillerie ».
+ * ------------------------------------------------------------------ */
 
-.template-minimal {
-  --theme-elevation-0: #0b1c5e;
+:root,
+html[data-theme='light'] {
+  /* Bleu de marque pour les liens, focus, éléments actifs. */
+  --color-blue-500: #2e9fdf;
+  --color-blue-600: #1f7fc0;
+  --color-blue-700: #0a1e7a;
+  --theme-success-500: #2e9fdf;
+
+  /* Fond général très légèrement bleuté plutôt que blanc pur. */
+  --theme-bg: #f5f7fb;
 }
 
+/* Écran de connexion : dégradé clair, argent + bleu cristal. */
 .login {
-  background: radial-gradient(130% 90% at 50% -10%, #1b3f9e 0%, #0b1c5e 48%, #071240 100%);
+  background:
+    radial-gradient(120% 80% at 50% -10%, rgba(46, 159, 223, 0.14), transparent 60%),
+    linear-gradient(180deg, #eef2f8 0%, #e3e9f2 100%);
 }
 
-:root {
-  --color-success-500: #2e9fdf;
+.login .template-minimal__wrap {
+  background: #ffffff;
+  border: 1px solid #dbe3ec;
+  border-radius: 14px;
+  box-shadow: 0 20px 50px -24px rgba(10, 30, 122, 0.25);
+}
+
+/* Bouton d'action principal en bleu royal O'Crystal. */
+.btn--style-primary:not(:disabled) {
+  --color-base-800: #0a1e7a;
+  --color-base-850: #0a1e7a;
+  --theme-elevation-800: #0a1e7a;
+  background-color: #0a1e7a;
+  border-color: #0a1e7a;
+}
+.btn--style-primary:not(:disabled):hover {
+  background-color: #12327f;
+  border-color: #12327f;
+}
+
+/* Barre latérale : légère teinte froide. */
+.nav {
+  background: #eef2f8;
+  border-right: 1px solid #dde4ee;
+}
+
+/* Anneau de focus accessible en bleu cristal. */
+*:focus-visible {
+  outline-color: #2e9fdf;
 }
