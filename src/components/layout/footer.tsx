@@ -2,7 +2,7 @@ import { useTranslations } from "next-intl";
 import { Link } from "@/i18n/navigation";
 import { footerNav, legalNav, socialLinks } from "@/config/nav";
 import { ConsentLink } from "@/components/consent/consent-link";
-import { BrandMark } from "@/components/brand/BrandMark";
+import { BrandLockup } from "@/components/brand/brand-lockup";
 import { LocaleSwitcher } from "./locale-switcher";
 import { NewsletterForm } from "@/components/forms/newsletter-form";
 
@@ -17,13 +17,8 @@ export function Footer() {
       <hr className="hairline" />
       <div className="container-page grid gap-12 py-16 md:py-20 lg:grid-cols-[1.4fr_1fr_1fr_1fr]">
         <div className="max-w-xs">
-          <div className="flex items-center gap-3">
-            <BrandMark className="h-10 w-auto" />
-            <span className="font-[family-name:var(--font-display)] text-lg tracking-[0.14em] text-[var(--color-platine-bright)]">
-              O<span className="text-[var(--color-cristal)]">&apos;</span>Crystal
-            </span>
-          </div>
-          <p className="mt-4 text-sm text-[var(--color-muted)]">{tf("tagline")}</p>
+          <BrandLockup size="lg" />
+          <p className="mt-5 text-sm text-[var(--color-muted)]">{tf("tagline")}</p>
           <p className="mt-6 text-xs text-[var(--color-muted)]">{tf("address")}</p>
         </div>
 
