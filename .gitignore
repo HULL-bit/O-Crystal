@@ -54,3 +54,7 @@ next-env.d.ts
 /src/media/
 
 # Payload generated (types committés, import map committée)
+
+# Notes de déploiement avec valeurs réelles (secrets — jamais committé)
+*.local.md
+/DEPLOIEMENT-*.md
