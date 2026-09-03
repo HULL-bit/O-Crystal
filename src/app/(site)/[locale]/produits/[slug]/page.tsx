@@ -16,6 +16,20 @@ import { ARLaunch } from "@/components/three/ar-launch";
 import { getProduct, getProducts, payloadClient, toLocale } from "@/lib/cms";
 import { asMedia, type Product } from "@/lib/cms-types";
 import { minerals as fallbackMinerals, dryResidue } from "@/content/minerals";
+import { products as staticProducts } from "@/content/products";
+
+/** Fiche minimale à partir des données statiques (CMS vide / hors-ligne). */
+function staticProduct(slug: string, locale: string): Product | null {
+  const p = staticProducts.find((x) => x.slug === slug);
+  if (!p) return null;
+  return {
+    name: locale === "en" ? p.nameEn : p.nameFr,
+    slug: p.slug,
+    volume: p.volume,
+    tagline: locale === "en" ? p.useEn : p.useFr,
+    availability: "available",
+  } as Product;
+}
 import { JsonLd, productLd } from "@/components/seo/json-ld";
 
 type Props = { params: Promise<{ locale: string; slug: string }> };
@@ -29,18 +43,26 @@ export async function generateStaticParams() {
       limit: 100,
       depth: 0,
     });
-    return r.docs.flatMap((d) => [
-      { locale: "fr", slug: String(d.slug) },
-      { locale: "en", slug: String(d.slug) },
+    const slugs = r.docs.length
+      ? r.docs.map((d) => String(d.slug))
+      : staticProducts.map((p) => p.slug);
+    return slugs.flatMap((slug) => [
+      { locale: "fr", slug },
+      { locale: "en", slug },
     ]);
   } catch {
-    return [];
+    return staticProducts.flatMap((p) => [
+      { locale: "fr", slug: p.slug },
+      { locale: "en", slug: p.slug },
+    ]);
   }
 }
 
 export async function generateMetadata({ params }: Props): Promise<Metadata> {
   const { locale, slug } = await params;
-  const product = (await getProduct(toLocale(locale), slug)) as Product | null;
+  const product =
+    ((await getProduct(toLocale(locale), slug)) as Product | null) ??
+    staticProduct(slug, locale);
   if (!product) return {};
   return {
     title: product.meta?.title || `${product.name} · O'Crystal`,
@@ -53,7 +75,9 @@ export default async function ProductPage({ params }: Props) {
   setRequestLocale(locale);
   const t = await getTranslations("productsPage");
 
-  const product = (await getProduct(toLocale(locale), slug)) as Product | null;
+  const product =
+    ((await getProduct(toLocale(locale), slug)) as Product | null) ??
+    staticProduct(slug, locale);
   if (!product) notFound();
 
   const others = ((await getProducts(toLocale(locale))) as Product[])
