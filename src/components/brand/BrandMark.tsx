@@ -10,18 +10,17 @@ type BrandMarkProps = {
 };
 
 /**
- * Icône de marque O'Crystal — PLACEHOLDER fidèle à `docs/brand-source/`.
- * Goutte d'eau + bulles, portant en son cœur la rosace « cristal »
- * (losanges + perles) — symbole de pureté et de préciosité.
- *
- * TODO : remplacer par le SVG vectoriel officiel une fois fourni
- * (fichiers .ai/.eps/.pdf dans docs/brand-source/).
+ * Icône de marque O'Crystal — d'après le fichier officiel
+ * `docs/brand-source/icone marque officiel.pdf` :
+ * une grosse bulle + une petite au-dessus d'une goutte cyan portant en son
+ * cœur la rosace « cristal » (losanges cardinaux + perles diagonales + losange
+ * central). Reflet en croissant sur la bulle, éclat sur la goutte.
  */
 export function BrandMark({ className, style, title, animated }: BrandMarkProps) {
   const decorative = !title;
   return (
     <svg
-      viewBox="0 0 100 172"
+      viewBox="0 0 110 212"
       className={cn("block", className)}
       style={style}
       role={decorative ? undefined : "img"}
@@ -31,73 +30,64 @@ export function BrandMark({ className, style, title, animated }: BrandMarkProps)
     >
       {!decorative && <title>{title}</title>}
       <defs>
-        <linearGradient
-          id="ocrystal-drop"
-          x1="50"
-          y1="30"
-          x2="50"
-          y2="168"
-          gradientUnits="userSpaceOnUse"
-        >
-          <stop offset="0" stopColor="#7FD0F5" />
-          <stop offset="0.45" stopColor="#2E9FDF" />
-          <stop offset="1" stopColor="#0A1E7A" />
+        <linearGradient id="oc-drop" x1="22" y1="70" x2="92" y2="205" gradientUnits="userSpaceOnUse">
+          <stop offset="0" stopColor="#4FB6E6" />
+          <stop offset="0.55" stopColor="#2E9FDF" />
+          <stop offset="1" stopColor="#1E7FC2" />
         </linearGradient>
-        <linearGradient
-          id="ocrystal-bubble"
-          x1="34"
-          y1="10"
-          x2="66"
-          y2="44"
-          gradientUnits="userSpaceOnUse"
-        >
-          <stop offset="0" stopColor="#9BDBF7" />
-          <stop offset="1" stopColor="#2E9FDF" />
+        <linearGradient id="oc-bubble" x1="38" y1="8" x2="72" y2="46" gradientUnits="userSpaceOnUse">
+          <stop offset="0" stopColor="#7FCFF0" />
+          <stop offset="1" stopColor="#37A6E0" />
         </linearGradient>
       </defs>
 
-      {/* Bulles au-dessus de la goutte */}
+      {/* Bulles */}
       <g data-part="bubbles">
-        <circle cx="47" cy="26" r="17" fill="url(#ocrystal-bubble)" />
+        <circle cx="55" cy="25" r="22" fill="url(#oc-bubble)" />
+        {/* reflet en croissant */}
         <path
-          d="M37 20a13 13 0 0 1 12-8"
+          d="M40 34a17 17 0 0 1 3-25"
           fill="none"
           stroke="#FFFFFF"
-          strokeWidth="2.4"
+          strokeWidth="3.4"
           strokeLinecap="round"
-          opacity="0.9"
+          opacity="0.92"
         />
-        <ellipse
-          cx="41.5"
-          cy="19.5"
-          rx="3.4"
-          ry="2.2"
-          fill="#FFFFFF"
-          opacity="0.9"
-          transform="rotate(-32 41.5 19.5)"
-        />
-        <circle cx="66" cy="47" r="6.2" fill="url(#ocrystal-bubble)" />
-        <circle cx="63.6" cy="44.6" r="1.7" fill="#FFFFFF" opacity="0.9" />
+        <ellipse cx="47" cy="15" rx="4.4" ry="2.6" fill="#FFFFFF" opacity="0.92" transform="rotate(-30 47 15)" />
+        <circle cx="55" cy="54" r="7.5" fill="url(#oc-bubble)" />
+        <circle cx="52" cy="51" r="1.9" fill="#FFFFFF" opacity="0.9" />
       </g>
 
       {/* Goutte */}
       <path
         data-part="drop"
-        d="M50 52c12 30 36 50 36 74a36 36 0 0 1-72 0c0-24 24-44 36-74Z"
-        fill="url(#ocrystal-drop)"
+        d="M55 74c-11 22-42 53-42 84a42 42 0 0 0 84 0c0-31-31-62-42-84Z"
+        fill="url(#oc-drop)"
+      />
+      {/* éclat / réflexion lumineuse */}
+      <path
+        d="M44 96c-9 14-19 30-21 45"
+        fill="none"
+        stroke="#FFFFFF"
+        strokeWidth="4"
+        strokeLinecap="round"
+        opacity="0.28"
       />
 
-      {/* Rosace « cristal » — losanges (N/E/S/O) + perles (diagonales) + cœur */}
-      <g data-part="rosace" fill="#FFFFFF">
-        <path d="M50 130 44 117 50 104 56 117Z" />
-        <path d="M50 130 63 124 76 130 63 136Z" />
-        <path d="M50 130 56 143 50 156 44 143Z" />
-        <path d="M50 130 37 124 24 130 37 136Z" />
-        <circle cx="59.4" cy="120.6" r="4.6" />
-        <circle cx="40.6" cy="120.6" r="4.6" />
-        <circle cx="59.4" cy="139.4" r="4.6" />
-        <circle cx="40.6" cy="139.4" r="4.6" />
-        <circle cx="50" cy="130" r="2.6" />
+      {/* Rosace « cristal » */}
+      <g data-part="rosace" fill="#FFFFFF" transform="translate(55 166)">
+        {/* losanges cardinaux */}
+        <path d="M0 -9 4.5 -15 0 -25 -4.5 -15Z" />
+        <path d="M0 9 4.5 15 0 25 -4.5 15Z" />
+        <path d="M-9 0 -15 -4.5 -25 0 -15 4.5Z" />
+        <path d="M9 0 15 -4.5 25 0 15 4.5Z" />
+        {/* perles diagonales */}
+        <circle cx="-11.5" cy="-11.5" r="4.4" />
+        <circle cx="11.5" cy="-11.5" r="4.4" />
+        <circle cx="-11.5" cy="11.5" r="4.4" />
+        <circle cx="11.5" cy="11.5" r="4.4" />
+        {/* losange central */}
+        <path d="M0 -4.5 3.2 0 0 4.5 -3.2 0Z" />
       </g>
     </svg>
   );

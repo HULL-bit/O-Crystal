@@ -112,7 +112,10 @@ const nextConfig: NextConfig = {
   images: {
     formats: ["image/avif", "image/webp"],
     qualities: [60, 75, 90],
-    localPatterns: [{ pathname: "/api/media/**" }],
+    localPatterns: [
+      { pathname: "/api/media/**" },
+      { pathname: "/**", search: "" }, // visuels statiques dans public/
+    ],
     remotePatterns: [
       { protocol: "https", hostname: "images.pexels.com" },
       { protocol: "https", hostname: "images.unsplash.com" },

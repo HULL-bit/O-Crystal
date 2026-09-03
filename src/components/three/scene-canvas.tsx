@@ -70,15 +70,21 @@ export function SceneCanvas({
   );
 }
 
-/** Goutte-cristal en CSS pur. */
+/** Goutte de marque O'Crystal (bulles + goutte + rosace) qui flotte. */
 function CrystalDropCSS() {
   return (
     <div aria-hidden className="absolute inset-0 grid place-items-center">
-      <div className="oc-decor relative h-[min(66vw,32rem)] w-[min(66vw,32rem)] [animation:float_11s_ease-in-out_infinite] will-change-transform motion-reduce:animate-none">
-        <div className="absolute inset-[-14%] rounded-full bg-[radial-gradient(circle_at_50%_45%,rgba(46,159,223,0.32),transparent_62%)]" />
-        <div className="absolute inset-[10%] [border-radius:50%_50%_50%_50%/58%_58%_42%_42%] bg-[radial-gradient(circle_at_36%_28%,rgba(190,236,255,0.95),rgba(127,208,245,0.75)_26%,rgba(46,159,223,0.45)_54%,rgba(12,40,120,0.18)_78%,transparent)] shadow-[inset_-18px_-26px_54px_rgba(10,26,90,0.45),inset_16px_18px_44px_rgba(255,255,255,0.35)]" />
-        <div className="absolute inset-[26%] [border-radius:50%_50%_50%_50%/56%_56%_44%_44%] bg-[conic-gradient(from_130deg_at_50%_50%,rgba(255,255,255,0.05),rgba(127,208,245,0.35)_18%,rgba(255,255,255,0.06)_34%,rgba(232,237,243,0.3)_58%,rgba(255,255,255,0.04)_74%,rgba(127,208,245,0.28)_92%)] opacity-80 mix-blend-screen" />
-        <div className="absolute left-[30%] top-[22%] h-[12%] w-[20%] -rotate-[18deg] rounded-full bg-white/65 blur-md" />
+      <div className="relative grid h-[min(74vw,30rem)] w-[min(74vw,30rem)] place-items-center">
+        {/* halo lumineux */}
+        <div className="absolute inset-[6%] rounded-full bg-[radial-gradient(circle_at_50%_42%,rgba(127,208,245,0.4),rgba(46,159,223,0.18)_46%,transparent_70%)]" />
+        {/* la goutte-logo */}
+        <div className="oc-decor relative h-full w-auto [animation:float_11s_ease-in-out_infinite] will-change-transform motion-reduce:animate-none">
+          <BrandMark className="h-full w-auto drop-shadow-[0_18px_40px_rgba(10,30,122,0.35)]" />
+          {/* reflet lumineux qui balaie la goutte (desktop seulement) */}
+          <div className="absolute inset-0 hidden overflow-hidden [mask-image:radial-gradient(60%_46%_at_50%_74%,#000_60%,transparent)] sm:block">
+            <div className="oc-sheen absolute -inset-y-6 left-0 w-1/3 -skew-x-12 bg-[linear-gradient(90deg,transparent,rgba(255,255,255,0.55),transparent)] [animation:sheen_5.5s_ease-in-out_infinite]" />
+          </div>
+        </div>
       </div>
     </div>
   );
