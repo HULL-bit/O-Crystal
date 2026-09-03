@@ -7,6 +7,7 @@ import { MineralGauges } from "@/components/products/mineral-gauges";
 import { Counter } from "@/components/motion/counter";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
+import { Photo } from "@/components/media/photo";
 import { getPage, toLocale } from "@/lib/cms";
 import { Blocks } from "@/components/cms/blocks";
 import type { PageDoc } from "@/lib/cms-types";
@@ -47,6 +48,32 @@ export default async function SourcePage({ params }: Props) {
 
       {/* Parcours de l'eau — séquence signature */}
       <SourceJourney />
+
+      {/* Du captage à la bouteille — visuels du procédé */}
+      <Section spacing="lg">
+        <Eyebrow>{t("processTitle")}</Eyebrow>
+        <RevealGroup className="mt-10 grid gap-5 md:grid-cols-3" stagger={0.08}>
+          {(
+            [
+              { src: "treatmentPlant", cap: t("process1") },
+              { src: "factoryLine", cap: t("process2") },
+              { src: "bottleStudio", cap: t("process3") },
+            ] as const
+          ).map((p) => (
+            <Reveal key={p.src} as="div" className="group">
+              <Photo
+                src={p.src}
+                alt={p.cap}
+                framed
+                tint="medium"
+                sizes="(max-width: 768px) 100vw, 33vw"
+                className="aspect-[4/3] w-full transition-transform duration-[var(--duration-slow)] group-hover:scale-[1.02]"
+              />
+              <p className="mt-3 text-sm text-[var(--color-muted)]">{p.cap}</p>
+            </Reveal>
+          ))}
+        </RevealGroup>
+      </Section>
 
       {/* Minéralité */}
       <Section spacing="lg" tone="silver">

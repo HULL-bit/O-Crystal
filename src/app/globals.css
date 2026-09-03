@@ -191,6 +191,24 @@
     transform: translate3d(0, 2.5%, 0) rotate(1.5deg);
   }
 }
+/* Rotation lente — anneau de caustiques derrière la goutte-logo (GPU, transform). */
+@keyframes spin-slow {
+  to {
+    transform: rotate(360deg);
+  }
+}
+/* Scintillement doux de la rosace / du halo. */
+@keyframes twinkle {
+  0%,
+  100% {
+    opacity: 0.55;
+    transform: scale(1);
+  }
+  50% {
+    opacity: 1;
+    transform: scale(1.06);
+  }
+}
 
 /* Révélation mot par mot du hero — CSS pur : joue dès le 1er rendu, sans
    attendre l'hydratation JS (préserve le LCP du titre). */

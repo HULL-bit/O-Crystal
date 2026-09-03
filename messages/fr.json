@@ -347,7 +347,11 @@
     "why2Title": "Embouteillée à la source",
     "why2Text": "Aucun transport avant conditionnement : la pureté d'origine est préservée.",
     "why3Title": "Fines bulles",
-    "why3Text": "Une effervescence délicate, signature d'une eau vivante et légère."
+    "why3Text": "Une effervescence délicate, signature d'une eau vivante et légère.",
+    "processTitle": "Du captage à la bouteille",
+    "process1": "Captage & traitement — osmose inverse et contrôle continu",
+    "process2": "Embouteillage à la source — chaîne fermée, sans rupture",
+    "process3": "Chaque format, la même eau — contrôlée avant expédition"
   },
   "brandPage": {
     "eyebrow": "La Marque",

@@ -347,7 +347,11 @@
     "why2Title": "Bottled at the source",
     "why2Text": "No transport before bottling: the original purity is preserved.",
     "why3Title": "Fine bubbles",
-    "why3Text": "A delicate effervescence — the signature of a living, light water."
+    "why3Text": "A delicate effervescence — the signature of a living, light water.",
+    "processTitle": "From spring to bottle",
+    "process1": "Catchment & treatment — reverse osmosis, continuous monitoring",
+    "process2": "Bottled at source — closed line, no interruption",
+    "process3": "Every format, the same water — checked before dispatch"
   },
   "brandPage": {
     "eyebrow": "The Brand",

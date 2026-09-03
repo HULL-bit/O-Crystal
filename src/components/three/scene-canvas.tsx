@@ -70,21 +70,36 @@ export function SceneCanvas({
   );
 }
 
-/** Goutte de marque O'Crystal (bulles + goutte + rosace) qui flotte. */
+/**
+ * Goutte de marque O'Crystal — composition lumineuse : anneau de caustiques en
+ * rotation lente, halo pulsé, éclat au cœur de la rosace, goutte-logo qui
+ * flotte, balayage de lumière et fines bulles qui montent. 100 % CSS
+ * (transform / opacity → GPU), version allégée sur mobile (voir `.oc-decor`).
+ */
 function CrystalDropCSS() {
   return (
     <div aria-hidden className="absolute inset-0 grid place-items-center">
-      <div className="relative grid h-[min(74vw,30rem)] w-[min(74vw,30rem)] place-items-center">
-        {/* halo lumineux */}
-        <div className="absolute inset-[6%] rounded-full bg-[radial-gradient(circle_at_50%_42%,rgba(127,208,245,0.4),rgba(46,159,223,0.18)_46%,transparent_70%)]" />
+      <div className="relative grid h-[min(82vw,34rem)] w-[min(82vw,34rem)] place-items-center">
+        {/* anneau de caustiques en rotation */}
+        <div className="oc-decor absolute inset-0 rounded-full opacity-70 [animation:spin-slow_28s_linear_infinite] motion-reduce:animate-none bg-[conic-gradient(from_0deg,transparent,rgba(127,208,245,0.28)_12%,transparent_26%,rgba(232,240,248,0.2)_44%,transparent_60%,rgba(46,159,223,0.26)_80%,transparent)]" />
+        {/* halo pulsé */}
+        <div className="oc-decor absolute inset-[6%] rounded-full [animation:twinkle_9s_ease-in-out_infinite] motion-reduce:animate-none bg-[radial-gradient(circle_at_50%_44%,rgba(127,208,245,0.42),rgba(46,159,223,0.16)_48%,transparent_72%)]" />
+        {/* éclat au cœur (rosace) */}
+        <div className="oc-decor absolute left-1/2 top-[60%] h-[26%] w-[26%] -translate-x-1/2 rounded-full [animation:twinkle_4.5s_ease-in-out_infinite] motion-reduce:animate-none bg-[radial-gradient(circle,rgba(255,255,255,0.8),rgba(190,236,255,0.25)_45%,transparent_70%)]" />
+
         {/* la goutte-logo */}
-        <div className="oc-decor relative h-full w-auto [animation:float_11s_ease-in-out_infinite] will-change-transform motion-reduce:animate-none">
-          <BrandMark className="h-full w-auto drop-shadow-[0_18px_40px_rgba(10,30,122,0.35)]" />
-          {/* reflet lumineux qui balaie la goutte (desktop seulement) */}
-          <div className="absolute inset-0 hidden overflow-hidden [mask-image:radial-gradient(60%_46%_at_50%_74%,#000_60%,transparent)] sm:block">
-            <div className="oc-sheen absolute -inset-y-6 left-0 w-1/3 -skew-x-12 bg-[linear-gradient(90deg,transparent,rgba(255,255,255,0.55),transparent)] [animation:sheen_5.5s_ease-in-out_infinite]" />
+        <div className="oc-decor relative h-full w-auto [animation:float_12s_ease-in-out_infinite] will-change-transform motion-reduce:animate-none">
+          <BrandMark className="h-full w-auto drop-shadow-[0_22px_46px_rgba(10,30,122,0.4)]" />
+          {/* balayage de lumière sur la goutte (desktop) */}
+          <div className="absolute inset-0 hidden overflow-hidden [mask-image:radial-gradient(58%_46%_at_50%_74%,#000_58%,transparent)] sm:block">
+            <div className="absolute -inset-y-8 left-0 w-2/5 -skew-x-12 bg-[linear-gradient(90deg,transparent,rgba(255,255,255,0.6),transparent)] [animation:sheen_6s_ease-in-out_infinite]" />
           </div>
         </div>
+
+        {/* fines bulles qui montent (desktop) */}
+        <span className="oc-decor absolute left-[30%] top-[64%] hidden h-2 w-2 rounded-full bg-[radial-gradient(circle_at_35%_30%,#fff,rgba(127,208,245,0.5))] opacity-70 [animation:float_7s_ease-in-out_infinite] sm:block" />
+        <span className="oc-decor absolute left-[68%] top-[52%] hidden h-1.5 w-1.5 rounded-full bg-[radial-gradient(circle_at_35%_30%,#fff,rgba(127,208,245,0.5))] opacity-60 [animation:float_9s_ease-in-out_infinite_0.8s] sm:block" />
+        <span className="oc-decor absolute left-[58%] top-[74%] hidden h-1 w-1 rounded-full bg-white/70 opacity-60 [animation:float_6s_ease-in-out_infinite_1.6s] sm:block" />
       </div>
     </div>
   );
