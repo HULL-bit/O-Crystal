@@ -28,6 +28,62 @@ ou un registrar international qui gère `.sn`.
 
 ---
 
+## Option B — un seul hôte Docker (`docker compose`)
+
+Alternative à Render : tout le programme (app + Postgres) démarre avec **une seule
+commande**, sur ta machine ou un VPS (Hetzner, DigitalOcean, OVH…).
+
+### Démarrer
+
+```bash
+cp .env.example .env.local          # renseigner au moins PAYLOAD_SECRET + CRON_SECRET
+#   (openssl rand -base64 32)         + les 5 clés R2 pour le stockage des médias
+docker compose up --build           # construit l'image puis démarre db + web
+```
+
+→ site : **http://localhost:3000**  ·  admin : **http://localhost:3000/admin**
+(port 3000 pris ? `WEB_PORT=3001 docker compose up`)
+
+Au 1ᵉʳ démarrage, `docker/entrypoint.sh` applique le schéma (`docker/schema.sql`,
+118 tables) puis lance le serveur. Va sur `/admin` → crée le premier compte
+(**admin d'office**). Fichiers : `Dockerfile`, `compose.yaml`, `docker/`.
+
+### Ce qu'il faut savoir
+
+- **Image** : multi-étages, sortie Next « standalone » (`output: 'standalone'` posé
+  seulement quand `DOCKER_BUILD=1`). `next start` classique reste le mode Render.
+- **Schéma** : une build de prod fige `NODE_ENV=production` → Payload n'exécute plus
+  la synchro auto (drizzle push). D'où `docker/schema.sql`, rejoué au 1ᵉʳ boot.
+  **Après toute modif de collection/champ**, régénérer :
+
+  ```bash
+  # 1. pousser le schéma dans une base jetable (mode dev)
+  docker compose up -d db
+  DATABASE_URI=postgres://ocrystal:ocrystal@127.0.0.1:5433/ocrystal \
+    NODE_ENV=development pnpm exec next dev &   # ouvrir /admin une fois, puis Ctrl-C
+  # 2. exporter
+  PGPASSWORD=ocrystal pg_dump -h 127.0.0.1 -p 5433 -U ocrystal -d ocrystal \
+    --schema-only --no-owner --no-privileges \
+    | sed -e '/^SET transaction_timeout/d' -e '/^\\restrict /d' -e '/^\\unrestrict /d' \
+    > docker/schema.sql
+  ```
+
+- **Médias** : R2 obligatoire (le volume `ocrystal-media` n'est qu'un repli).
+- **E-mails / hCaptcha** : mêmes variables que Render, lues depuis `.env.local`.
+- **Prod publique** : mettre un reverse-proxy TLS devant (Caddy, Traefik, ou
+  Cloudflare Tunnel) et `SITE_URL=https://ocrystal.sn docker compose up --build`.
+
+### Commandes utiles
+
+```bash
+docker compose logs -f web           # journaux
+docker compose down                  # arrêter (garde les données)
+docker compose down -v               # arrêter + EFFACER la base et les médias
+docker compose exec db psql -U ocrystal -d ocrystal   # console SQL
+```
+
+---
+
 ## 1. Comptes à créer
 
 | Service | Rôle | Obligatoire |

@@ -1,0 +1,30 @@
+# Contexte de build Docker — on n'envoie que le strict nécessaire.
+node_modules
+.next
+.git
+.github
+.turbo
+.vscode
+.idea
+
+# Secrets & notes locales — NE JAMAIS mettre dans une image
+.env
+.env.*
+!.env.example
+*.local.md
+DEPLOIEMENT-*.md
+
+# Tests / rapports / artefacts
+test-results
+playwright-report
+blob-report
+coverage
+.playwright
+
+# Divers
+*.log
+media
+src/media
+scratchpad
+Dockerfile
+.dockerignore

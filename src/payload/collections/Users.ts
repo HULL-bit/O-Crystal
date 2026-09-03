@@ -25,6 +25,19 @@ export const Users: CollectionConfig = {
     delete: isAdmin,
     admin: ({ req: { user } }) => Boolean(user), // tout compte authentifié accède au portail
   },
+  hooks: {
+    beforeChange: [
+      async ({ operation, data, req }) => {
+        // Le tout premier compte de l'instance est administrateur d'office
+        // (sinon personne ne peut promouvoir personne).
+        if (operation === "create") {
+          const { totalDocs } = await req.payload.count({ collection: "users" });
+          if (totalDocs === 0) data.roles = ["admin"];
+        }
+        return data;
+      },
+    ],
+  },
   fields: [
     { name: "name", type: "text", required: true },
     {

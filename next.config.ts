@@ -94,6 +94,15 @@ const nextConfig: NextConfig = {
   poweredByHeader: false,
   reactStrictMode: true,
 
+  // Sortie autonome UNIQUEMENT pour l'image Docker (le Dockerfile pose
+  // DOCKER_BUILD=1). Sur Render / en local, `next start` reste le mode normal
+  // (`next start` refuse la sortie standalone).
+  ...(process.env.DOCKER_BUILD
+    ? { output: "standalone" as const, outputFileTracingRoot: dirname }
+    : {}),
+  // `sharp` (redimensionnement d'images Payload) : gardé hors bundle serveur.
+  serverExternalPackages: ["sharp"],
+
   experimental: {
     optimizePackageImports: ["motion", "@react-three/drei"],
   },
