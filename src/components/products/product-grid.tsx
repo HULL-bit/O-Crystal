@@ -6,6 +6,7 @@ import { Link } from "@/i18n/navigation";
 import { Reveal, RevealGroup } from "@/components/motion/reveal";
 import { CmsImage } from "@/components/cms/cms-image";
 import { BrandMark } from "@/components/brand/BrandMark";
+import { OCrystalBottle } from "@/components/products/ocrystal-bottle";
 import { asMedia, type Product } from "@/lib/cms-types";
 import { cn } from "@/lib/utils";
 
@@ -57,16 +58,15 @@ export function ProductGrid({ products }: { products: Product[] }) {
                 <BrandMark className="h-6 w-auto opacity-60 transition-opacity group-hover:opacity-100" />
               </div>
 
-              <div className="relative mx-auto my-6 aspect-[3/4] w-32">
+              <div className="relative mx-auto my-6 aspect-[3/4] w-36">
                 {asMedia(p.packshot) ? (
-                  <CmsImage media={p.packshot} sizes="128px" className="object-contain" />
+                  <CmsImage media={p.packshot} sizes="144px" className="object-contain" />
                 ) : (
-                  <div
-                    aria-hidden
-                    className="absolute inset-x-6 bottom-0 top-6 rounded-t-[45%] rounded-b-lg bg-[linear-gradient(180deg,var(--color-cristal-light),var(--color-cristal)_60%,var(--color-royal))] transition-transform duration-[var(--duration-slow)] ease-[var(--ease-eau)] group-hover:-translate-y-1"
-                  >
-                    <span className="absolute inset-x-3 top-3 h-1/3 rounded bg-white/15" />
-                  </div>
+                  <OCrystalBottle
+                    format={p.slug}
+                    volume={p.volume}
+                    className="transition-transform duration-[var(--duration-slow)] ease-[var(--ease-eau)] group-hover:-translate-y-1"
+                  />
                 )}
               </div>
 

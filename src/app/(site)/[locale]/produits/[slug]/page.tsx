@@ -11,7 +11,7 @@ import { CmsImage } from "@/components/cms/cms-image";
 import { RichText } from "@/components/cms/rich-text";
 import { MineralGauges } from "@/components/products/mineral-gauges";
 import { Product360 } from "@/components/products/product-360";
-import { SceneCanvas } from "@/components/three/scene-canvas";
+import { OCrystalBottle } from "@/components/products/ocrystal-bottle";
 import { ARLaunch } from "@/components/three/ar-launch";
 import { getProduct, getProducts, payloadClient, toLocale } from "@/lib/cms";
 import { asMedia, type Product } from "@/lib/cms-types";
@@ -128,12 +128,21 @@ export default async function ProductPage({ params }: Props) {
                     {t("view360")}
                   </p>
                 </>
+              ) : asMedia(product.packshot) ? (
+                <div className="relative aspect-[3/4] w-full">
+                  <CmsImage
+                    media={product.packshot}
+                    fallbackAlt={product.name}
+                    sizes="(max-width: 1024px) 80vw, 24rem"
+                    className="object-contain"
+                    priority
+                  />
+                </div>
               ) : (
-                <SceneCanvas
-                  variant="bottle"
-                  fallbackImage={product.packshot ?? null}
-                  fallbackAlt={product.name}
-                  className="aspect-[3/4] w-full"
+                <OCrystalBottle
+                  format={product.slug}
+                  volume={product.volume}
+                  className="mx-auto aspect-[3/4] max-h-[60vh] w-full"
                 />
               )}
             </div>
