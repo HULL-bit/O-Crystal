@@ -81,7 +81,7 @@ export function Hero({ content }: { content?: HeroContent }) {
           {copy.eyebrow}
         </p>
 
-        <h1 className="mt-6 max-w-[15ch] text-[length:var(--text-hero)] leading-[0.95] font-[400]">
+        <h1 className="mt-6 max-w-[11ch] text-[length:var(--text-hero)] leading-[0.95] font-[400] lg:max-w-[12ch]">
           <SplitText
             text={copy.titleLine1}
             by="word"
