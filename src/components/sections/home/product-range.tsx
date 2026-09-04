@@ -6,6 +6,7 @@ import { Eyebrow } from "@/components/ui/section";
 import { Reveal } from "@/components/motion/reveal";
 import { products } from "@/content/products";
 import { BrandMark } from "@/components/brand/BrandMark";
+import { OCrystalBottle } from "@/components/products/ocrystal-bottle";
 
 export function ProductRange() {
   const t = useTranslations("home.bottle");
@@ -46,12 +47,12 @@ export function ProductRange() {
                   <BrandMark className="h-7 w-auto opacity-60 transition-opacity group-hover:opacity-100" />
                 </div>
 
-                <div
-                  className="relative mx-auto w-16 rounded-t-[40%] rounded-b-lg bg-[linear-gradient(180deg,rgba(127,208,245,0.5),rgba(46,159,223,0.25))] transition-transform duration-[var(--duration-slow)] ease-[var(--ease-eau)] group-hover:-translate-y-1"
-                  style={{ height: `${8 + p.silhouette * 9}rem` }}
-                  aria-hidden
-                >
-                  <span className="absolute inset-x-3 top-3 h-1/3 rounded bg-white/15" />
+                <div className="relative mx-auto aspect-[3/4] w-32">
+                  <OCrystalBottle
+                    format={p.slug}
+                    volume={p.volume}
+                    className="transition-transform duration-[var(--duration-slow)] ease-[var(--ease-eau)] group-hover:-translate-y-1"
+                  />
                 </div>
 
                 <div>

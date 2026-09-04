@@ -6,6 +6,7 @@ import { SourceJourney } from "@/components/sections/home/source-journey";
 import { Minerality } from "@/components/sections/home/minerality";
 import { ProductRange } from "@/components/sections/home/product-range";
 import { Proof } from "@/components/sections/home/proof";
+import { NewsTeaser } from "@/components/sections/home/news-teaser";
 import { CtaDuo } from "@/components/sections/home/cta-duo";
 import { NewsletterSection } from "@/components/sections/home/newsletter-section";
 import { Ornament } from "@/components/brand/ornament";
@@ -44,6 +45,7 @@ export default async function HomePage({ params }: Props) {
       <Minerality tone="silver" />
       <ProductRange />
       <Proof tone="dark" />
+      <NewsTeaser />
       <CtaDuo tone="silver" />
       <NewsletterSection />
     </>
