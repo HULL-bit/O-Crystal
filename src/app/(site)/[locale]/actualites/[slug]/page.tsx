@@ -10,6 +10,7 @@ import { RichText } from "@/components/cms/rich-text";
 import { ShareButton } from "@/components/share-button";
 import { getArticle, getArticles, payloadClient, toLocale } from "@/lib/cms";
 import { asMedia, type Article } from "@/lib/cms-types";
+import { news, newsArticle, newsAsArticles } from "@/content/news";
 import { JsonLd, articleLd } from "@/components/seo/json-ld";
 
 type Props = { params: Promise<{ locale: string; slug: string }> };
@@ -24,18 +25,29 @@ export async function generateStaticParams() {
       limit: 100,
       depth: 0,
     });
-    return r.docs.flatMap((d) => [
+    const params = r.docs.flatMap((d) => [
       { locale: "fr", slug: String(d.slug) },
       { locale: "en", slug: String(d.slug) },
     ]);
+    return params.length ? params : staticParams();
   } catch {
-    return [];
+    return staticParams();
   }
+}
+
+/** Brèves statiques (repli quand la collection Articles du CMS est vide). */
+function staticParams() {
+  return news.flatMap((n) => [
+    { locale: "fr", slug: n.slug },
+    { locale: "en", slug: n.slug },
+  ]);
 }
 
 export async function generateMetadata({ params }: Props): Promise<Metadata> {
   const { locale, slug } = await params;
-  const a = (await getArticle(toLocale(locale), slug)) as Article | null;
+  const l = toLocale(locale);
+  const a =
+    ((await getArticle(l, slug)) as Article | null) ?? newsArticle(l, slug);
   if (!a) return {};
   return {
     title: a.meta?.title || `${a.title} · O'Crystal`,
@@ -50,12 +62,19 @@ export default async function ArticlePage({ params }: Props) {
   const t = await getTranslations("newsPage");
   const l = toLocale(locale);
 
-  const article = (await getArticle(l, slug)) as Article | null;
+  const staticA = newsArticle(l, slug);
+  const article = ((await getArticle(l, slug)) as Article | null) ?? staticA;
   if (!article) notFound();
 
-  const related = ((await getArticles(l)) as Article[])
-    .filter((a) => a.slug !== slug)
-    .slice(0, 3);
+  // Corps en paragraphes pour les brèves statiques (pas de Lexical).
+  const staticBody = staticA && article === staticA ? staticA.body : null;
+
+  const cmsRelated = ((await getArticles(l)) as Article[]).filter(
+    (a) => a.slug !== slug,
+  );
+  const related = (
+    cmsRelated.length ? cmsRelated : newsAsArticles(l).filter((a) => a.slug !== slug)
+  ).slice(0, 3);
 
   const df = new Intl.DateTimeFormat(locale === "en" ? "en-GB" : "fr-FR", {
     dateStyle: "long",
@@ -104,7 +123,15 @@ export default async function ArticlePage({ params }: Props) {
 
       <Section spacing="md">
         <Reveal className="mx-auto max-w-2xl">
-          <RichText data={article.content} />
+          {staticBody ? (
+            <div className="space-y-5 text-[var(--color-muted)]">
+              {staticBody.map((p, i) => (
+                <p key={i}>{p}</p>
+              ))}
+            </div>
+          ) : (
+            <RichText data={article.content} />
+          )}
         </Reveal>
       </Section>
 

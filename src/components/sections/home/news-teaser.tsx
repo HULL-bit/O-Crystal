@@ -10,8 +10,8 @@ import { news } from "@/content/news";
 /**
  * Teaser « Actualités » sur l'accueil : trois publications récentes avec visuel,
  * catégorie et date. Alimenté par `src/content/news.ts` (repli statique) en
- * attendant la collection `Articles` du CMS ; les cartes renvoient vers
- * `/actualites`.
+ * attendant la collection `Articles` du CMS ; les cartes renvoient vers la
+ * fiche `/actualites/<slug>`.
  */
 export function NewsTeaser() {
   const t = useTranslations("home.news");
@@ -46,7 +46,7 @@ export function NewsTeaser() {
           return (
             <Reveal key={n.slug} as="article">
               <Link
-                href="/actualites"
+                href={`/actualites/${n.slug}`}
                 className="group glass block h-full overflow-hidden rounded-[var(--radius-lg)] transition-colors hover:border-[color-mix(in_oklab,var(--color-cristal)_45%,transparent)]"
               >
                 <Photo
