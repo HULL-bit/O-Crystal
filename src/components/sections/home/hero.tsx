@@ -96,7 +96,7 @@ export function Hero({ content }: { content?: HeroContent }) {
             immediate
             gradient
             delay={0.35}
-            className="block"
+            className="block italic"
           />
         </h1>
 
