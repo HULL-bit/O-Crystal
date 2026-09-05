@@ -28,15 +28,15 @@ export function Header() {
       <div
         data-scrolled={scrolled}
         className={cn(
-          "oc-navbar pointer-events-auto flex w-full max-w-[87rem] items-center justify-between gap-1 rounded-full px-2.5 sm:px-3",
-          scrolled ? "py-1.5" : "py-2.5",
+          "oc-navbar pointer-events-auto flex w-full max-w-[90rem] items-center justify-between gap-1 rounded-full px-3 sm:px-3.5",
+          scrolled ? "py-2" : "py-3",
         )}
       >
         <Logo />
 
         {/* Nav desktop */}
         <nav
-          className="hidden shrink items-center lg:flex xl:gap-0.5"
+          className="hidden shrink items-center lg:flex"
           onMouseLeave={() => setOpenMenu(null)}
         >
           {primaryNav.map((item) => {
@@ -54,7 +54,7 @@ export function Header() {
                   href={item.href}
                   prefetch
                   className={cn(
-                    "relative block rounded-full px-2.5 py-2 text-[0.82rem] whitespace-nowrap transition-colors xl:px-3",
+                    "relative block rounded-full px-2.5 py-2.5 text-[0.875rem] whitespace-nowrap transition-colors",
                     isActive
                       ? "text-white"
                       : "text-[var(--color-platine)] hover:text-white",
@@ -111,28 +111,28 @@ export function Header() {
         <div className="flex shrink-0 items-center gap-1.5">
           <Link
             href="/pro"
-            className="hidden rounded-full border border-[color-mix(in_oklab,var(--color-argent)_35%,transparent)] px-3 py-1.5 text-[0.8rem] whitespace-nowrap text-[var(--color-platine)] transition-colors hover:border-[color-mix(in_oklab,var(--color-argent-bright)_60%,transparent)] hover:text-white xl:inline-flex"
+            className="hidden rounded-full border border-[color-mix(in_oklab,var(--color-argent)_35%,transparent)] px-3 py-2 text-[0.85rem] whitespace-nowrap text-[var(--color-platine)] transition-colors hover:border-[color-mix(in_oklab,var(--color-argent-bright)_60%,transparent)] hover:text-white xl:inline-flex"
           >
             {t("proSpace")}
           </Link>
           <Link
             href="/recherche"
             aria-label={t("search")}
-            className="hidden h-9 w-9 shrink-0 items-center justify-center rounded-full border border-[color-mix(in_oklab,var(--color-argent)_35%,transparent)] text-[var(--color-platine-bright)] transition-colors hover:border-[color-mix(in_oklab,var(--color-argent-bright)_60%,transparent)] hover:text-white sm:flex"
+            className="hidden h-10 w-10 shrink-0 items-center justify-center rounded-full border border-[color-mix(in_oklab,var(--color-argent)_35%,transparent)] text-[var(--color-platine-bright)] transition-colors hover:border-[color-mix(in_oklab,var(--color-argent-bright)_60%,transparent)] hover:text-white sm:flex"
           >
-            <svg viewBox="0 0 24 24" className="h-4 w-4" fill="none" stroke="currentColor" strokeWidth="2">
+            <svg viewBox="0 0 24 24" className="h-[18px] w-[18px]" fill="none" stroke="currentColor" strokeWidth="2">
               <circle cx="11" cy="11" r="7" />
               <path d="m20 20-3.5-3.5" strokeLinecap="round" />
             </svg>
           </Link>
 
-          <LocaleSwitcher className="hidden shrink-0 rounded-full border border-[color-mix(in_oklab,var(--color-argent)_35%,transparent)] px-2.5 py-1.5 sm:inline-flex" />
+          <LocaleSwitcher className="hidden shrink-0 rounded-full border border-[color-mix(in_oklab,var(--color-argent)_35%,transparent)] px-3 py-2 text-[0.8rem] sm:inline-flex" />
 
           <Button
             href="/professionnels"
             variant="metal"
             size="sm"
-            className="hidden whitespace-nowrap xl:inline-flex"
+            className="hidden h-10 whitespace-nowrap xl:inline-flex"
             magnetic
           >
             {tA("becomeDistributor")}
@@ -140,7 +140,7 @@ export function Header() {
 
           <button
             type="button"
-            className="relative z-50 flex h-10 w-10 items-center justify-center rounded-full border border-[color-mix(in_oklab,var(--color-argent)_35%,transparent)] text-[var(--color-platine-bright)] lg:hidden"
+            className="relative z-50 flex h-11 w-11 items-center justify-center rounded-full border border-[color-mix(in_oklab,var(--color-argent)_35%,transparent)] text-[var(--color-platine-bright)] lg:hidden"
             aria-expanded={mobileOpen}
             aria-label={mobileOpen ? t("close") : t("openMenu")}
             onClick={() => setMobileOpen((v) => !v)}

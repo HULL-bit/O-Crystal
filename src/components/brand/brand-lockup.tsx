@@ -17,12 +17,12 @@ export function BrandLockup({
 }) {
   const mark = {
     sm: "h-7",
-    md: "h-[1.9rem] sm:h-9 md:h-[2.3rem]",
+    md: "h-9 sm:h-[2.35rem] md:h-[2.5rem]",
     lg: "h-10 sm:h-11",
   }[size];
   const word = {
     sm: "text-[1.05rem]",
-    md: "text-[1.15rem] sm:text-[1.3rem] md:text-[1.4rem]",
+    md: "text-[1.24rem] sm:text-[1.4rem] md:text-[1.48rem]",
     lg: "text-[1.5rem] sm:text-[1.75rem]",
   }[size];
 
